@@ -25,6 +25,8 @@ public class ItemManager {
 
     private Item.ItemType bulletspeeditem = Item.ItemType.BulletSpeedItem;
 
+    private Item.ItemType enemyshipspeeditem = Item.ItemType.EnemyShipSpeedItem;
+
     private int enemyshipssize;
 
 
@@ -101,6 +103,7 @@ public class ItemManager {
             item_list.add(shielditem);
             item_list.add(extralifeitem);
             item_list.add(bulletspeeditem);
+            item_list.add(enemyshipspeeditem);
 
         }
 
