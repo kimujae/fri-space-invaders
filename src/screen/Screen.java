@@ -43,6 +43,10 @@ public class Screen {
 	/** What kind of screen goes next. */
 	protected int returnCode;
 
+	protected boolean bool;
+
+	protected  boolean isInit;
+
 	/**
 	 * Constructor, establishes the properties of the screen.
 	 * 
@@ -57,7 +61,7 @@ public class Screen {
 		this.width = width;
 		this.height = height;
 		this.fps = fps;
-
+		this.isInit= true;
 		this.drawManager = Core.getDrawManager();
 		this.inputManager = Core.getInputManager();
 		this.logger = Core.getLogger();
@@ -85,6 +89,15 @@ public class Screen {
 			long time = System.currentTimeMillis();
 
 			update();
+			if(getInterrupt()== true){
+				return 0;
+			}
+			while(getInterrupt()==true){
+				try {
+					TimeUnit.MILLISECONDS.sleep(100);
+				} catch (InterruptedException e) {
+				}
+			}
 
 			time = (1000 / this.fps) - (System.currentTimeMillis() - time);
 			if (time > 0) {
@@ -122,4 +135,13 @@ public class Screen {
 	public final int getHeight() {
 		return this.height;
 	}
+
+
+	public final boolean getInterrupt(){return this.bool;}
+
+
+	public final void setInterrupt(boolean bool){this.bool = bool;}
+
+
+	public final boolean getIsInit(){return this.isInit;}
 }
