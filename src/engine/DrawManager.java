@@ -1083,4 +1083,51 @@ public final class DrawManager {
 				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 2);
 	}
 
+	public void drawPauseStateScreen(final Screen screen, final int option){
+		String continueString = "Continue Game";
+		//String storeString = "Store";
+		String saveString ="Save Game";
+		String MenuString ="Menu";
+		String ExitString = "Exit Program";
+
+		if(option == 1)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, continueString,
+				screen.getHeight() / 3 * 2 - fontRegularMetrics.getHeight());
+
+      /*if(option == 2)
+         backBufferGraphics.setColor(Color.GREEN);
+      else
+         backBufferGraphics.setColor(Color.WHITE);
+      drawCenteredRegularString(screen, storeString,
+            screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 2);
+      */
+
+		if(option == 2)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, saveString,
+				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight());
+
+
+		if(option == 3)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, MenuString,
+				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 3);
+
+		if(option == 4)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, ExitString,
+				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 5);
+
+	}
+
+
 }
