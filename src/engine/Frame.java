@@ -55,7 +55,11 @@ public class Frame extends JFrame {
 	 */
 	public final int setScreen(final Screen screen) {
 		currentScreen = screen;
-		currentScreen.initialize();
+		if(screen.getInterrupt() == false) {
+			currentScreen.initialize();
+		}else{
+			currentScreen.setInterrupt(false);
+		}
 		return currentScreen.run();
 	}
 

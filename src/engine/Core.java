@@ -10,17 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entity.ItemPool;
-import screen.GameScreen;
-import screen.HighScoreScreen;
-import screen.ScoreScreen;
-import screen.Screen;
-import screen.TitleScreen;
-import screen.GameSaveScreen;
-import screen.SettingScreen;
-import screen.HelpScreen;
-import screen.VolumeScreen;
-import screen.StoreScreen;
-import screen.PauseScreen;
+import screen.*;
+import sound.SoundPlay;
+import sound.SoundType;
 
 /**
  * Implements core game logic.
@@ -86,6 +78,8 @@ public final class Core {
 	/** Logger handler for printing to console. */
 	private static ConsoleHandler consoleHandler;
 
+	private static GameScreen gameScreen;
+
 
 	/**
 	 * Test implementation.
@@ -137,6 +131,9 @@ public final class Core {
 			switch (returnCode) {
 				case 1:
 					// Main menu.
+                    if(gameScreen != null && gameScreen.getInterrupt() == true){
+                        gameScreen = null;
+                    }
 					currentScreen = new TitleScreen(width, height, FPS);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
@@ -147,54 +144,66 @@ public final class Core {
 					// Game & score.
 					GO_MAIN = true;
 					do {
-						// One extra live every few levels.
-						boolean bonusLife = gameState.getLevel()
-								% EXTRA_LIFE_FRECUENCY == 0
-								&& gameState.getLivesRemaining() < MAX_LIVES;
-						currentScreen = new GameScreen(gameState,
-								gameSettings.get(gameState.getLevel() - 1),
-								bonusLife, width, height, FPS);
-						LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-								+ " game screen at " + FPS + " fps.");
-						frame.setScreen(currentScreen);
-						LOGGER.info("Closing game screen.");
-
-						gameState = ((GameScreen) currentScreen).getGameState();
-
-						if (gameState.getScore() > 500)
-							permanentState.setCoin(gameState.getScore() - 500); // earn coin
-
-
-						if (gameState.getLivesRemaining() > 0) {
-							currentScreen = new PauseScreen(width, height, FPS, gameState);
-							returnCode = frame.setScreen(currentScreen);
+						if(gameScreen != null && gameScreen.getInterrupt()){
+							currentScreen = gameScreen;
+							frame.setScreen(currentScreen);
 						}
-
-						if (gameState.getLivesRemaining() > 0 && gameState.getLevel() < NUM_LEVELS){
+						else {
+							// One extra live every few levels.
+							boolean bonusLife = gameState.getLevel()
+									% EXTRA_LIFE_FRECUENCY == 0
+									&& gameState.getLivesRemaining() < MAX_LIVES;
+							gameScreen = new GameScreen(gameState,
+									gameSettings.get(gameState.getLevel() - 1),
+									bonusLife, width, height, FPS);
+							currentScreen = gameScreen;
 							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-									+ " game save screen at " + FPS + " fps.");
-							currentScreen = new GameSaveScreen(gameState, width, height, FPS);
-							returnCode = frame.setScreen(currentScreen);
-							LOGGER.info("Closing game save screen.");
-							if (returnCode == 2) {
-								getFileManager().Savefile(gameState);
-								LOGGER.info("Complete Save.");
-								GO_MAIN = false;
-								gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-								returnCode = 1;
-								break;
-							}
+									+ " game screen at " + FPS + " fps.");
 						}
 
-						gameState = new GameState(gameState.getLevel() + 1,
-								gameState.getScore(),
-								gameState.getLivesRemaining(),
-								gameState.getBulletsShot(),
-								gameState.getShipsDestroyed()
-						);
+						if (currentScreen.getIsInit() && frame.setScreen(currentScreen) == 11) {
+							returnCode = 11;
+							break;
+						} else {
+
+							LOGGER.info("Closing game screen.");
+							gameState = ((GameScreen) currentScreen).getGameState();
+
+							if (gameState.getScore() > 500)
+								permanentState.setCoin(gameState.getScore() - 500); // earn coin
+
+
+							if (gameState.getLivesRemaining() > 0) {
+								currentScreen = new PauseScreen(width, height, FPS, gameState);
+								returnCode = frame.setScreen(currentScreen);
+							}
+
+							if (gameState.getLivesRemaining() > 0 && gameState.getLevel() < NUM_LEVELS) {
+								LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+										+ " game save screen at " + FPS + " fps.");
+								currentScreen = new GameSaveScreen(gameState, width, height, FPS);
+								returnCode = frame.setScreen(currentScreen);
+								LOGGER.info("Closing game save screen.");
+								if (returnCode == 2) {
+									getFileManager().Savefile(gameState);
+									LOGGER.info("Complete Save.");
+									GO_MAIN = false;
+									gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+									returnCode = 1;
+									break;
+								}
+							}
+
+							gameState = new GameState(gameState.getLevel() + 1,
+									gameState.getScore(),
+									gameState.getLivesRemaining(),
+									gameState.getBulletsShot(),
+									gameState.getShipsDestroyed()
+							);
+						}
 					} while (gameState.getLivesRemaining() > 0
 							&& gameState.getLevel() <= NUM_LEVELS);
-					if (!GO_MAIN)
+					if ((gameScreen != null && gameScreen.getInterrupt()) || !GO_MAIN)
 						break;
 					getFileManager().Savefile(new GameState(0, 0, 3, 0, 0));
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -311,6 +320,17 @@ public final class Core {
 				LOGGER.info("Closing help screen.");
 				break;
 
+			case 11: //pauseStateScreen
+				currentScreen = new PauseStateScreen(width, height, FPS, gameScreen);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " pause screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				if(returnCode ==2) {
+					SoundPlay.getInstance().stopBgm();
+					SoundPlay.getInstance().play(SoundType.inGameBGM);
+				}
+				LOGGER.info("Closing pause screen.");
+				break;
 			}
 
 		} while (returnCode != 0);
