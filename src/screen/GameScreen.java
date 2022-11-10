@@ -618,4 +618,15 @@ public class GameScreen extends Screen {
 		for (EnemyShip enemyShip : this.enemyShipFormation)
 			enemyShip.setInitPointValue();
 	}
+
+
+	public int getScore(){
+		return score;
+	}
+	public int getLives(){
+		return lives;
+	}
+	public int getLevel(){
+		return level;
+	}
 }
