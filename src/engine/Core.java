@@ -133,6 +133,7 @@ public final class Core {
 					// Main menu.
                     if(gameScreen != null && gameScreen.getInterrupt() == true){
                         gameScreen = null;
+						gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
                     }
 					currentScreen = new TitleScreen(width, height, FPS);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
