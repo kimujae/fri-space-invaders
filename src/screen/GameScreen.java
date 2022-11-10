@@ -212,7 +212,9 @@ public class GameScreen extends Screen {
 	 */
 	public final int run() {
 		super.run();
-
+		if(getInterrupt()==true){
+			return 11;
+		}
 		SoundPlay.getInstance().stopBgm();
 		this.score += LIFE_SCORE * (this.lives - 1);
 		this.logger.info("Screen cleared with a score of " + this.score); // 정상 출력
@@ -251,6 +253,10 @@ public class GameScreen extends Screen {
 				if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
 					if (this.ship.shoot(this.bullets))
 						this.bulletsShot++;
+
+				if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
+					this.setInterrupt(true);
+				}
 			}
 
 			if (this.enemyShipSpecial != null) {
@@ -313,12 +319,15 @@ public class GameScreen extends Screen {
 			this.screenFinishedCooldown.reset();
 		}
 
-		if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
+		if (this.levelFinished && this.screenFinishedCooldown.checkFinished()) {
 			this.isRunning = false;
+			this.isInit = false;
+		}
 
 		if(this.enemyShipFormation.isEmpty()){
 			sound.SoundPlay.getInstance().play(SoundType.roundClear);
 			this.isRunning = false;
+			this.isInit = false;
 		}
 	}
 
@@ -617,5 +626,16 @@ public class GameScreen extends Screen {
 	public void clearPointUp(){
 		for (EnemyShip enemyShip : this.enemyShipFormation)
 			enemyShip.setInitPointValue();
+	}
+
+
+	public int getScore(){
+		return score;
+	}
+	public int getLives(){
+		return lives;
+	}
+	public int getLevel(){
+		return level;
 	}
 }
