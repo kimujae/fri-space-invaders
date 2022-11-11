@@ -78,6 +78,7 @@ public class PauseStateScreen extends Screen{
                         SoundPlay.getInstance().stopBgm();
                         this.isRunning = false;
                     }
+                    if (menuCode == 2) this.isRunning = false;
                     if (menuCode == 1) this.isRunning = false;
                 }
             }
@@ -90,6 +91,7 @@ public class PauseStateScreen extends Screen{
             if (this.menuCode == 1) {
                 menuCode++;
                 //이수빈 save returnCode작성
+                returnCode = 12;
             }
             else if (this.menuCode == 2) {
                 menuCode++;
@@ -116,6 +118,7 @@ public class PauseStateScreen extends Screen{
             else if(this.menuCode ==3) {
                 menuCode--;
                 //이수빈 save returnCode작성
+                returnCode = 12;
             }
             else if(this.menuCode ==4) {
                 menuCode--;
