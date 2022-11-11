@@ -80,6 +80,8 @@ public final class Core {
 
 	private static GameScreen gameScreen;
 
+	private static SaveInfoScreen saveInfoScreen;
+
 
 	/**
 	 * Test implementation.
@@ -131,10 +133,10 @@ public final class Core {
 			switch (returnCode) {
 				case 1:
 					// Main menu.
-                    if(gameScreen != null && gameScreen.getInterrupt() == true){
-                        gameScreen = null;
+					if(gameScreen != null && gameScreen.getInterrupt() == true){
+						gameScreen = null;
 						gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-                    }
+					}
 					currentScreen = new TitleScreen(width, height, FPS);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
@@ -186,7 +188,7 @@ public final class Core {
 								returnCode = frame.setScreen(currentScreen);
 								LOGGER.info("Closing game save screen.");
 								if (returnCode == 2) {
-									getFileManager().Savefile(gameState);
+									getFileManager().Savefile(gameState, saveInfoScreen.getSlotNum());
 									LOGGER.info("Complete Save.");
 									GO_MAIN = false;
 									gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
@@ -206,7 +208,7 @@ public final class Core {
 							&& gameState.getLevel() <= NUM_LEVELS);
 					if ((gameScreen != null && gameScreen.getInterrupt()) || !GO_MAIN)
 						break;
-					getFileManager().Savefile(new GameState(0, 0, 3, 0, 0));
+					getFileManager().Savefile(new GameState(0, 0, 3, 0, 0), saveInfoScreen.getSlotNum());
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " score screen at " + FPS + " fps, with a score of "
 							+ gameState.getScore() + ", "
@@ -281,77 +283,94 @@ public final class Core {
 				} while (returnCode != 0);
 
 				returnCode = 1; */
-        
-				currentScreen = new StoreScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " store screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing store screen.");
-				break;
 
-			case 5:
-				// Load
-				String save_info [] = getFileManager().loadInfo();
-				gameState = new GameState(Integer.parseInt(save_info[0]), Integer.parseInt(save_info[1]), Integer.parseInt(save_info[2]), Integer.parseInt(save_info[3]), Integer.parseInt(save_info[4]));
-				returnCode = 2;
-				break;
-				
-			case 6:
-				// Setting.
-				currentScreen = new SettingScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " setting screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing setting screen.");
-				break;
-				
-			case 7: //Help
-				currentScreen = new HelpScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " setting screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing help screen.");
-				break;
-				
-			case 8: //Volume //mainmenu 1014
-				currentScreen = new VolumeScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " setting screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing help screen.");
-				break;
+					currentScreen = new StoreScreen(width, height, FPS);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " store screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing store screen.");
+					break;
 
-			case 9:
-				// Help(operation)
-				currentScreen = new HelpOperationScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " operation screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing operation screen.");
-				break;
+				case 5:
+					// Load
+//				String save_info [] = getFileManager().loadInfo();
+//				gameState = new GameState(Integer.parseInt(save_info[0]), Integer.parseInt(save_info[1]), Integer.parseInt(save_info[2]), Integer.parseInt(save_info[3]), Integer.parseInt(save_info[4]));
+//				returnCode = 2;
+//				break;
+					currentScreen = new SaveInfoScreen(width, height, FPS, "Load");
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " SaveInfo screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing SaveInfo screen.");
+					break;
 
-			case 10:
-				// Help(item description)
-				currentScreen = new HelpItemDescriptionScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " item description screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing description screen.");
-				break;
+				case 6:
+					// Setting.
+					currentScreen = new SettingScreen(width, height, FPS);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " setting screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing setting screen.");
+					break;
+
+				case 7: //Help
+					currentScreen = new HelpScreen(width, height, FPS);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " setting screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing help screen.");
+					break;
+
+				case 8: //Volume //mainmenu 1014
+					currentScreen = new VolumeScreen(width, height, FPS);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " setting screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing help screen.");
+					break;
+
+				case 9:
+					// Help(operation)
+					currentScreen = new HelpOperationScreen(width, height, FPS);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " operation screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing operation screen.");
+					break;
+
+				case 10:
+					// Help(item description)
+					currentScreen = new HelpItemDescriptionScreen(width, height, FPS);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " item description screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing description screen.");
+					break;
 
 
 
-				case 11: //pauseStateScreen
-				currentScreen = new PauseStateScreen(width, height, FPS, gameScreen);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " pause screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				if(returnCode ==2) {
-					SoundPlay.getInstance().stopBgm();
-					SoundPlay.getInstance().play(SoundType.inGameBGM);
-				}
-				LOGGER.info("Closing pause screen.");
-				break;
+				case 11:
+					//pauseStateScreen
+					currentScreen = new PauseStateScreen(width, height, FPS, gameScreen);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " pause screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					if(returnCode ==2) {
+						SoundPlay.getInstance().stopBgm();
+						SoundPlay.getInstance().play(SoundType.inGameBGM);
+					}
+					LOGGER.info("Closing pause screen.");
+					break;
+
+				case 12:
+					// SaveInfo
+					currentScreen = new SaveInfoScreen(width, height, FPS, "Pause");
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " SaveInfo screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing SaveInfo screen.");
+					break;
+
 			}
 
 		} while (returnCode != 0);

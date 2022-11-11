@@ -4,10 +4,8 @@ import java.awt.*;
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import engine.DrawManager.SpriteType;
@@ -15,9 +13,9 @@ import engine.DrawManager;
 
 /**
  * Manages files used in the application.
- * 
+ *
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
- * 
+ *
  */
 public final class FileManager {
 
@@ -407,15 +405,28 @@ public final class FileManager {
 		}
 	}
 
-	public void Savefile(GameState gamestate) {
+	public void Savefile(GameState gamestate, final int slotNum) {
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
 			jarPath = URLDecoder.decode(jarPath, "UTF-8");
-			File file = new File(jarPath + "../save");
+			File file = null;
+			switch (slotNum) {
+				case 1:
+					file = new File(jarPath + "../save1");
+					break;
+
+				case 2:
+					file = new File(jarPath + "../save2");
+					break;
+				case 3:
+					file = new File(jarPath + "../save3");
+					break;
+			}
+//			File file = new File(jarPath + "../save");
 			BufferedWriter save = new BufferedWriter(new FileWriter(file));
 
-					String state = Integer.toString(gamestate.getLevel() + 1) + ' ' +
+			String state = Integer.toString(gamestate.getLevel() + 1) + ' ' +
 					Integer.toString(gamestate.getScore()) + ' ' +
 					Integer.toString(gamestate.getLivesRemaining()) + ' ' +
 					Integer.toString(gamestate.getBulletsShot()) + ' ' +
@@ -429,7 +440,7 @@ public final class FileManager {
 		}
 	}
 
-	public String[] loadInfo(){
+	public String[] loadInfo(final int slotNum){
 		String[] array = {"1","0","3","0","0"};
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
@@ -437,12 +448,24 @@ public final class FileManager {
 			jarPath = URLDecoder.decode(jarPath, "UTF-8");
 			String savePath = new File(jarPath).getParent();
 			savePath += File.separator;
-			savePath += "save";
+			switch (slotNum) {
+				case 1:
+					savePath += "save1";
+					break;
+				case 2:
+					savePath += "save2";
+					break;
+				case 3:
+					savePath += "save3";
+					break;
+			}
+//			savePath += "save";
 			File saveFile = new File(savePath);
 			BufferedReader br = new BufferedReader(new FileReader(saveFile));
 			String save_info = br.readLine();
 			array = save_info.split(" ");
 			logger.info("Finish loading.");
+			System.out.println(Arrays.toString(array));
 		}
 		catch (FileNotFoundException e) {
 			logger.info("Save file is not found.");
