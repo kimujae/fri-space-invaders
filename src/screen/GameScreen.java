@@ -2,6 +2,7 @@ package screen;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -210,7 +211,7 @@ public class GameScreen extends Screen {
 	 * 
 	 * @return Next screen code.
 	 */
-	public final int run() {
+	public final int run() throws IOException {
 		super.run();
 		if(getInterrupt()==true){
 			return 11;
@@ -224,7 +225,7 @@ public class GameScreen extends Screen {
 	/**
 	 * Updates the elements on screen and checks for events.
 	 */
-	protected final void update() {
+	protected final void update() throws IOException {
 		super.update();
 
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {
