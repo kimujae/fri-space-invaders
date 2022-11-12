@@ -1,6 +1,7 @@
 package screen;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.Random;
 
 import engine.Cooldown;
@@ -60,7 +61,7 @@ public class StoreScreen extends Screen {
     /**
      * Updates the elements on screen and checks for events.
      */
-    protected final void update() {
+    protected final void update() throws IOException {
         super.update();
 
         draw();
@@ -126,7 +127,7 @@ public class StoreScreen extends Screen {
         soundPlay.play(SoundType.menuSelect);
     }
 
-    private void rerollItem() {
+    private void rerollItem() throws IOException {
         if (menuCode == 0){ // ship shape
             if (permanentState.getCoin() >= COST_SHAPE) {
                 int x = new Random().nextInt(3);
@@ -134,7 +135,7 @@ public class StoreScreen extends Screen {
                     x = new Random().nextInt(3);
 
                 permanentState.setShipShape(x);
-                permanentState.setCoin(-COST_SHAPE);
+                permanentState.setCoin(-COST_SHAPE, 0);
             }
         }
         else if (menuCode == 1){ // ship color
@@ -144,7 +145,7 @@ public class StoreScreen extends Screen {
                     x = new Random().nextInt(3);
 
                 permanentState.setShipColor(x);
-                permanentState.setCoin(-COST_COLOR);
+                permanentState.setCoin(-COST_COLOR, 0);
             }
         }
         else if (menuCode == 2){ // bullet effect
@@ -154,7 +155,7 @@ public class StoreScreen extends Screen {
                     x = new Random().nextInt(3) + 1;
 
                 permanentState.setBulletSFX(x);
-                permanentState.setCoin(-COST_BULLET);
+                permanentState.setCoin(-COST_BULLET, 0);
             }
         }
         else { // BGM
@@ -163,7 +164,7 @@ public class StoreScreen extends Screen {
                 while (permanentState.getBGM() == x)
                     x = new Random().nextInt(3) + 1;
                 permanentState.setBGM(x);
-                permanentState.setCoin(-COST_BGM);
+                permanentState.setCoin(-COST_BGM, 0);
             }
         }
     }

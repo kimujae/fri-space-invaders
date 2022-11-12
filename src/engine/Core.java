@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -40,22 +41,22 @@ public final class Core {
 	/** Difficulty settings for level 1. */
 	private static final GameSettings SETTINGS_LEVEL_1 =
 
-			new GameSettings(1, 5, 4, 60, 2000);
+			new GameSettings(1, 1, 1, 60, 2000);
 	/** Difficulty settings for level 2. */
 	private static final GameSettings SETTINGS_LEVEL_2 =
-			new GameSettings(2, 5, 5, 50, 2500);
+			new GameSettings(2, 1, 1, 50, 2500);
 	/** Difficulty settings for level 3. */
 	private static final GameSettings SETTINGS_LEVEL_3 =
-			new GameSettings(3, 6, 5, 40, 1500);
+			new GameSettings(3, 1, 1, 40, 1500);
 	/** Difficulty settings for level 4. */
 	private static final GameSettings SETTINGS_LEVEL_4 =
-			new GameSettings(4, 6, 6, 30, 1500);
+			new GameSettings(4, 1, 1, 30, 1500);
 	/** Difficulty settings for level 5. */
 	private static final GameSettings SETTINGS_LEVEL_5 =
-			new GameSettings(5, 7, 6, 20, 1000);
+			new GameSettings(5, 1, 1, 20, 1000);
 	/** Difficulty settings for level 6. */
 	private static final GameSettings SETTINGS_LEVEL_6 =
-			new GameSettings(6, 7, 7, 10, 1000);
+			new GameSettings(6, 1, 1, 10, 1000);
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(7,7, 8, 5, 500);
@@ -89,7 +90,7 @@ public final class Core {
 	 * @param args
 	 *            Program args, ignored.
 	 */
-	public static void main(final String[] args) {
+	public static void main(final String[] args) throws IOException {
 		try {
 			LOGGER.setUseParentHandlers(false);
 
@@ -125,6 +126,7 @@ public final class Core {
 
 		GameState gameState;
 		PermanentState permanentState = PermanentState.getInstance();
+		LoadGameState loadGameState = new LoadGameState();
 
 		gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
 
@@ -132,8 +134,9 @@ public final class Core {
 		do {
 			switch (returnCode) {
 				case 1:
+
 					// Main menu.
-					if(gameScreen != null && gameScreen.getInterrupt() == true){
+					if(gameScreen != null && gameScreen.getInterrupt()){
 						gameScreen = null;
 						gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
 					}
@@ -173,7 +176,7 @@ public final class Core {
 							gameState = ((GameScreen) currentScreen).getGameState();
 
 							if (gameState.getScore() > 500)
-								permanentState.setCoin(gameState.getScore() - 500); // earn coin
+								permanentState.setCoin(gameState.getScore() - 500, 0); // earn coin
 
 
 							if (gameState.getLivesRemaining() > 0) {
@@ -188,7 +191,8 @@ public final class Core {
 								returnCode = frame.setScreen(currentScreen);
 								LOGGER.info("Closing game save screen.");
 								if (returnCode == 2) {
-									getFileManager().Savefile(gameState, saveInfoScreen.getSlotNum());
+									getFileManager().Savefile(gameState,  0);
+									getFileManager().saveCoins(permanentState.getCoin(), 0);
 									LOGGER.info("Complete Save.");
 									GO_MAIN = false;
 									gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
@@ -208,7 +212,7 @@ public final class Core {
 							&& gameState.getLevel() <= NUM_LEVELS);
 					if ((gameScreen != null && gameScreen.getInterrupt()) || !GO_MAIN)
 						break;
-					getFileManager().Savefile(new GameState(0, 0, 3, 0, 0), saveInfoScreen.getSlotNum());
+					getFileManager().Savefile(new GameState(0, 0, 3, 0, 0), 0);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " score screen at " + FPS + " fps, with a score of "
 							+ gameState.getScore() + ", "
@@ -233,56 +237,6 @@ public final class Core {
 					break;
 
 				case 4:
-					// Store
-				/* returnCode = 1;
-				do {
-					switch (returnCode) {
-						case 1:
-							// Main store
-							currentScreen = new StoreScreen(width, height, FPS);
-							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-									+ " store screen at " + FPS + " fps.");
-							returnCode = frame.setScreen(currentScreen);
-							LOGGER.info("Closing store screen.");
-							break;
-						case 2:
-							// Ship shape
-							currentScreen = new ShipShapeScreen(width, height, FPS);
-							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-									+ " ship shape screen at " + FPS + " fps.");
-							returnCode = frame.setScreen(currentScreen);
-							LOGGER.info("Closing ship shape screen.");
-							break;
-						case 3:
-							// Ship color
-							currentScreen = new ShipColorScreen(width, height, FPS);
-							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-									+ " ship color screen at " + FPS + " fps.");
-							returnCode = frame.setScreen(currentScreen);
-							LOGGER.info("Closing ship color screen.");
-							break;
-						case 4:
-							// Bullet effect
-							currentScreen = new BulletEffectScreen(width, height, FPS);
-							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-									+ " bullet effect screen at " + FPS + " fps.");
-							returnCode = frame.setScreen(currentScreen);
-							LOGGER.info("Closing bullet effect screen.");
-							break;
-						case 5:
-							// BGM
-							currentScreen = new BGMScreen(width, height, FPS);
-							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-									+ " background music screen at " + FPS + " fps.");
-							returnCode = frame.setScreen(currentScreen);
-							LOGGER.info("Closing background music screen.");
-							break;
-						default:
-							break;
-					}
-				} while (returnCode != 0);
-
-				returnCode = 1; */
 
 					currentScreen = new StoreScreen(width, height, FPS);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -297,11 +251,22 @@ public final class Core {
 //				gameState = new GameState(Integer.parseInt(save_info[0]), Integer.parseInt(save_info[1]), Integer.parseInt(save_info[2]), Integer.parseInt(save_info[3]), Integer.parseInt(save_info[4]));
 //				returnCode = 2;
 //				break;
-					currentScreen = new SaveInfoScreen(width, height, FPS, "Load");
+					//currentScreen = new SaveInfoScreen(loadGameState, width, height, FPS, "Load");
+
+					/*int slotNum = loadGameState.getSaveSlot();
+					String save_info []  = getFileManager().loadInfo();
+					gameState = new GameState(Integer.parseInt(save_info[slotNum*5]),
+							Integer.parseInt(save_info[slotNum*5+ 1]),
+							Integer.parseInt(save_info[slotNum*5+2]),
+							Integer.parseInt(save_info[slotNum*5+3]),
+							Integer.parseInt(save_info[slotNum*5+4]));
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " SaveInfo screen at " + FPS + " fps.");
-					returnCode = frame.setScreen(currentScreen);
-					LOGGER.info("Closing SaveInfo screen.");
+					returnCode = 2;
+
+					 */
+					// returnCode = frame.setScreen(currentScreen);
+					//LOGGER.info("Closing SaveInfo screen.");
 					break;
 
 				case 6:
@@ -364,7 +329,7 @@ public final class Core {
 
 				case 12:
 					// SaveInfo
-					currentScreen = new SaveInfoScreen(width, height, FPS, "Pause");
+					currentScreen = new SaveInfoScreen(loadGameState, width, height, FPS, "Pause");
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " SaveInfo screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);

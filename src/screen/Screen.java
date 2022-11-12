@@ -1,6 +1,7 @@
 package screen;
 
 import java.awt.Insets;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -84,7 +85,7 @@ public class Screen {
 	 * 
 	 * @return Next screen code.
 	 */
-	public int run() {
+	public int run() throws IOException {
 		this.isRunning = true;
 
 		while (this.isRunning) {
@@ -117,7 +118,7 @@ public class Screen {
 	/**
 	 * Updates the elements on screen and checks for events.
 	 */
-	protected void update() {
+	protected void update() throws IOException {
 	}
 
 	/**

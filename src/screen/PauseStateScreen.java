@@ -90,7 +90,6 @@ public class PauseStateScreen extends Screen{
         private void nextMenuItem() {
             if (this.menuCode == 1) {
                 menuCode++;
-                //이수빈 save returnCode작성
                 returnCode = 12;
             }
             else if (this.menuCode == 2) {
@@ -117,7 +116,6 @@ public class PauseStateScreen extends Screen{
             }
             else if(this.menuCode ==3) {
                 menuCode--;
-                //이수빈 save returnCode작성
                 returnCode = 12;
             }
             else if(this.menuCode ==4) {

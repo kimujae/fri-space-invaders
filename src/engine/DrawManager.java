@@ -1145,21 +1145,20 @@ public final class DrawManager {
 		backBufferGraphics.drawString(coinString, screen.getWidth() - 11 * (coinString.length() + 1), 25);
 	}
 
-	public void drawSaveInfo(final Screen screen) {
+	public void drawSaveInfo(final Screen screen, String info1, String info2, String info3) {
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredBigString(screen, "Save Slots", screen.getHeight() / 10);
-		for (int i = 1; i <= 3; i++){
-			String save [] = getFileManager().loadInfo(i);
-			String info = "Stage: " + save[0] + " Score: " + save[1];
-			backBufferGraphics.drawString(info, screen.getWidth() *2/5, screen.getHeight() * (3 * i - 1)/10);
-		}
 
-
-//		String info2 = "Stage: " + save[0] + " Score: " + save[1];
-//		String info3 = "Stage: " + save[0] + " Score: " + save[1];
-
-//		backBufferGraphics.drawString(info2, screen.getWidth() *2/5, screen.getHeight() * 5/10);
-//		backBufferGraphics.drawString(info3, screen.getWidth() *2/5, screen.getHeight() * 8/10);
+//		System.out.println(info1);
+		if (info1.charAt(7) == '1')
+			info1 = "New Game";
+		if (info2.charAt(7) == '1')
+			info2 = "New Game";
+		if (info3.charAt(7) == '1')
+			info3 = "New Game";
+		backBufferGraphics.drawString(info1, screen.getWidth() *2/5, screen.getHeight() * (2)/10);
+		backBufferGraphics.drawString(info2, screen.getWidth() *2/5, screen.getHeight() * (5)/10);
+		backBufferGraphics.drawString(info3, screen.getWidth() *2/5, screen.getHeight() * (8)/10);
 
 
 	}

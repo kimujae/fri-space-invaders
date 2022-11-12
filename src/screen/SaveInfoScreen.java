@@ -1,6 +1,7 @@
 package screen;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -9,11 +10,14 @@ import java.util.Set;
 
 import engine.Cooldown;
 import engine.Core;
+import engine.LoadGameState;
 import engine.PermanentState;
 import sound.SoundPlay;
 import sound.SoundType;
 
 import java.util.*;
+
+import static engine.Core.getFileManager;
 
 public class SaveInfoScreen extends Screen {
 
@@ -22,11 +26,18 @@ public class SaveInfoScreen extends Screen {
 
     /** Time between changes in user selection. */
     private Cooldown selectionCooldown;
+
     private PermanentState permanentState = PermanentState.getInstance();
 
     private SoundPlay soundPlay = SoundPlay.getInstance();
 
+    private LoadGameState loadGameState;
+
     private int menuCode = 0;
+    //0 slot1
+    //1 slot2
+    //2 slot3
+    //3 exit
     private int start_or_delete = 0;
 
     //    private int starts[] = {1, 4, 7};
@@ -44,10 +55,11 @@ public class SaveInfoScreen extends Screen {
      * @param fps
      *            Frames per second, frame rate at which the game is run.
      */
-    public SaveInfoScreen (final int width, final int height, final int fps, final String from) {
+    public SaveInfoScreen (LoadGameState loadGameState, final int width, final int height, final int fps, final String from) {
         super(width, height, fps);
 
-        if (from == "Load")
+        this.loadGameState = loadGameState;
+        if (Objects.equals(from, "Load") || Objects.equals(from, "init"))
             this.returnCode = 1;
         else
             this.returnCode = 11;
@@ -55,16 +67,28 @@ public class SaveInfoScreen extends Screen {
         this.selectionCooldown.reset();
     }
 
+    // 1. 코인 저장이 안됨(시작 전에 coins 파일에 1000 2000 3000 저장하고 껐다 키면
+    // coins파일 내용 다 사라짐)
+    // 2. 메인메뉴에서 플레이 버튼 누르면 세이브화면으로 가기
+    // 3. 세이브 화면에서 start누르면 데이터 읽어와서 로드하기
+    // 4. 딜리트 누르면 세이브 파일 지워지고 인터페이스 newgame으로 바꾸기
+    // 5. 모든 스테이지 클리어하면 세이브 파일 지우기
+
     /**
      * Starts the action.
      *
      * @return Next screen code.
      */
-    public final int run() {
+    public final int run() throws IOException {
         super.run();
 
         return this.returnCode;
     }
+
+    String save [] = getFileManager().loadInfo();
+    String info1 = "Stage: " + save[0] + " Score: " + save[1];
+    String info2 = "Stage: " + save[5] + " Score: " + save[6];
+    String info3 = "Stage: " + save[10] + " Score: " + save[11];
 
     /**
      * Updates the elements on screen and checks for events.
@@ -103,7 +127,9 @@ public class SaveInfoScreen extends Screen {
                 if (menuCode == 3)
                     this.isRunning = false;
                 else {
-                    //menucode가 0(slot1), 1(slot2), 2(slot3)
+                    loadGameState.setSaveSlot(menuCode);
+                    this.isRunning = false;
+                   /* //menucode가 0(slot1), 1(slot2), 2(slot3)
 
                     // 번호가 1, 4, 7이면 해당 slot의 데이터를 불러와서 게임 시작
                     // 1: slot1, 4: slot2, 7: slot3
@@ -120,9 +146,8 @@ public class SaveInfoScreen extends Screen {
                         // 슬롯에 세이브 파일이 존재하지 않음
                         else {
 
-                        }
+                        }*/
 
-                    }
 
                 }
 //                else if (start_or_delete == 1) {
@@ -144,10 +169,14 @@ public class SaveInfoScreen extends Screen {
      * Shifts the focus to the next menu item.
      */
     private void nextRow() {
-        if (menuCode == 3)
+        if (menuCode == 3) {
             menuCode = 0;
-        else
+            this.returnCode = 1;
+        }
+        else {
             menuCode++;
+            this.returnCode = 5;
+        }
         start_or_delete = 3 * menuCode;
         soundPlay.play(SoundType.menuSelect);
     }
@@ -199,7 +228,7 @@ public class SaveInfoScreen extends Screen {
     private void draw() {
         drawManager.initDrawing(this);
 
-        drawManager.drawSaveInfo(this);
+        drawManager.drawSaveInfo(this, this.info1, this.info2, this.info3);
 
         drawManager.drawSaveSlots(this, this.menuCode);
 

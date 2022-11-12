@@ -1,5 +1,7 @@
 package engine;
 
+import screen.SaveInfoScreen;
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -22,16 +24,15 @@ public final class PermanentState {
 	/** Current bullet sound effect. */
 	private int bulletSFX = 1;
 	/** Application logger. */
+
+	private int slotNum = 0;
 	private static Logger logger;
 
 	private static PermanentState ps;
 
 	private PermanentState() {
-		try {
-			this.coin = Core.getFileManager().loadCoins();
-		} catch (IOException e) {
-			logger.warning("Couldn't load coins!");
-		}
+		this.coin = Core.getFileManager().loadCoins(0);
+//				this.slotNum = sis.getSlotNum();
 	}
 
 	public static PermanentState getInstance(){
@@ -44,13 +45,9 @@ public final class PermanentState {
 		return coin;
 	}
 
-	public void setCoin(int income) {
+	public void setCoin(int income , int slotNum) throws IOException {
 		this.coin += income;
-		try {
-			FileManager.getInstance().saveCoins(coin);
-		} catch (IOException e) {
-			logger.warning("Couldn't save coins!");
-		}
+		FileManager.getInstance().saveCoins(coin, slotNum);
 	}
 
 	public int getShipShape() {
