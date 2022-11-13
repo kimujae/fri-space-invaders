@@ -321,7 +321,27 @@ public final class Core {
 				LOGGER.info("Closing help screen.");
 				break;
 
-			case 11: //pauseStateScreen
+				case 9:
+					// Help(operation)
+					currentScreen = new HelpOperationScreen(width, height, FPS);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " operation screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing operation screen.");
+					break;
+
+				case 10:
+					// Help(item description)
+					currentScreen = new HelpItemDescriptionScreen(width, height, FPS);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " item description screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing description screen.");
+					break;
+
+
+
+				case 11: //pauseStateScreen
 				currentScreen = new PauseStateScreen(width, height, FPS, gameScreen);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " pause screen at " + FPS + " fps.");
