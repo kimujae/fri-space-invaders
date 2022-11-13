@@ -46,9 +46,13 @@ public class SaveInfoScreen extends Screen {
 
     private String save_or_init;
 
-    private GameState gameState;
+    private GameScreen gameScreen;
 
     private boolean isPauseStateScreen;
+
+    private GameState gameState;
+
+    private int level;
 
     //    private int starts[] = {1, 4, 7};
     Set<Integer> starts = new HashSet<>(Arrays.asList(1, 4, 7));
@@ -65,12 +69,13 @@ public class SaveInfoScreen extends Screen {
      * @param fps
      *            Frames per second, frame rate at which the game is run.
      */
-    public SaveInfoScreen (GameState gameState, LoadGameState loadGameState,
+    public SaveInfoScreen (GameScreen gameScreen,GameState gameState, LoadGameState loadGameState,
                            final int width, final int height, final int fps, final String from, final boolean isPauseStateScreen) {
         super(width, height, fps);
 
         this.isPauseStateScreen = isPauseStateScreen;
         this.loadGameState = loadGameState;
+        this.gameScreen = gameScreen;
         this.gameState = gameState;
         save_or_init = from;
         if (Objects.equals(from, "Load") || Objects.equals(from, "init") )
@@ -152,6 +157,7 @@ public class SaveInfoScreen extends Screen {
                     loadGameState.setSaveSlot(menuCode);
                     if(start_or_delete == 1){
                         this.returnCode = 1;
+                        System.out.println(loadGameState.getSaveSlot());
                         this.isRunning = false;
                     }
                     else if(start_or_delete == 2){
@@ -165,7 +171,7 @@ public class SaveInfoScreen extends Screen {
                                     0,getFileManager().loadInfo());
                             save = getFileManager().loadInfo();
                             try{
-                            getFileManager().saveCoins(0, menuCode,
+                            getFileManager().saveCoins(0, 0,
                                     getFileManager().loadCoins(0),
                                     getFileManager().loadCoins(1),
                                     getFileManager().loadCoins(2));
@@ -183,7 +189,7 @@ public class SaveInfoScreen extends Screen {
                                     1,getFileManager().loadInfo());
                             save = getFileManager().loadInfo();
                             try {
-                                getFileManager().saveCoins(0, menuCode,
+                                getFileManager().saveCoins(0, 1,
                                         getFileManager().loadCoins(0),
                                         getFileManager().loadCoins(1),
                                         getFileManager().loadCoins(2));
@@ -201,7 +207,7 @@ public class SaveInfoScreen extends Screen {
                                     2,getFileManager().loadInfo());
                             save = getFileManager().loadInfo();
                             try {
-                                getFileManager().saveCoins(0, menuCode,
+                                getFileManager().saveCoins(0,2,
                                         getFileManager().loadCoins(0),
                                         getFileManager().loadCoins(1),
                                         getFileManager().loadCoins(2));
@@ -211,13 +217,13 @@ public class SaveInfoScreen extends Screen {
                             info3 = "Stage: " + save[0] + " Score: " + save[1];
                         }
                     }else if(start_or_delete == 3){
-                        int level = gameState.getLevel();
                         if(isPauseStateScreen == true){
-                            gameState = new GameState(level-1,
-                                    gameState.getScore(),
-                                    gameState.getLivesRemaining(),
-                                    gameState.getBulletsShot(),
-                                    gameState.getShipsDestroyed());
+
+                            gameState = new GameState(gameScreen.getLevel()-1,
+                                    gameScreen.getScore(),
+                                    gameScreen.getLives(),
+                                    gameScreen.getBulletsShot(),
+                                    gameScreen.getShipsDestroyed());
                             getFileManager().Savefile(gameState,
                                     menuCode,getFileManager().loadInfo());
                         }else

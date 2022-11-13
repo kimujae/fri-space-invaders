@@ -183,8 +183,9 @@ public final class Core {
 							if (gameState.getScore() > 500)
 								if(loadGameState.getSaveSlot() == -1){
 
-								}else permanentState.setCoin(gameState.getScore() - 500,
-										loadGameState.getSaveSlot()); // earn coin
+								}else{ permanentState.setCoin(gameState.getScore() - 500,
+										loadGameState.getSaveSlot());
+										System.out.println(loadGameState.getSaveSlot());}// earn coin
 
 
 							if (gameState.getLivesRemaining() > 0) {
@@ -278,12 +279,12 @@ public final class Core {
 
 					// returnCode = frame.setScreen(currentScreen);
 					//LOGGER.info("Closing SaveInfo screen.");
-					currentScreen = new SaveInfoScreen(gameState,loadGameState, width, height, FPS, "init", false);
+					currentScreen = new SaveInfoScreen(gameScreen,gameState,loadGameState, width, height, FPS, "init", false);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " SaveInfo screen at " + FPS + " fps.");
 
 					returnCode = frame.setScreen(currentScreen);
-					gameState = loadGameState.getGameState();
+					//gameState = loadGameState.getGameState();
 					System.out.println(returnCode);
 					LOGGER.info("Closing SaveInfo screen.");
 					break;
@@ -352,7 +353,8 @@ public final class Core {
 					// SaveInfo
 					boolean isPauseStateScreen = true;
 					if(gameScreen.getInterrupt() == false) isPauseStateScreen = false;
-					currentScreen = new  SaveInfoScreen(gameState ,loadGameState, width, height, FPS, "Load", isPauseStateScreen);
+
+					currentScreen = new  SaveInfoScreen(gameScreen ,gameState ,loadGameState, width, height, FPS, "Load", isPauseStateScreen);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " SaveInfo screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);

@@ -1,5 +1,9 @@
 package engine;
 
+import javax.imageio.IIOException;
+
+import java.io.IOException;
+
 import static engine.Core.getFileManager;
 
 public class LoadGameState {
@@ -34,8 +38,12 @@ public class LoadGameState {
         int slotNum = saveSlotNum;
         String save_info []  = getFileManager().loadInfo();
 
+        try {
+            permanentState.setSlotCoin(getFileManager().loadCoins(slotNum));
+        }catch(IOException e){
 
-        permanentState.setCoin(0, slotNum);
+        }
+
 
         GameState gameState = new GameState(Integer.parseInt(save_info[slotNum * 5]),
                 Integer.parseInt(save_info[slotNum * 5 + 1]),

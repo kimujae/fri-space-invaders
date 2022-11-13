@@ -1150,11 +1150,11 @@ public final class DrawManager {
 		drawCenteredBigString(screen, "Save Slots", screen.getHeight() / 10);
 
 //		System.out.println(info1);
-		if (info1.charAt(7) == '1')
+		if (info1.charAt(7) == '1' && info1.charAt(16) == '0')
 			info1 = "New Game";
-		if (info2.charAt(7) == '1')
+		if (info2.charAt(7) == '1'&& info2.charAt(16) == '0')
 			info2 = "New Game";
-		if (info3.charAt(7) == '1')
+		if (info3.charAt(7) == '1'&& info3.charAt(16) == '0')
 			info3 = "New Game";
 		backBufferGraphics.drawString(info1, screen.getWidth() *2/5, screen.getHeight() * (2)/10);
 		backBufferGraphics.drawString(info2, screen.getWidth() *2/5, screen.getHeight() * (5)/10);

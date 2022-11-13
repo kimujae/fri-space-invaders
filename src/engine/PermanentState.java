@@ -31,11 +31,8 @@ public final class PermanentState {
 	private static PermanentState ps;
 
 	private PermanentState() {
-		try{
-			this.coin = Core.getFileManager().loadCoins(1);
-		} catch (IOException e) {
+		this.coin = 0;
 
-		}
 //				this.slotNum = sis.getSlotNum();
 	}
 
@@ -51,7 +48,13 @@ public final class PermanentState {
 
 	public void setCoin(int income , int slotNum) {
 		this.coin += income;
-		FileManager.getInstance().saveCoins(coin, slotNum, 0, 1, 2);
+		try {
+			FileManager.getInstance().saveCoins(coin, slotNum, FileManager.getInstance().loadCoins(0),
+					FileManager.getInstance().loadCoins(1), FileManager.getInstance().loadCoins(0));
+		}
+		catch(IOException e){
+
+		}
 
 	}
 
@@ -80,4 +83,6 @@ public final class PermanentState {
 	}
 
 	public void setBulletSFX(int sfx) { this.bulletSFX = sfx; }
+
+	public void setSlotCoin(int SlotCoin){this.coin = SlotCoin;}
 }

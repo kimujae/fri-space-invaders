@@ -357,14 +357,15 @@ public final class FileManager {
 			coins = save_info.split(" ");
 			br.close();
 			logger.info("Finish loading.");
-			System.out.println(coins);
+			System.out.println(coins[2]);
 
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
-		}  //finally {
+		}  finally {
 			//if(bu)
-		//}
-		return Integer.parseInt(coins[slotNum]);
+			//}
+			return Integer.parseInt(coins[slotNum]);
+		}
 	}
 
 	public void saveCoins(final int coins, int slotnum, int loadCoins1, int loadCoins2, int loadCoins3){
@@ -381,7 +382,9 @@ public final class FileManager {
 			coinsPath += "coins";
 
 			File coinsFile = new File(coinsPath);
-
+			System.out.println(loadCoins1);
+			System.out.println(loadCoins2);
+			System.out.println(loadCoins3);
 			if (!coinsFile.exists())
 				coinsFile.createNewFile();
 
@@ -406,7 +409,7 @@ public final class FileManager {
 							coin2 + " " +
 							coins;
 			}
-
+			System.out.println(saveCoins);
 			outputStream = new FileOutputStream(coinsFile);
 			bufferedWriter = new BufferedWriter(new OutputStreamWriter(
 					outputStream, Charset.forName("UTF-8")));
@@ -445,14 +448,9 @@ public final class FileManager {
 
 			switch (slotNum) {
 				case 0:
-					for(int i = 0 ; i < 15; i ++){
-						System.out.println(originalInfo[i]);
-					}
 					for (int i = 5; i < 15; i++) {
 						state.append(" ").append(originalInfo[i]);
-						System.out.println(state);
 					}
-					System.out.println(state);
 					break;
 
 				case 1:
