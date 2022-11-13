@@ -46,8 +46,9 @@ public class Screen {
 	protected boolean bool;
 
 	protected  boolean isInit;
+	protected int insNum;
 
-	/**
+    /**
 	 * Constructor, establishes the properties of the screen.
 	 * 
 	 * @param width
