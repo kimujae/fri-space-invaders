@@ -345,11 +345,30 @@ public final class DrawManager {
 		drawCenteredBigString(screen, titleString, screen.getHeight() / 6);
 	}
 	//mainmenu 1014
+	public void drawSettingMenu(final Screen screen, final int option) {
+		String VolumeString = "Sound";
+		String BackString = "Exit";
+
+		if (option == 8)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, VolumeString,
+				screen.getHeight()/3);
+		if (option == 1)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, BackString, screen.getHeight()/3
+				+ fontRegularMetrics.getHeight() * 2);
+
+	}
+	//mainmenu 1014
 	public void drawVolume(final Screen screen, final int volume, final int option){
 		String volumeString = "Bgm";
 		String effectString = "Effect";
-		String backString = "Back";
-		
+		String backString = "Exit";
+
 		if (option == 100)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
@@ -370,7 +389,7 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, backString,
 				screen.getHeight()/3 + fontBigMetrics.getHeight() * 7);
-		
+
 
 	}
 
@@ -450,24 +469,24 @@ public final class DrawManager {
 		
 	}
 	//mainmenu 1014
-	public void drawSettingMenu(final Screen screen, final int option) {
-		String VolumeString = "Sound";
-		String BackString = "Back";
-
-		if (option == 8)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, VolumeString,
-				screen.getHeight()/3);
-		if (option == 1)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, BackString, screen.getHeight()/3
-				 + fontRegularMetrics.getHeight() * 2);
-		
-	}
+//	public void drawSettingMenu(final Screen screen, final int option) {
+//		String VolumeString = "Sound";
+//		String BackString = "Back";
+//
+//		if (option == 8)
+//			backBufferGraphics.setColor(Color.GREEN);
+//		else
+//			backBufferGraphics.setColor(Color.WHITE);
+//		drawCenteredRegularString(screen, VolumeString,
+//				screen.getHeight()/3);
+//		if (option == 1)
+//			backBufferGraphics.setColor(Color.GREEN);
+//		else
+//			backBufferGraphics.setColor(Color.WHITE);
+//		drawCenteredRegularString(screen, BackString, screen.getHeight()/3
+//				 + fontRegularMetrics.getHeight() * 2);
+//
+//	}
 
 	/**
 	 * Draws main menu.
