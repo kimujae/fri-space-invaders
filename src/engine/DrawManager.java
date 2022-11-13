@@ -686,6 +686,7 @@ public final class DrawManager {
 	public void drawHighScoreMenu(final Screen screen) {
 		String highScoreString = "High Scores";
 		String instructionsString = "Press Space to return";
+		String backString = "Exit";
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, highScoreString, screen.getHeight() / 8);
@@ -693,6 +694,9 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.GRAY);
 		drawCenteredRegularString(screen, instructionsString,
 				screen.getHeight() / 5);
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredRegularString(screen, backString, screen.getHeight() * 7 / 8);
 	}
 	
 	//Draw Setting
