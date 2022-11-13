@@ -211,7 +211,7 @@ public class GameScreen extends Screen {
 	 * 
 	 * @return Next screen code.
 	 */
-	public final int run() throws IOException {
+	public final int run() {
 		super.run();
 		if(getInterrupt()==true){
 			return 11;
@@ -225,7 +225,7 @@ public class GameScreen extends Screen {
 	/**
 	 * Updates the elements on screen and checks for events.
 	 */
-	protected final void update() throws IOException {
+	protected final void update()  {
 		super.update();
 
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {
@@ -533,7 +533,7 @@ public class GameScreen extends Screen {
 					itempool.getItem().getItemType() == Item.ItemType.BulletSpeedItem) {
 
 				LOGGER.info("Obtained BulletSpeed Item");
-				this.returnCode = 0;
+				//this.returnCode = 0;
 				this.clearItem();//효과초기화
 				this.clearPointUp();
 				this.itemInfoCooldown.reset();
@@ -545,7 +545,7 @@ public class GameScreen extends Screen {
 					itempool.getItem().getItemType() == Item.ItemType.PointUpItem) {
 
 				LOGGER.info("Obtained PointUp Item");
-				this.returnCode = 1;
+				//this.returnCode = 1;
 				this.clearItem();//효과 초기화
 				this.itemInfoCooldown.reset();
 				for (EnemyShip enemyShip : this.enemyShipFormation)
@@ -555,7 +555,7 @@ public class GameScreen extends Screen {
 					itempool.getItem().getItemType() == Item.ItemType.MachineGun) {
 
 				LOGGER.info("Obtained MachineGun");
-				this.returnCode = 2;
+				//this.returnCode = 2;
 				this.clearItem();
 				this.clearPointUp();
 				this.itemInfoCooldown.reset();
@@ -566,7 +566,7 @@ public class GameScreen extends Screen {
 					itempool.getItem().getItemType() == Item.ItemType.ShieldItem) {
 
 				LOGGER.warning("Obtained Shield Item");
-				this.returnCode = 3;
+				//this.returnCode = 3;
 				this.clearItem();//효과 초기화
 				this.clearPointUp();
 				this.itemInfoCooldown.reset();
@@ -576,7 +576,7 @@ public class GameScreen extends Screen {
 					itempool.getItem().getItemType() == Item.ItemType.SpeedUpItem) {
 
 				LOGGER.warning("Obtained SpeedUp Item");
-				this.returnCode = 4;
+				//this.returnCode = 4;
 				this.clearItem();//효과 초기화
 				this.clearPointUp();
 				this.itemInfoCooldown.reset();
@@ -639,4 +639,6 @@ public class GameScreen extends Screen {
 	public int getLevel(){
 		return level;
 	}
+
+	public boolean getLevelFinished(){return this.levelFinished;}
 }

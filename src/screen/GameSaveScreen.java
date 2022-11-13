@@ -21,6 +21,8 @@ public class GameSaveScreen extends Screen {
     /** Current lives remaining */
     private int lives;
 
+    private int menuCode;
+
     /**
      * Constructor, establishes the properties of the screen.
      *
@@ -38,6 +40,7 @@ public class GameSaveScreen extends Screen {
         this.returnCode = 1;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
+        this.menuCode = 1;
     }
 
     /**
@@ -77,10 +80,14 @@ public class GameSaveScreen extends Screen {
      * Shifts the focus to the next menu item.
      */
     private void nextMenuItem() {
-        if (this.returnCode == 1)
+        if (this.menuCode== 1) {
+            this.menuCode = 2;
+            this.returnCode = 12;
+        }
+        else if (this.menuCode == 2) {
+            this.menuCode = 1;
             this.returnCode = 2;
-        else if (this.returnCode == 2)
-            this.returnCode = 1;
+        }
     }
 
     /**
@@ -90,12 +97,14 @@ public class GameSaveScreen extends Screen {
         drawManager.initDrawing(this);
 
         drawManager.drawScore(this, this.score);
+
         drawManager.drawLives(this, this.lives);
+
         drawManager.drawHorizontalLine(this, 39);
 
         drawManager.drawCenteredBigString(this, "Stage clear", this.getHeight() / 3);
 
-        drawManager.drawStageClearScreen(this, this.returnCode);
+        drawManager.drawStageClearScreen(this, this.menuCode);
 
         drawManager.completeDrawing(this);
     }

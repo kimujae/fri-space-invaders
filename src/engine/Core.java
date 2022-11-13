@@ -41,10 +41,10 @@ public final class Core {
 	/** Difficulty settings for level 1. */
 	private static final GameSettings SETTINGS_LEVEL_1 =
 
-			new GameSettings(1, 1, 1, 60, 2000);
+			new GameSettings(1, 5, 4, 60, 2000);
 	/** Difficulty settings for level 2. */
 	private static final GameSettings SETTINGS_LEVEL_2 =
-			new GameSettings(2, 1, 1, 50, 2500);
+			new GameSettings(2, 5, 5, 50, 2500);
 	/** Difficulty settings for level 3. */
 	private static final GameSettings SETTINGS_LEVEL_3 =
 			new GameSettings(3, 1, 1, 40, 1500);
@@ -127,19 +127,24 @@ public final class Core {
 		GameState gameState;
 		PermanentState permanentState = PermanentState.getInstance();
 		LoadGameState loadGameState = new LoadGameState();
+		String saveFrom = "init";
 
 		gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+		getFileManager();
 
-		int returnCode = 1;
+		int returnCode = 5;
 		do {
 			switch (returnCode) {
 				case 1:
 
 					// Main menu.
+					gameState = loadGameState.getGameState();
+
 					if(gameScreen != null && gameScreen.getInterrupt()){
 						gameScreen = null;
 						gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
 					}
+
 					currentScreen = new TitleScreen(width, height, FPS);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
@@ -176,7 +181,10 @@ public final class Core {
 							gameState = ((GameScreen) currentScreen).getGameState();
 
 							if (gameState.getScore() > 500)
-								permanentState.setCoin(gameState.getScore() - 500, 0); // earn coin
+								if(loadGameState.getSaveSlot() == -1){
+
+								}else permanentState.setCoin(gameState.getScore() - 500,
+										loadGameState.getSaveSlot()); // earn coin
 
 
 							if (gameState.getLivesRemaining() > 0) {
@@ -189,16 +197,19 @@ public final class Core {
 										+ " game save screen at " + FPS + " fps.");
 								currentScreen = new GameSaveScreen(gameState, width, height, FPS);
 								returnCode = frame.setScreen(currentScreen);
+								System.out.println(returnCode);
+								GO_MAIN = false;
 								LOGGER.info("Closing game save screen.");
-								if (returnCode == 2) {
-									getFileManager().Savefile(gameState,  0);
-									getFileManager().saveCoins(permanentState.getCoin(), 0);
-									LOGGER.info("Complete Save.");
-									GO_MAIN = false;
-									gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-									returnCode = 1;
+								break;
+								/*if (returnCode == 2) {
+									//getFileManager().Savefile(gameState,  loadGameState.getSaveSlot(),getFileManager().loadInfo());
+									//getFileManager().saveCoins(permanentState.getCoin(), loadGameState.getSaveSlot());
+									//LOGGER.info("Complete Save.");
+									//GO_MAIN = false;
+									//gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+									returnCode = 5;
 									break;
-								}
+								}*/
 							}
 
 							gameState = new GameState(gameState.getLevel() + 1,
@@ -212,7 +223,7 @@ public final class Core {
 							&& gameState.getLevel() <= NUM_LEVELS);
 					if ((gameScreen != null && gameScreen.getInterrupt()) || !GO_MAIN)
 						break;
-					getFileManager().Savefile(new GameState(0, 0, 3, 0, 0), 0);
+					//getFileManager().Savefile(new GameState(0, 0, 3, 0, 0), 0,getFileManager().loadInfo());
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " score screen at " + FPS + " fps, with a score of "
 							+ gameState.getScore() + ", "
@@ -227,6 +238,7 @@ public final class Core {
 					break;
 				case 3:
 					// High scores.
+					System.out.println("3번진입");
 					currentScreen = new HighScoreScreen(width, height, FPS);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " high score screen at " + FPS + " fps.");
@@ -246,6 +258,7 @@ public final class Core {
 					break;
 
 				case 5:
+
 					// Load
 //				String save_info [] = getFileManager().loadInfo();
 //				gameState = new GameState(Integer.parseInt(save_info[0]), Integer.parseInt(save_info[1]), Integer.parseInt(save_info[2]), Integer.parseInt(save_info[3]), Integer.parseInt(save_info[4]));
@@ -253,21 +266,29 @@ public final class Core {
 //				break;
 					//currentScreen = new SaveInfoScreen(loadGameState, width, height, FPS, "Load");
 
-					/*int slotNum = loadGameState.getSaveSlot();
-					String save_info []  = getFileManager().loadInfo();
-					gameState = new GameState(Integer.parseInt(save_info[slotNum*5]),
-							Integer.parseInt(save_info[slotNum*5+ 1]),
-							Integer.parseInt(save_info[slotNum*5+2]),
-							Integer.parseInt(save_info[slotNum*5+3]),
-							Integer.parseInt(save_info[slotNum*5+4]));
+
+/*
+					currentScreen = new SaveInfoScreen(loadGameState, width, height, FPS, "Load");
+					frame.setScreen(currentScreen);
+
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " SaveInfo screen at " + FPS + " fps.");
-					returnCode = 2;
+					returnCode = 1;
+*/
 
-					 */
 					// returnCode = frame.setScreen(currentScreen);
 					//LOGGER.info("Closing SaveInfo screen.");
+					currentScreen = new SaveInfoScreen(gameState,loadGameState, width, height, FPS, "init", false);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " SaveInfo screen at " + FPS + " fps.");
+
+					returnCode = frame.setScreen(currentScreen);
+					gameState = loadGameState.getGameState();
+					System.out.println(returnCode);
+					LOGGER.info("Closing SaveInfo screen.");
 					break;
+
+
 
 				case 6:
 					// Setting.
@@ -329,12 +350,25 @@ public final class Core {
 
 				case 12:
 					// SaveInfo
-					currentScreen = new SaveInfoScreen(loadGameState, width, height, FPS, "Pause");
+					boolean isPauseStateScreen = true;
+					if(gameScreen.getInterrupt() == false) isPauseStateScreen = false;
+					currentScreen = new  SaveInfoScreen(gameState ,loadGameState, width, height, FPS, "Load", isPauseStateScreen);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " SaveInfo screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);
+
+					if(isPauseStateScreen == true){
+						returnCode = 11;
+					}
+					gameState = loadGameState.getGameState();
 					LOGGER.info("Closing SaveInfo screen.");
 					break;
+
+
+
+				case 13:
+					//save at selected slot
+
 
 			}
 

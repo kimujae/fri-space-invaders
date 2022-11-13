@@ -342,40 +342,7 @@ public final class FileManager {
 //		return savedCoins;
 //	}
 
-//	public int loadCoins(final int slotNum) throws IOException {
-//		String savedCoins;
-//		InputStream inputStream = null;
-//		BufferedReader bufferedReader = null;
-//
-//		try {
-//			String jarPath = FileManager.class.getProtectionDomain()
-//					.getCodeSource().getLocation().getPath();
-//			jarPath = URLDecoder.decode(jarPath, "UTF-8");
-//
-//			String coinsPath = new File(jarPath).getParent();
-//			coinsPath += File.separator;
-//			coinsPath += "coins";
-//
-//			File coinsFile = new File(coinsPath);
-//			inputStream = new FileInputStream(coinsFile);
-//			bufferedReader = new BufferedReader(new InputStreamReader(
-//					inputStream, Charset.forName("UTF-8")));
-//
-//			logger.info("Loading user coins");
-//
-//			savedCoins = bufferedReader.readLine();
-//		} catch (FileNotFoundException e) {
-//			logger.info("Loading default coins.");
-//			savedCoins = "0 0 0";
-//		} finally {
-//			if (bufferedReader != null)
-//				bufferedReader.close();
-//		}
-//		String[] coins = savedCoins.split(" ");
-////
-//		return Integer.parseInt(coins[slotNum]);
-//	}
-	public int loadCoins(final int slotNum) {
+	public int loadCoins(final int slotNum) throws IOException {
 		String[] coins = {"0", "0", "0"};
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
@@ -388,147 +355,73 @@ public final class FileManager {
 			BufferedReader br = new BufferedReader(new FileReader(saveFile));
 			String save_info = br.readLine();
 			coins = save_info.split(" ");
+			br.close();
 			logger.info("Finish loading.");
 			System.out.println(coins);
 
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			return Integer.parseInt(coins[slotNum]);
-		}
+		}  //finally {
+			//if(bu)
+		//}
+		return Integer.parseInt(coins[slotNum]);
 	}
 
-//	public void saveCoins(final int coin, final int slotNum) throws IOException {
-//		OutputStream outputStream;
-//		BufferedWriter bufferedWriter = null;
-//
-//		try	{
-
-
-//			String jarPath = FileManager.class.getProtectionDomain()
-//					.getCodeSource().getLocation().getPath();
-//			jarPath = URLDecoder.decode(jarPath, "UTF-8");
-//
-//			String coinsPath = new File(jarPath).getParent();
-//			coinsPath += File.separator;
-//			coinsPath += "coins";
-//
-//			File coinsFile = new File(coinsPath);
-//
-//			if (!coinsFile.exists())
-//				coinsFile.createNewFile();
-////			System.out.println(coinsFile.exists());
-//
-//			outputStream = new FileOutputStream(coinsFile);
-//			bufferedWriter = new BufferedWriter(new OutputStreamWriter(
-//					outputStream, Charset.forName("UTF-8")));
-//
-//			String saveCoins = null;
-//			int coin1 = loadCoins(0);
-//			int coin2 = loadCoins(1);
-//			int coin3 = loadCoins(2);
-//
-//			System.out.printf("slotNum : %d\n", slotNum);
-//			System.out.printf("coins : %d %d %d %d\n", coin, coin1, coin2, coin3);
-//
-//			switch (slotNum) {
-//				case 0:
-//					saveCoins = coin + " " +
-//							coin2 + " " +
-//							coin3;
-//					break;
-//				case 1:
-//					saveCoins = coin1 + " " +
-//							coin + " " +
-//							coin3;
-//					break;
-//				case 2:
-//					saveCoins = coin1 + " " +
-//							coin2 + " " +
-//							coin;
-//			}
-//
-//			System.out.printf("savecoins : %s", saveCoins);
-//
-//			logger.info("Saving coins");
-//
-//			bufferedWriter.write(saveCoins);
-//		} finally {
-//			if (bufferedWriter != null)
-//				bufferedWriter.close();
-//		}
-//	}
-public void saveCoins(final int coin, final int slotNum){
+	public void saveCoins(final int coins, int slotnum, int loadCoins1, int loadCoins2, int loadCoins3){
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
 
 		try	{
-		String jarPath = FileManager.class.getProtectionDomain()
-				.getCodeSource().getLocation().getPath();
-		jarPath = URLDecoder.decode(jarPath, "UTF-8");
+			String jarPath = FileManager.class.getProtectionDomain()
+					.getCodeSource().getLocation().getPath();
+			jarPath = URLDecoder.decode(jarPath, "UTF-8");
 
-		String coinsPath = new File(jarPath).getParent();
-		coinsPath += File.separator;
-		coinsPath += "coins";
-		File coinsfile = new File(coinsPath);
+			String coinsPath = new File(jarPath).getParent();
+			coinsPath += File.separator;
+			coinsPath += "coins";
 
-		if (!coinsfile.exists()) {
-			coinsfile.createNewFile();
+			File coinsFile = new File(coinsPath);
+
+			if (!coinsFile.exists())
+				coinsFile.createNewFile();
+
+			String saveCoins = null;
+			int coin1 = loadCoins1;
+			int coin2 = loadCoins2;
+			int coin3 = loadCoins3;
+
+			switch (slotnum) {
+				case 0:
+					saveCoins = coins + " " +
+							coin2 + " " +
+							coin3;
+					break;
+				case 1:
+					saveCoins = coin1 + " " +
+							coins + " " +
+							coin3;
+					break;
+				case 2:
+					saveCoins = coin1 + " " +
+							coin2 + " " +
+							coins;
+			}
+
+			outputStream = new FileOutputStream(coinsFile);
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+					outputStream, Charset.forName("UTF-8")));
+
+			logger.info("Saving coins");
+
+			bufferedWriter.write(saveCoins);
+			bufferedWriter.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-//			System.out.println(coinsFile.exists());
-
-		String saveCoins = null;
-		int coin1 = loadCoins(0);
-		int coin2 = loadCoins(1);
-		int coin3 = loadCoins(2);
-
-//		System.out.printf("slotNum : %d\n", slotNum);
-//		System.out.printf("coins : %d %d %d %d\n", coin, coin1, coin2, coin3);
-
-		switch (slotNum) {
-			case 0:
-				saveCoins = coin + " " +
-						coin2 + " " +
-						coin3;
-				break;
-			case 1:
-				saveCoins = coin1 + " " +
-						coin + " " +
-						coin3;
-				break;
-			case 2:
-				saveCoins = coin1 + " " +
-						coin2 + " " +
-						coin;
-		}
-		/*BufferedWriter coinSave = new BufferedWriter(new FileWriter(coinsfile));
-
-		StringBuilder sb = new StringBuilder(saveCoins);
-//		System.out.printf("savecoins : %s", saveCoins);
-
-//		logger.info("Saving coins");
-
-		coinSave.write(saveCoins);*/
-		outputStream = new FileOutputStream(coinsfile);
-		bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, Charset.forName("UTF-8")));
-		bufferedWriter.write(saveCoins);
-
-
-}
-	catch (UnsupportedEncodingException e) {
-		throw new RuntimeException(e);
-	}
-	catch (IOException e) {
-		throw new RuntimeException(e);
 	}
 
-}
 
-	public void Savefile(GameState gamestate, final int slotNum) {
+	public void Savefile(GameState gamestate, final int slotNum, String[] originalInfo) {
 		try {
 			//slot 1번이 0 ~ 4번인덱스
 			// 2번이 5 ~ 9번 인덱스
@@ -548,13 +441,18 @@ public void saveCoins(final int coin, final int slotNum){
 					Integer.toString(gamestate.getBulletsShot()) + ' ' +
 					Integer.toString(gamestate.getShipsDestroyed()));
 
-			String[] originalInfo = loadInfo();
+			//String[] originalInfo = loadInfo();
 
 			switch (slotNum) {
 				case 0:
+					for(int i = 0 ; i < 15; i ++){
+						System.out.println(originalInfo[i]);
+					}
 					for (int i = 5; i < 15; i++) {
 						state.append(" ").append(originalInfo[i]);
+						System.out.println(state);
 					}
+					System.out.println(state);
 					break;
 
 				case 1:

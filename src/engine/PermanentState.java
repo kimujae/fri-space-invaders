@@ -31,7 +31,11 @@ public final class PermanentState {
 	private static PermanentState ps;
 
 	private PermanentState() {
-		this.coin = Core.getFileManager().loadCoins(0);
+		try{
+			this.coin = Core.getFileManager().loadCoins(1);
+		} catch (IOException e) {
+
+		}
 //				this.slotNum = sis.getSlotNum();
 	}
 
@@ -45,9 +49,10 @@ public final class PermanentState {
 		return coin;
 	}
 
-	public void setCoin(int income , int slotNum) throws IOException {
+	public void setCoin(int income , int slotNum) {
 		this.coin += income;
-		FileManager.getInstance().saveCoins(coin, slotNum);
+		FileManager.getInstance().saveCoins(coin, slotNum, 0, 1, 2);
+
 	}
 
 	public int getShipShape() {

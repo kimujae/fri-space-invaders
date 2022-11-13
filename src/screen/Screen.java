@@ -85,7 +85,7 @@ public class Screen {
 	 * 
 	 * @return Next screen code.
 	 */
-	public int run() throws IOException {
+	public int run()  {
 		this.isRunning = true;
 
 		while (this.isRunning) {
@@ -118,7 +118,7 @@ public class Screen {
 	/**
 	 * Updates the elements on screen and checks for events.
 	 */
-	protected void update() throws IOException {
+	protected void update()  {
 	}
 
 	/**

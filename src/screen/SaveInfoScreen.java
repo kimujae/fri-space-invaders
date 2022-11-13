@@ -8,10 +8,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import engine.Cooldown;
-import engine.Core;
-import engine.LoadGameState;
-import engine.PermanentState;
+import engine.*;
 import sound.SoundPlay;
 import sound.SoundType;
 
@@ -33,12 +30,25 @@ public class SaveInfoScreen extends Screen {
 
     private LoadGameState loadGameState;
 
+
     private int menuCode = 0;
     //0 slot1
     //1 slot2
     //2 slot3
     //3 exit
     private int start_or_delete = 0;
+
+    //private int coins = getFileManager().loadCoins(0);
+    private String save [] = getFileManager().loadInfo();
+    public String info1 = "Stage: " + save[0] + " Score: " + save[1];
+    public String info2 = "Stage: " + save[5] + " Score: " + save[6];
+    public String info3 = "Stage: " + save[10] + " Score: " + save[11];
+
+    private String save_or_init;
+
+    private GameState gameState;
+
+    private boolean isPauseStateScreen;
 
     //    private int starts[] = {1, 4, 7};
     Set<Integer> starts = new HashSet<>(Arrays.asList(1, 4, 7));
@@ -55,11 +65,15 @@ public class SaveInfoScreen extends Screen {
      * @param fps
      *            Frames per second, frame rate at which the game is run.
      */
-    public SaveInfoScreen (LoadGameState loadGameState, final int width, final int height, final int fps, final String from) {
+    public SaveInfoScreen (GameState gameState, LoadGameState loadGameState,
+                           final int width, final int height, final int fps, final String from, final boolean isPauseStateScreen) {
         super(width, height, fps);
 
+        this.isPauseStateScreen = isPauseStateScreen;
         this.loadGameState = loadGameState;
-        if (Objects.equals(from, "Load") || Objects.equals(from, "init"))
+        this.gameState = gameState;
+        save_or_init = from;
+        if (Objects.equals(from, "Load") || Objects.equals(from, "init") )
             this.returnCode = 1;
         else
             this.returnCode = 11;
@@ -79,16 +93,14 @@ public class SaveInfoScreen extends Screen {
      *
      * @return Next screen code.
      */
-    public final int run() throws IOException {
+    public final int run()  {
         super.run();
 
         return this.returnCode;
     }
 
-    String save [] = getFileManager().loadInfo();
-    String info1 = "Stage: " + save[0] + " Score: " + save[1];
-    String info2 = "Stage: " + save[5] + " Score: " + save[6];
-    String info3 = "Stage: " + save[10] + " Score: " + save[11];
+
+
 
     /**
      * Updates the elements on screen and checks for events.
@@ -101,12 +113,14 @@ public class SaveInfoScreen extends Screen {
                 && this.inputDelay.checkFinished()) {
             if (inputManager.isKeyDown(KeyEvent.VK_UP)
                     || inputManager.isKeyDown(KeyEvent.VK_W)) {
-                prevRow();
+                if(start_or_delete == 0)
+                    prevRow();
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_DOWN)
                     || inputManager.isKeyDown(KeyEvent.VK_S)) {
-                nextRow();
+                if(start_or_delete == 0)
+                    nextRow();
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_RIGHT) // start or delete 선택하기
@@ -118,17 +132,107 @@ public class SaveInfoScreen extends Screen {
             }
             if (inputManager.isKeyDown(KeyEvent.VK_LEFT) // 저장 slot으로 되돌아가기
                     || inputManager.isKeyDown(KeyEvent.VK_A)) {
-                if (menuCode != 3) {
-                    prevCol(menuCode);
+                if (start_or_delete == 1) {
+                    start_or_delete = 0;
+                }else if(start_or_delete == 3){
+                    start_or_delete = 0;
+                }
+                else if(start_or_delete ==2){
+                    nextCol(menuCode);
                 }
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE)){
-                if (menuCode == 3)
+                if (menuCode == 3) {
+                    if(save_or_init.equals("Load")) this.returnCode = 2;
+                    else this.returnCode = 1;
                     this.isRunning = false;
+                }
                 else {
                     loadGameState.setSaveSlot(menuCode);
-                    this.isRunning = false;
+                    if(start_or_delete == 1){
+                        this.returnCode = 1;
+                        this.isRunning = false;
+                    }
+                    else if(start_or_delete == 2){
+                        if(menuCode ==0){
+                            System.out.println(menuCode);
+                            getFileManager().Savefile(new GameState(0,
+                                            0,
+                                            3,
+                                            0,
+                                            0),
+                                    0,getFileManager().loadInfo());
+                            save = getFileManager().loadInfo();
+                            try{
+                            getFileManager().saveCoins(0, menuCode,
+                                    getFileManager().loadCoins(0),
+                                    getFileManager().loadCoins(1),
+                                    getFileManager().loadCoins(2));
+                            } catch(IOException e){
+
+                            }
+                            info1 = "Stage: " + save[0] + " Score: " + save[1];
+                        }
+                        else if(menuCode ==1){
+                            getFileManager().Savefile(new GameState(0,
+                                            0,
+                                            3,
+                                            0,
+                                            0),
+                                    1,getFileManager().loadInfo());
+                            save = getFileManager().loadInfo();
+                            try {
+                                getFileManager().saveCoins(0, menuCode,
+                                        getFileManager().loadCoins(0),
+                                        getFileManager().loadCoins(1),
+                                        getFileManager().loadCoins(2));
+                            }catch (IOException e){
+
+                            }
+                            info2 = "Stage: " + save[0] + " Score: " + save[1];
+                        }
+                        else if(menuCode ==2){
+                            getFileManager().Savefile(new GameState(0,
+                                            0,
+                                            3,
+                                            0,
+                                            0),
+                                    2,getFileManager().loadInfo());
+                            save = getFileManager().loadInfo();
+                            try {
+                                getFileManager().saveCoins(0, menuCode,
+                                        getFileManager().loadCoins(0),
+                                        getFileManager().loadCoins(1),
+                                        getFileManager().loadCoins(2));
+                            }catch(IOException e){
+
+                            }
+                            info3 = "Stage: " + save[0] + " Score: " + save[1];
+                        }
+                    }else if(start_or_delete == 3){
+                        int level = gameState.getLevel();
+                        if(isPauseStateScreen == true){
+                            gameState = new GameState(level-1,
+                                    gameState.getScore(),
+                                    gameState.getLivesRemaining(),
+                                    gameState.getBulletsShot(),
+                                    gameState.getShipsDestroyed());
+                            getFileManager().Savefile(gameState,
+                                    menuCode,getFileManager().loadInfo());
+                        }else
+                            getFileManager().Savefile(gameState,
+                                    menuCode,getFileManager().loadInfo());
+                        save = getFileManager().loadInfo();
+                        if(menuCode == 0)
+                            info1 = "Stage: " + save[0] + " Score: " + save[1];
+                        else if(menuCode == 1)
+                            info2 = "Stage: " + save[5] + " Score: " + save[6];
+                        else if(menuCode == 2)
+                            info3 = "Stage: " + save[10] + " Score: " + save[11];
+                        this.returnCode = 2;
+                    }
+
                    /* //menucode가 0(slot1), 1(slot2), 2(slot3)
 
                     // 번호가 1, 4, 7이면 해당 slot의 데이터를 불러와서 게임 시작
@@ -175,9 +279,8 @@ public class SaveInfoScreen extends Screen {
         }
         else {
             menuCode++;
-            this.returnCode = 5;
         }
-        start_or_delete = 3 * menuCode;
+        //start_or_delete = 3 * menuCode + 1;
         soundPlay.play(SoundType.menuSelect);
     }
 
@@ -189,36 +292,57 @@ public class SaveInfoScreen extends Screen {
             menuCode = 3;
         else
             menuCode--;
-        start_or_delete = 3 * menuCode;
+        //start_or_delete = 3 * menuCode + 1;
         soundPlay.play(SoundType.menuSelect);
     }
 
     private void nextCol(int row) {
-        start_or_delete++;
-        if (start_or_delete == 3)
+       // start_or_delete++;
+       /* start_or_delete = row +1 ;
+        if (start_or_delete == 2) {
             start_or_delete = 1;
-        else if (start_or_delete == 6)
+            this.returnCode = 5 ;
+        }
+        else if (start_or_delete == 5) {
             start_or_delete = 4;
-        else if (start_or_delete == 9)
+            this.returnCode =5;
+        }
+        else if (start_or_delete == 8) {
             start_or_delete = 7;
-
-
+            this.returnCode = 5;
+        }*/
+        if(save_or_init.equals("init")) {
+            if (start_or_delete == 0) start_or_delete = 1;
+            else if (start_or_delete == 1) {
+                start_or_delete = 2;
+            } else if (start_or_delete == 2) {
+                start_or_delete = 1;
+            }
+        }
+        else if(save_or_init.equals("Load")){
+            if (start_or_delete == 0) start_or_delete = 3;
+        }
         soundPlay.play(SoundType.menuSelect);
     }
 
     private void prevCol(int row) {
-        if (0 < start_or_delete && start_or_delete <= 2
-                || 3 < start_or_delete && start_or_delete <= 5
-                || 6 < start_or_delete && start_or_delete <= 8)
-            start_or_delete--;
-
-        if (start_or_delete == 0)
+        //if (0 < start_or_delete && start_or_delete <= 2
+          //      || 3 < start_or_delete && start_or_delete <= 5
+            //    || 6 < start_or_delete && start_or_delete <= 8)
+           // start_or_delete--;
+/*
+        if (start_or_delete == 1) {
             start_or_delete = 2;
-        else if (start_or_delete == 3)
+            //세이브파일 초기화
+        }
+        else if (start_or_delete == 4) {
             start_or_delete = 5;
-        else if (start_or_delete == 6)
-            start_or_delete = 8;
 
+        }
+        else if (start_or_delete == 7) {
+            start_or_delete = 8;
+        }
+*/
         soundPlay.play(SoundType.menuSelect);
     }
 
@@ -232,7 +356,7 @@ public class SaveInfoScreen extends Screen {
 
         drawManager.drawSaveSlots(this, this.menuCode);
 
-        drawManager.drawSaveStartDelete(this, this.start_or_delete);
+        drawManager.drawSaveStartDelete(this, menuCode, start_or_delete, save_or_init);
 
         drawManager.completeDrawing(this);
     }
@@ -240,4 +364,6 @@ public class SaveInfoScreen extends Screen {
     public int getSlotNum() {
         return menuCode;
     }
+
+
 }

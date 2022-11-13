@@ -423,7 +423,7 @@ public final class DrawManager {
 		String highScoresString = "High scores";
 		String exitString = "exit";
 		String setString = "setting";
-		String loadString = "load";
+		String loadString = "change slot";
 		String storeString = "store";
 		String helpString = "help";
 
@@ -1194,46 +1194,64 @@ public final class DrawManager {
 		drawCenteredRegularString(screen, backString, screen.getHeight() * 95/100);
 	}
 
-	public void drawSaveStartDelete (final Screen screen, final int sdCode) {
+	public void drawSaveStartDelete (final Screen screen, final int sdCode, final int startordelete, final String save_or_init) {
 		String start1 = "Start";
 		String delete1 = "Delete";
+		String save = "Save";
 
-		if (sdCode == 1)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(start1,screen.getWidth() *2/3 - 20,screen.getHeight() * 3 / 10);
+		if(save_or_init.equals("init")) {
+			if (sdCode == 0 && startordelete == 1)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(start1, screen.getWidth() * 2 / 3 - 20, screen.getHeight() * 3 / 10);
 
-		if (sdCode == 2)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(delete1,screen.getWidth() *4/5,screen.getHeight() * 3 / 10);
+			if (sdCode == 0 && startordelete == 2)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(delete1, screen.getWidth() * 4 / 5, screen.getHeight() * 3 / 10);
 
-		if (sdCode == 4)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(start1,screen.getWidth() *2/3 - 20,screen.getHeight() * 6 / 10);
+			if (sdCode == 1 && startordelete == 1)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(start1, screen.getWidth() * 2 / 3 - 20, screen.getHeight() * 6 / 10);
 
-		if (sdCode == 5)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(delete1,screen.getWidth() *4/5,screen.getHeight() * 6 / 10);
+			if (sdCode == 1 && startordelete == 2)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(delete1, screen.getWidth() * 4 / 5, screen.getHeight() * 6 / 10);
 
-		if (sdCode == 7)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(start1,screen.getWidth() *2/3 - 20,screen.getHeight() * 9 / 10);
+			if (sdCode == 2 && startordelete == 1)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(start1, screen.getWidth() * 2 / 3 - 20, screen.getHeight() * 9 / 10);
 
-		if (sdCode == 8)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(delete1,screen.getWidth() *4/5,screen.getHeight() * 9 / 10);
-
+			if (sdCode == 2 && startordelete == 2)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(delete1, screen.getWidth() * 4 / 5, screen.getHeight() * 9 / 10);
+		}else if(save_or_init.equals("Load")){
+			if (sdCode == 0 && startordelete == 3)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(save, screen.getWidth() * 4 / 5, screen.getHeight() * 3 / 10);
+			if (sdCode == 1 && startordelete == 3)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(save, screen.getWidth() * 4 / 5, screen.getHeight() * 6 / 10);
+			if (sdCode == 2 && startordelete == 3)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(save, screen.getWidth() * 4 / 5, screen.getHeight() * 9 / 10);
+		}
 	}
 	/**
 	 * Draws a centered string on regular font.

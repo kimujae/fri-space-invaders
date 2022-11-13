@@ -61,7 +61,7 @@ public class StoreScreen extends Screen {
     /**
      * Updates the elements on screen and checks for events.
      */
-    protected final void update() throws IOException {
+    protected final void update()  {
         super.update();
 
         draw();
@@ -127,7 +127,7 @@ public class StoreScreen extends Screen {
         soundPlay.play(SoundType.menuSelect);
     }
 
-    private void rerollItem() throws IOException {
+    private void rerollItem() {
         if (menuCode == 0){ // ship shape
             if (permanentState.getCoin() >= COST_SHAPE) {
                 int x = new Random().nextInt(3);
