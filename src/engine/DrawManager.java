@@ -364,32 +364,75 @@ public final class DrawManager {
 
 	}
 	//mainmenu 1014
-	public void drawVolume(final Screen screen, final int volume, final int option){
+	public void drawVolume(final Screen screen, final int volume, final int option1, final int option2){
 		String volumeString = "Bgm";
 		String effectString = "Effect";
 		String backString = "Exit";
 
-		if (option == 100)
+		String[] bgmVolumeString = new String[10];
+		String[] effectVolumeString = new String[10];
+
+		for(int i = 0; i < 10; i++){
+			int num = i+1;
+			bgmVolumeString[i] = num +"";
+		}
+		for(int i = 0; i < 10; i++){
+			int num = i+1;
+			effectVolumeString[i] = num +"";
+		}
+
+		if (option1 == 100)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, volumeString,
 				screen.getHeight()/3);
-		drawCenteredBigString(screen,"<        "+ SoundPlay.getInstance().getBgmVolume() +"        >",screen.getHeight()/3+fontRegularMetrics.getHeight() * 2);
-		if (option == 101)
+
+		if (option1 == 101)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, effectString,
 				screen.getHeight()/3 + fontBigMetrics.getHeight()*3);
-		drawCenteredBigString(screen,"<        "+ SoundPlay.getInstance().getEffectVolume() +"        >",screen.getHeight()/3+fontRegularMetrics.getHeight() * 7);
-		if (option == 6)
+
+		for(int i = 0; i < 10; i ++) {
+			if(option2 == i+1) {
+				backBufferGraphics.setFont(fontBig);
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawString(bgmVolumeString[i], (i + 1) * screen.getWidth() / 12,
+						screen.getHeight() / 3 + fontRegularMetrics.getHeight() * 2);
+			}
+			else {
+				backBufferGraphics.setFont(fontBig);
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawString(bgmVolumeString[i], (i + 1) * screen.getWidth() / 12,
+						screen.getHeight() / 3 + fontRegularMetrics.getHeight() * 2);
+			}
+		}
+
+
+		for(int i = 0; i < 10; i ++) {
+			if(option2 == 10+i+1) {
+				backBufferGraphics.setFont(fontBig);
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawString(bgmVolumeString[i], (i + 1) * screen.getWidth() / 12,
+						screen.getHeight() / 3 + fontRegularMetrics.getHeight() * 7);
+			}
+			else{
+				backBufferGraphics.setFont(fontBig);
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawString(bgmVolumeString[i], (i + 1) * screen.getWidth() / 12,
+						screen.getHeight() / 3 + fontRegularMetrics.getHeight() * 7);
+			}
+		}
+
+
+		if (option1 == 102)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, backString,
 				screen.getHeight()/3 + fontBigMetrics.getHeight() * 7);
-
 
 	}
 
