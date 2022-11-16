@@ -123,8 +123,9 @@ public final class Core {
 
 		GameState gameState;
 		PermanentState permanentState = PermanentState.getInstance();
-
+		LoadGameState loadGameState = new LoadGameState();
 		gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+
 
 		int returnCode = 1;
 		do {
@@ -291,10 +292,22 @@ public final class Core {
 
 			case 5:
 				// Load
+				/*
+				currentScreen = new SaveInfoScreen(loadGameState, width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " SaveInfo screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing SaveInfo screen.");
+				gameState = loadGameState.getGameState();
+				break;
+				*/
+
+				/*
 				String save_info [] = getFileManager().loadInfo();
 				gameState = new GameState(Integer.parseInt(save_info[0]), Integer.parseInt(save_info[1]), Integer.parseInt(save_info[2]), Integer.parseInt(save_info[3]), Integer.parseInt(save_info[4]));
 				returnCode = 2;
 				break;
+				*/
 				
 			case 6:
 				// Setting.
