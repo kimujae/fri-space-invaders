@@ -1184,6 +1184,85 @@ public final class DrawManager {
 		backBufferGraphics.drawString(coinString, screen.getWidth() - 11 * (coinString.length() + 1), 25);
 	}
 
+	public void drawSaveInfo(final Screen screen, String info1, String info2, String info3) {
+		backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredBigString(screen, "Save Slots", screen.getHeight() / 10);
+
+		if (info1.charAt(7) == '1' )
+			info1 = "New Game";
+		if (info2.charAt(7) == '1')
+			info2 = "New Game";
+		if (info3.charAt(7) == '1')
+			info3 = "New Game";
+
+		backBufferGraphics.drawString(info1, screen.getWidth() *2/5, screen.getHeight() * (2)/10);
+		backBufferGraphics.drawString(info2, screen.getWidth() *2/5, screen.getHeight() * (5)/10);
+		backBufferGraphics.drawString(info3, screen.getWidth() *2/5, screen.getHeight() * (8)/10);
+
+
+	}
+	public void drawSaveSlots(final Screen screen, final int mCode) {
+		String slot1 = "Slot 1";
+		String slot2 = "Slot 2";
+		String slot3 = "Slot 3";
+
+		// print slot 1
+		if (mCode == 0)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(slot1,screen.getWidth() / 5 - 30,screen.getHeight() * 2 / 10);
+
+		// print slot 2
+		if (mCode == 1)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(slot2,screen.getWidth() / 5 - 30,screen.getHeight() * 5 / 10);
+
+		// print slot 3
+		if (mCode == 2)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(slot3,screen.getWidth() / 5 - 30,screen.getHeight() * 8 / 10);
+
+	}
+
+	public void drawSaveStartDelete (final Screen screen, final int mCode, final int startordelete) {
+		String start = "Ok";
+		String delete = "No";
+
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(start, screen.getWidth() * 2 / 3 - 50, screen.getHeight() * 3 / 10);
+		backBufferGraphics.drawString(delete, screen.getWidth() * 4 / 5, screen.getHeight() * 3 / 10);
+		backBufferGraphics.drawString(start, screen.getWidth() * 2 / 3 - 50, screen.getHeight() * 6 / 10);
+		backBufferGraphics.drawString(delete, screen.getWidth() * 4 / 5, screen.getHeight() * 6 / 10);
+		backBufferGraphics.drawString(start, screen.getWidth() * 2 / 3 - 50, screen.getHeight() * 9 / 10);
+		backBufferGraphics.drawString(delete, screen.getWidth() * 4 / 5, screen.getHeight() * 9 / 10);
+
+		backBufferGraphics.setColor(Color.GREEN);
+		if (mCode == 0) {
+			if (startordelete == 1)
+				backBufferGraphics.drawString(start, screen.getWidth() * 2 / 3 - 50, screen.getHeight() * 3 / 10);
+			else // startordelete == 2
+				backBufferGraphics.drawString(delete, screen.getWidth() * 4 / 5, screen.getHeight() * 3 / 10);
+		}
+		if (mCode == 1) {
+			if (startordelete == 1)
+				backBufferGraphics.drawString(start, screen.getWidth() * 2 / 3 - 50, screen.getHeight() * 6 / 10);
+			else // startordelete == 2
+				backBufferGraphics.drawString(delete, screen.getWidth() * 4 / 5, screen.getHeight() * 6 / 10);
+		}
+		if (mCode == 2) {
+			if (startordelete == 1)
+				backBufferGraphics.drawString(start, screen.getWidth() * 2 / 3 - 50, screen.getHeight() * 9 / 10);
+			else // startordelete == 2
+				backBufferGraphics.drawString(delete, screen.getWidth() * 4 / 5, screen.getHeight() * 9 / 10);
+		}
+
+	}
+
 	/**
 	 * Draws a centered string on regular font.
 	 * 

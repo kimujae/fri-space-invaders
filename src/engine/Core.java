@@ -125,18 +125,28 @@ public final class Core {
 		GameState gameState;
 		PermanentState permanentState = PermanentState.getInstance();
 		LoadGameState loadGameState = new LoadGameState();
-		gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
 
+		String[] OriginalData = getFileManager().loadInfo();
 
-		int returnCode = 1;
+		loadGameState.initData(OriginalData);
+
+		currentScreen = new SaveInfoScreen(loadGameState, width, height, FPS);
+		LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+				+ " save info screen at " + FPS + " fps.");
+		int returnCode = frame.setScreen(currentScreen);
+		LOGGER.info("Closing save info screen.");
+		gameState = loadGameState.getGameState();
+
 		do {
+
 			switch (returnCode) {
 				case 1:
 					// Main menu.
-                    if(gameScreen != null && gameScreen.getInterrupt() == true){
-                        gameScreen = null;
-						gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-                    }
+//                    if(gameScreen != null && gameScreen.getInterrupt()){
+//                        gameScreen = null;
+//						gameState = loadGameState.getGameState();
+//						System.out.println("if");
+//                    }
 					currentScreen = new TitleScreen(width, height, FPS);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
@@ -157,7 +167,7 @@ public final class Core {
 									% EXTRA_LIFE_FRECUENCY == 0
 									&& gameState.getLivesRemaining() < MAX_LIVES;
 							gameScreen = new GameScreen(gameState,
-									gameSettings.get(gameState.getLevel() - 1),
+									gameSettings.get(gameState.getLevel()),
 									bonusLife, width, height, FPS);
 							currentScreen = gameScreen;
 							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -188,16 +198,39 @@ public final class Core {
 								returnCode = frame.setScreen(currentScreen);
 								LOGGER.info("Closing game save screen.");
 								if (returnCode == 2) {
-									getFileManager().Savefile(gameState);
+
+									gameState = new GameState(
+											gameState.getLevel() + 1,
+											gameState.getScore(),
+											gameState.getLivesRemaining(),
+											gameState.getBulletsShot(),
+											gameState.getShipsDestroyed()
+									);
+//									loadGameState.setGameState(new GameState(
+//											gameState.getLevel() + 2,
+//											gameState.getScore(),
+//											gameState.getLivesRemaining(),
+//											gameState.getBulletsShot(),
+//											gameState.getShipsDestroyed()
+//									));
+									loadGameState.setGameState(gameState);
+									System.out.println(gameState.getLevel());
+									getFileManager().Savefile(gameState, loadGameState.getSaveSlot(), loadGameState.getData());
+
 									LOGGER.info("Complete Save.");
 									GO_MAIN = false;
-									gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+//									gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+//									System.out.println(gameState.getLevel());
+//									System.out.println(gameState.getScore());
+//									System.out.println(gameState.getLivesRemaining());
+//									System.out.println(gameState.getBulletsShot());
+//									System.out.println(gameState.getShipsDestroyed());
 									returnCode = 1;
 									break;
 								}
 							}
-
-							gameState = new GameState(gameState.getLevel() + 1,
+							gameState = new GameState(
+									gameState.getLevel() + 1,
 									gameState.getScore(),
 									gameState.getLivesRemaining(),
 									gameState.getBulletsShot(),
@@ -208,7 +241,7 @@ public final class Core {
 							&& gameState.getLevel() <= NUM_LEVELS);
 					if ((gameScreen != null && gameScreen.getInterrupt()) || !GO_MAIN)
 						break;
-					getFileManager().Savefile(new GameState(0, 0, 3, 0, 0));
+//					getFileManager().Savefile(new GameState(0, 0, 3, 0, 0), loadGameState.getSaveSlot());
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " score screen at " + FPS + " fps, with a score of "
 							+ gameState.getScore() + ", "
@@ -218,8 +251,18 @@ public final class Core {
 					currentScreen = new ScoreScreen(width, height, FPS, gameState);
 					returnCode = frame.setScreen(currentScreen);
 					LOGGER.info("Closing score screen.");
-					if (gameState.getLivesRemaining() == 0 || gameState.getLevel() == NUM_LEVELS + 1)
-						gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+					// 다 깼을 때
+					if (gameState.getLivesRemaining() == 0 || gameState.getLevel() == NUM_LEVELS + 1){
+						loadGameState.setGameState(new GameState(
+								7,
+								gameState.getScore(),
+								gameState.getLivesRemaining(),
+								gameState.getBulletsShot(),
+								gameState.getShipsDestroyed())
+						);
+						gameState = loadGameState.getGameState();
+					}
+
 					break;
 				case 3:
 					// High scores.
@@ -234,55 +277,6 @@ public final class Core {
 
 				case 4:
 					// Store
-				/* returnCode = 1;
-				do {
-					switch (returnCode) {
-						case 1:
-							// Main store
-							currentScreen = new StoreScreen(width, height, FPS);
-							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-									+ " store screen at " + FPS + " fps.");
-							returnCode = frame.setScreen(currentScreen);
-							LOGGER.info("Closing store screen.");
-							break;
-						case 2:
-							// Ship shape
-							currentScreen = new ShipShapeScreen(width, height, FPS);
-							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-									+ " ship shape screen at " + FPS + " fps.");
-							returnCode = frame.setScreen(currentScreen);
-							LOGGER.info("Closing ship shape screen.");
-							break;
-						case 3:
-							// Ship color
-							currentScreen = new ShipColorScreen(width, height, FPS);
-							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-									+ " ship color screen at " + FPS + " fps.");
-							returnCode = frame.setScreen(currentScreen);
-							LOGGER.info("Closing ship color screen.");
-							break;
-						case 4:
-							// Bullet effect
-							currentScreen = new BulletEffectScreen(width, height, FPS);
-							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-									+ " bullet effect screen at " + FPS + " fps.");
-							returnCode = frame.setScreen(currentScreen);
-							LOGGER.info("Closing bullet effect screen.");
-							break;
-						case 5:
-							// BGM
-							currentScreen = new BGMScreen(width, height, FPS);
-							LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-									+ " background music screen at " + FPS + " fps.");
-							returnCode = frame.setScreen(currentScreen);
-							LOGGER.info("Closing background music screen.");
-							break;
-						default:
-							break;
-					}
-				} while (returnCode != 0);
-
-				returnCode = 1; */
         
 				currentScreen = new StoreScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -370,6 +364,17 @@ public final class Core {
 
 		} while (returnCode != 0);
 
+		loadGameState.setGameState(new GameState(
+				gameState.getLevel() - 1,
+				gameState.getScore(),
+				gameState.getLivesRemaining(),
+				gameState.getBulletsShot(),
+				gameState.getBulletsShot()
+		));
+		getFileManager().Savefile(loadGameState.getGameState(),
+				loadGameState.getSaveSlot(),
+				loadGameState.getData());
+
 		fileHandler.flush();
 		fileHandler.close();
 		System.exit(0);
@@ -442,4 +447,4 @@ public final class Core {
 											   final int variance) {
 		return new Cooldown(milliseconds, variance);
 	}
-}
+	}
