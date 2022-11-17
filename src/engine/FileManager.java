@@ -407,7 +407,7 @@ public final class FileManager {
 		}
 	}
 
-	public void Savefile(GameState gamestate) {
+	public void Savefile(GameState gamestate, int menuCode, String[] data) {
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
@@ -415,11 +415,41 @@ public final class FileManager {
 			File file = new File(jarPath + "../save");
 			BufferedWriter save = new BufferedWriter(new FileWriter(file));
 
-					String state = Integer.toString(gamestate.getLevel() + 1) + ' ' +
-					Integer.toString(gamestate.getScore()) + ' ' +
-					Integer.toString(gamestate.getLivesRemaining()) + ' ' +
-					Integer.toString(gamestate.getBulletsShot()) + ' ' +
-					Integer.toString(gamestate.getShipsDestroyed());
+				String state = Integer.toString(gamestate.getLevel() + 1) + ' ' +
+						gamestate.getScore() + ' ' +
+						gamestate.getLivesRemaining() + ' ' +
+						gamestate.getBulletsShot() + ' ' +
+						gamestate.getShipsDestroyed();
+
+			String ogInfo[] = data;
+			switch (menuCode) {
+				case 0:
+					for (int i = 5; i < 15; i++)
+						state += " " + ogInfo[i];
+
+					break;
+
+				case 1:
+					String slot1 = "";
+					for (int i = 0; i <5; i++)
+						slot1 += ogInfo[i] + " ";
+
+					String slot3 = " ";
+					for (int i = 10; i < 15; i++)
+						slot3 += ogInfo[i] + " ";
+
+					state = slot1 + state  + slot3;
+					break;
+
+				case 2:
+					String tmp = "";
+					for (int i = 0; i < 10; i++){
+						tmp += ogInfo[i] + " ";
+					}
+					state = tmp + state;
+					break;
+			}
+
 
 			save.write(state);
 
@@ -430,7 +460,10 @@ public final class FileManager {
 	}
 
 	public String[] loadInfo(){
-		String[] array = {"1","0","3","0","0"};
+		String[] array =
+				{"1","0","3","0","0",
+				"1","0","3","0","0",
+				"1","0","3","0","0",};
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
