@@ -39,9 +39,9 @@ public class SaveInfoScreen extends Screen {
 
     //private int coins = getFileManager().loadCoins(0);
     private String save [] = getFileManager().loadInfo();
-    public String info1 = "Stage: " + save[0] + " Lives: " + save[2];
-    public String info2 = "Stage: " + save[5] + " Lives: " + save[7];
-    public String info3 = "Stage: " + save[10] + " Lives: " + save[12];
+    public String info1 = "Stage: " + save[0] + " Lives: " + save[2]+ " " +  save[1];
+    public String info2 = "Stage: " + save[5] + " Lives: " + save[7]+ " " +  save[6];
+    public String info3 = "Stage: " + save[10] + " Lives: " + save[12]+ " " +  save[11];
 
     private String save_or_init;
 
@@ -148,6 +148,7 @@ public class SaveInfoScreen extends Screen {
                             0),
                             menuCode, loadGameState.getData());
                     loadGameState.initData(getFileManager().loadInfo());
+                    permanentState.setInitCoin(menuCode);
                     save = getFileManager().loadInfo();
                     infoUpdate();
                 }
@@ -197,9 +198,9 @@ public class SaveInfoScreen extends Screen {
     }
 
     private void infoUpdate() {
-        info1 = "Stage: " + save[0] + " Lives: " + save[2];
-        info2 = "Stage: " + save[5] + " Lives: " + save[7];
-        info3 = "Stage: " + save[10] + " Lives: " + save[12];
+        info1 = "Stage: " + save[0] + " Lives: " + save[2] + " " +  save[1];
+        info2 = "Stage: " + save[5] + " Lives: " + save[7] + " " + save[6];
+        info3 = "Stage: " + save[10] + " Lives: " + save[12] + " " + save[11];
     }
 
     /**

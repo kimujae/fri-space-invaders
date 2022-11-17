@@ -121,24 +121,28 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_7);
 		gameSettings.add(SETTINGS_Boss_Stage);
 
-		GameState gameState;
+		GameState gameState = new GameState(0,0,0,0,0);
 		PermanentState permanentState = PermanentState.getInstance();
 		LoadGameState loadGameState = new LoadGameState();
 
 		String[] OriginalData = getFileManager().loadInfo();
-
 		loadGameState.initData(OriginalData);
 
-		currentScreen = new SaveInfoScreen(loadGameState, width, height, FPS);
-		LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-				+ " save info screen at " + FPS + " fps.");
-		int returnCode = frame.setScreen(currentScreen);
-		LOGGER.info("Closing save info screen.");
-		gameState = loadGameState.getGameState();
 
+		int returnCode = -1;
 		do {
 
 			switch (returnCode) {
+				case -1:
+					currentScreen = new SaveInfoScreen(loadGameState, width, height, FPS);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " save info screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing save info screen.");
+					gameState = loadGameState.getGameState();
+					permanentState.setSlot(loadGameState.getSaveSlot());
+					break;
+
 				case 1:
 					// Main menu.
 //                    if(gameScreen != null && gameScreen.getInterrupt()){
@@ -285,6 +289,7 @@ public final class Core {
 				break;
 
 			case 5:
+				break;
 				// Load
 				/*
 				currentScreen = new SaveInfoScreen(loadGameState, width, height, FPS);
@@ -356,6 +361,19 @@ public final class Core {
 				if(returnCode ==2) {
 					SoundPlay.getInstance().stopBgm();
 					SoundPlay.getInstance().play(SoundType.inGameBGM);
+				}
+				else if(returnCode == 5){
+					gameState = new GameState(
+							gameScreen.getLevel(),
+							gameScreen.getScore(),
+							gameScreen.getLivesRemaining(),
+							gameScreen.getBulletsShot(),
+							gameScreen.getShipsDestroyed()
+					);
+				loadGameState.setGameState(gameState);
+				System.out.println(gameState.getLevel());
+				getFileManager().Savefile(gameState, loadGameState.getSaveSlot(), loadGameState.getData());
+				returnCode = 1;
 				}
 				LOGGER.info("Closing pause screen.");
 				break;
