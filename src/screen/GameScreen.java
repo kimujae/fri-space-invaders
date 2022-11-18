@@ -638,4 +638,10 @@ public class GameScreen extends Screen {
 	public int getLevel(){
 		return level;
 	}
+
+	public int getLivesRemaining(){return lives;}
+
+	public int getBulletsShot(){return bulletsShot;}
+
+	public int getShipsDestroyed(){return shipsDestroyed;}
 }
