@@ -343,44 +343,38 @@ public final class FileManager {
 		return savedCoins;
 	}
 
-	public int loadCoins() throws IOException {
-		int savedCoins = 0;
-		InputStream inputStream = null;
-		BufferedReader bufferedReader = null;
-
+	public static int loadCoins(final int slotNum) throws IOException {
+		String[] coins = {"0", "0", "0"};
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
 			jarPath = URLDecoder.decode(jarPath, "UTF-8");
+			String savePath = new File(jarPath).getParent();
+			savePath += File.separator;
+			savePath += "coins";
+			File saveFile = new File(savePath);
+			BufferedReader br = new BufferedReader(new FileReader(saveFile));
+			String save_info = br.readLine();
+			coins = save_info.split(" ");
+			logger.info("Finish loading.");
+			br.close();
 
-			String coinsPath = new File(jarPath).getParent();
-			coinsPath += File.separator;
-			coinsPath += "coins";
-
-			File coinsFile = new File(coinsPath);
-			inputStream = new FileInputStream(coinsFile);
-			bufferedReader = new BufferedReader(new InputStreamReader(
-					inputStream, Charset.forName("UTF-8")));
-
-			logger.info("Loading user coins");
-
-			savedCoins = Integer.parseInt(bufferedReader.readLine());
 		} catch (FileNotFoundException e) {
-			logger.info("Loading default coins.");
-			savedCoins = loadDefaultCoins();
-		} finally {
-			if (bufferedReader != null)
-				bufferedReader.close();
-		}
+			throw new RuntimeException(e);
+		}  finally {
 
-		return savedCoins;
+			return Integer.parseInt(coins[slotNum]);
+		}
 	}
 
-	public void saveCoins(final int coins) throws IOException {
+	public static void saveCoins(final int coin, int slotNum){
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
 
 		try	{
+			int coin1 = loadCoins(0);
+			int coin2 = loadCoins(1);
+			int coin3 = loadCoins(2);
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
 			jarPath = URLDecoder.decode(jarPath, "UTF-8");
@@ -391,23 +385,46 @@ public final class FileManager {
 
 			File coinsFile = new File(coinsPath);
 
-			if (!coinsFile.exists())
+			if (!coinsFile.exists()) {
 				coinsFile.createNewFile();
+			}
+
+
+			String saveCoins = null;
+
+
+			switch (slotNum) {
+				case 0:
+					saveCoins = coin + " " +
+							coin2 + " " +
+							coin3;
+					break;
+				case 1:
+					saveCoins = coin1 + " " +
+							coin + " " +
+							coin3;
+					break;
+				case 2:
+					saveCoins = coin1 + " " +
+							coin2 + " " +
+							coin;
+			}
 
 			outputStream = new FileOutputStream(coinsFile);
 			bufferedWriter = new BufferedWriter(new OutputStreamWriter(
 					outputStream, Charset.forName("UTF-8")));
 
-			logger.info("Saving coins");
+//			logger.info("Saving coins");
 
-			bufferedWriter.write(String.valueOf(coins));
-		} finally {
-			if (bufferedWriter != null)
-				bufferedWriter.close();
+			bufferedWriter.write(saveCoins);
+			bufferedWriter.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	public void Savefile(GameState gamestate, int menuCode, String[] data) {
+	public static void Savefile(GameState gamestate, int menuCode, String[] data) {
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
