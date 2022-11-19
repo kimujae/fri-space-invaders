@@ -181,7 +181,6 @@ public final class Core {
 							returnCode = 11;
 							break;
 						} else {
-
 							LOGGER.info("Closing game screen.");
 							gameState = ((GameScreen) currentScreen).getGameState();
 
@@ -194,7 +193,16 @@ public final class Core {
 								returnCode = frame.setScreen(currentScreen);
 							}
 
+
 							if (gameState.getLivesRemaining() > 0 && gameState.getLevel() < NUM_LEVELS) {
+								//continue를 할때도 저장
+								loadGameState.setGameState(gameState);
+								System.out.println(gameState.getLevel());
+								getFileManager().Savefile(gameState, loadGameState.getSaveSlot(), loadGameState.getData());
+
+								LOGGER.info("Complete Save.");
+								GO_MAIN = false;
+
 								LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 										+ " game save screen at " + FPS + " fps.");
 								currentScreen = new GameSaveScreen(gameState, width, height, FPS);
@@ -254,8 +262,13 @@ public final class Core {
 					currentScreen = new ScoreScreen(width, height, FPS, gameState);
 					returnCode = frame.setScreen(currentScreen);
 					LOGGER.info("Closing score screen.");
-					// 다 깼을 때
-					if (gameState.getLivesRemaining() == 0 || gameState.getLevel() == NUM_LEVELS + 1){
+
+					if(gameState.getLivesRemaining() == 0){
+						gameState = loadGameState.getGameState();
+						returnCode=-1;
+					}
+					// 다 깼을 때 문제 발생
+					if (gameState.getLevel() == NUM_LEVELS + 1){
 						loadGameState.setGameState(new GameState(
 								7,
 								gameState.getScore(),
