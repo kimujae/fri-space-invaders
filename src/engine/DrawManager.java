@@ -1394,14 +1394,12 @@ public final class DrawManager {
 //			backBufferGraphics.setColor(Color.WHITE);
 //		drawCenteredRegularString(screen, saveString,
 //				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight());
-
-
 		if(option == 2)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, MenuString,
-				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight());
+				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight()*2);
 
 		if(option == 3)
 			backBufferGraphics.setColor(Color.GREEN);
