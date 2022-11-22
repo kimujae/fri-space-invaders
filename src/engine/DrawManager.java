@@ -1399,7 +1399,7 @@ public final class DrawManager {
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, MenuString,
-				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight()*2);
+				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight());
 
 		if(option == 3)
 			backBufferGraphics.setColor(Color.GREEN);
