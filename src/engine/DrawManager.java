@@ -1347,23 +1347,31 @@ public final class DrawManager {
 					+ fontBigMetrics.getHeight() / 3);
 	}
 
-	public void drawStageClearScreen(final Screen screen, final int option){
+	public void drawStageClearScreen(final Screen screen, final int option, int lev){
 		String continueString = "Continue";
 		String exitString = "Exit";//게임 클리어하면 continue든 exit이든 세이브가 됨
 
-		if(option == 1)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, continueString,
-				screen.getHeight() / 3 * 2);
+		if (lev < 7) {
+			if(option == 1)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			drawCenteredRegularString(screen, continueString,
+					screen.getHeight() / 3 * 2);
 
-		if(option == 2)
+			if(option == 2)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			drawCenteredRegularString(screen, exitString,
+					screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 2);
+		}
+		else {
 			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, exitString,
-				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 2);
+			drawCenteredRegularString(screen, exitString,
+					screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 2);
+		}
+
 	}
 
 	public void drawPauseStateScreen(final Screen screen, final int option){

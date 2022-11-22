@@ -58,11 +58,11 @@ public final class Core {
 			new GameSettings(6, 1, 1, 10, 1000);
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
-			new GameSettings(7,1, 1, 5, 500);
+			new GameSettings(7,1, 1, 100, 1000);
 
 	/** add boss stage **/
 	private static final GameSettings SETTINGS_Boss_Stage=
-			new GameSettings(8, 1,1, 0, 200);
+			new GameSettings(8, 1,1, 100, 1000);
 
 	/** Frame to draw the screen on. */
 	private static Frame frame;
@@ -239,8 +239,10 @@ public final class Core {
 									gameState.getShipsDestroyed()
 							);
 						}
+						System.out.println(gameState.getLevel());
+//						System.out.println(gameState.getScore() <= NUM_LEVELS);
 					} while (gameState.getLivesRemaining() > 0
-							&& gameState.getLevel() <= NUM_LEVELS);
+							&& gameState.getLevel() < NUM_LEVELS);
 					if ((gameScreen != null && gameScreen.getInterrupt()) || !GO_MAIN)
 						break;
 //					getFileManager().Savefile(new GameState(0, 0, 3, 0, 0), loadGameState.getSaveSlot());
@@ -260,7 +262,7 @@ public final class Core {
 						returnCode=-1;
 					}
 					// 다 깼을 때 문제 발생
-					if (gameState.getLevel() == NUM_LEVELS + 1){
+					if (gameState.getLevel() == 8){
 						loadGameState.setGameState(new GameState(
 								7,
 								gameState.getScore(),
@@ -269,6 +271,7 @@ public final class Core {
 								gameState.getShipsDestroyed())
 						);
 						gameState = loadGameState.getGameState();
+						returnCode = 0;
 					}
 
 					break;

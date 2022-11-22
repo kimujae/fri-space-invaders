@@ -21,6 +21,8 @@ public class GameSaveScreen extends Screen {
     /** Current lives remaining */
     private int lives;
 
+    private GameState gameState;
+
     /**
      * Constructor, establishes the properties of the screen.
      *
@@ -30,6 +32,8 @@ public class GameSaveScreen extends Screen {
      */
     public GameSaveScreen(final GameState gameState, final int width, final int height, final int fps) {
         super(width, height, fps);
+
+        this.gameState = gameState;
 
         this.score = gameState.getScore();
         this.lives = gameState.getLivesRemaining();
@@ -77,10 +81,16 @@ public class GameSaveScreen extends Screen {
      * Shifts the focus to the next menu item.
      */
     private void nextMenuItem() {
-        if (this.returnCode == 1)
+        if (gameState.getLevel() < 7) {
+            if (this.returnCode == 1)
+                this.returnCode = 2;
+            else if (this.returnCode == 2)
+                this.returnCode = 1;
+        }
+        else {
             this.returnCode = 2;
-        else if (this.returnCode == 2)
-            this.returnCode = 1;
+        }
+
     }
 
     /**
@@ -93,9 +103,14 @@ public class GameSaveScreen extends Screen {
         drawManager.drawLives(this, this.lives);
         drawManager.drawHorizontalLine(this, 39);
 
-        drawManager.drawCenteredBigString(this, "Stage clear", this.getHeight() / 3);
+        if (gameState.getLevel() == 7) {
+            drawManager.drawCenteredBigString(this, "All clear", this.getHeight() / 3);
+        }
+        else {
+            drawManager.drawCenteredBigString(this, "Stage clear", this.getHeight() / 3);
+        }
 
-        drawManager.drawStageClearScreen(this, this.returnCode);
+        drawManager.drawStageClearScreen(this, this.returnCode, gameState.getLevel());
 
         drawManager.completeDrawing(this);
     }
