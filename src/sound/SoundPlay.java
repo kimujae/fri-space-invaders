@@ -4,8 +4,8 @@ import engine.PermanentState;
 
 public class SoundPlay{
     private static SoundPlay instance;
-    private int effectVolume = 0;
-    private int bgmVolume = 0;
+    private int effectVolume = 30;
+    private int bgmVolume = 30;
     private SoundBgm sb;
 
     private SoundPlay(){}
@@ -88,11 +88,13 @@ public class SoundPlay{
     }
 
     public void setEffectVolume(int value){
-        this.effectVolume += value;
+        this.effectVolume = value;
+        System.out.println(effectVolume);
     }
 
     public void setBgmVolume(int value){
         this.bgmVolume = value;
+        System.out.println(bgmVolume);
         sb.bgmVolume(bgmVolume);
     }
 
