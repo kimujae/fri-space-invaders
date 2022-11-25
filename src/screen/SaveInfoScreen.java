@@ -39,9 +39,9 @@ public class SaveInfoScreen extends Screen {
 
     //private int coins = getFileManager().loadCoins(0);
     private String save [] = getFileManager().loadInfo();
-    public String info1 = "Stage: " + save[0] + " Lives: " + save[2]+ " " +  save[1];
-    public String info2 = "Stage: " + save[5] + " Lives: " + save[7]+ " " +  save[6];
-    public String info3 = "Stage: " + save[10] + " Lives: " + save[12]+ " " +  save[11];
+    public String info1 = "Stage: " + save[0] + " Lives: " + save[2];
+    public String info2 = "Stage: " + save[5] + " Lives: " + save[7];
+    public String info3 = "Stage: " + save[10] + " Lives: " + save[12];
 
     private String save_or_init;
 
@@ -131,28 +131,31 @@ public class SaveInfoScreen extends Screen {
             }
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
                 loadGameState.setSaveSlot(menuCode);
-                // start 버튼
-                if (start_or_delete == 1) {
-                    this.returnCode = 1;
-                    loadGameState.setSaveSlot(menuCode);
-                    loadGameState.setGameState(loadGameState.getGameState());
-                    this.isRunning = false;
-                }
-                // delete 버튼
-                else if (start_or_delete == 2) {
-                    getFileManager().Savefile(new GameState(
+                StartOrDelete(start_or_delete);
+            }
+        }
+    }
+
+    private void StartOrDelete(final int colNum) {
+        // start 버튼
+        if (colNum == 1) {
+            this.returnCode = 1;
+            loadGameState.setSaveSlot(menuCode);
+            loadGameState.setGameState(loadGameState.getGameState());
+            this.isRunning = false;
+        }
+        // delete 버튼
+        else if (colNum == 2) {
+            getFileManager().Savefile(new GameState(
                             0,
                             0,
                             3,
                             0,
                             0),
-                            menuCode, loadGameState.getData());
-                    loadGameState.initData(getFileManager().loadInfo());
-                    permanentState.setInitCoin(menuCode);
-                    save = getFileManager().loadInfo();
-                    infoUpdate();
-                }
-            }
+                    menuCode, loadGameState.getData());
+            loadGameState.initData(getFileManager().loadInfo());
+            save = getFileManager().loadInfo();
+            infoUpdate();
         }
     }
     /**
@@ -182,10 +185,10 @@ public class SaveInfoScreen extends Screen {
     }
 
     private void nextCol() {
-       if (start_or_delete == 2)
-           start_or_delete = 1;
-       else
-           start_or_delete++;
+        if (start_or_delete == 2)
+            start_or_delete = 1;
+        else
+            start_or_delete++;
         soundPlay.play(SoundType.menuSelect);
     }
 
@@ -198,9 +201,9 @@ public class SaveInfoScreen extends Screen {
     }
 
     private void infoUpdate() {
-        info1 = "Stage: " + save[0] + " Lives: " + save[2] + " " +  save[1];
-        info2 = "Stage: " + save[5] + " Lives: " + save[7] + " " + save[6];
-        info3 = "Stage: " + save[10] + " Lives: " + save[12] + " " + save[11];
+        info1 = "Stage: " + save[0] + " Lives: " + save[2];
+        info2 = "Stage: " + save[5] + " Lives: " + save[7];
+        info3 = "Stage: " + save[10] + " Lives: " + save[12];
     }
 
     /**
