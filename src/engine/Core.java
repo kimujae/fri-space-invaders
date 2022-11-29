@@ -40,29 +40,29 @@ public final class Core {
 	/** Difficulty settings for level 1. */
 	private static final GameSettings SETTINGS_LEVEL_1 =
 
-			new GameSettings(1, 5, 4, 60, 2000);
+			new GameSettings(1, 1, 1, 60, 2000);
 	/** Difficulty settings for level 2. */
 	private static final GameSettings SETTINGS_LEVEL_2 =
-			new GameSettings(2, 5, 5, 50, 2500);
+			new GameSettings(2, 1, 1, 50, 2500);
 	/** Difficulty settings for level 3. */
 	private static final GameSettings SETTINGS_LEVEL_3 =
-			new GameSettings(3, 6, 5, 40, 1500);
+			new GameSettings(3, 1, 1, 40, 1500);
 	/** Difficulty settings for level 4. */
 	private static final GameSettings SETTINGS_LEVEL_4 =
-			new GameSettings(4, 6, 6, 30, 1500);
+			new GameSettings(4, 1, 1, 30, 1500);
 	/** Difficulty settings for level 5. */
 	private static final GameSettings SETTINGS_LEVEL_5 =
-			new GameSettings(5, 7, 6, 20, 1000);
+			new GameSettings(5, 1, 1, 20, 1000);
 	/** Difficulty settings for level 6. */
 	private static final GameSettings SETTINGS_LEVEL_6 =
-			new GameSettings(6, 7, 7, 10, 1000);
+			new GameSettings(6, 1, 1, 10, 1000);
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
-			new GameSettings(7,7, 8, 5, 500);
+			new GameSettings(7,1, 1, 100, 1000);
 
 	/** add boss stage **/
 	private static final GameSettings SETTINGS_Boss_Stage=
-			new GameSettings(8, 3,3, 0, 200);
+			new GameSettings(8, 1,1, 100, 1000);
 
 	/** Frame to draw the screen on. */
 	private static Frame frame;
@@ -181,9 +181,9 @@ public final class Core {
 							returnCode = 11;
 							break;
 						} else {
-
 							LOGGER.info("Closing game screen.");
 							gameState = ((GameScreen) currentScreen).getGameState();
+
 
 							if (gameState.getScore() > 500)
 								permanentState.setCoin(gameState.getScore() - 500); // earn coin
@@ -194,42 +194,41 @@ public final class Core {
 								returnCode = frame.setScreen(currentScreen);
 							}
 
+
 							if (gameState.getLivesRemaining() > 0 && gameState.getLevel() < NUM_LEVELS) {
+								//continue를 할때도 저장
+								gameState = new GameState(
+										gameState.getLevel(),
+										gameState.getScore(),
+										gameState.getLivesRemaining(),
+										gameState.getBulletsShot(),
+										gameState.getShipsDestroyed()
+								);
+								loadGameState.setGameState(gameState);
+								System.out.println(gameState.getLevel());
+								getFileManager().Savefile(gameState, loadGameState.getSaveSlot(), loadGameState.getData());
 								LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 										+ " game save screen at " + FPS + " fps.");
 								currentScreen = new GameSaveScreen(gameState, width, height, FPS);
 								returnCode = frame.setScreen(currentScreen);
 								LOGGER.info("Closing game save screen.");
+
 								if (returnCode == 2) {
 
-									gameState = new GameState(
-											gameState.getLevel() + 1,
-											gameState.getScore(),
-											gameState.getLivesRemaining(),
-											gameState.getBulletsShot(),
-											gameState.getShipsDestroyed()
-									);
-//									loadGameState.setGameState(new GameState(
-//											gameState.getLevel() + 2,
+//									gameState = new GameState(
+//											gameState.getLevel(),
 //											gameState.getScore(),
 //											gameState.getLivesRemaining(),
 //											gameState.getBulletsShot(),
 //											gameState.getShipsDestroyed()
-//									));
-									loadGameState.setGameState(gameState);
-									System.out.println(gameState.getLevel());
-									getFileManager().Savefile(gameState, loadGameState.getSaveSlot(), loadGameState.getData());
+//									);
+//									loadGameState.setGameState(gameState);
+//									System.out.println(gameState.getLevel());
+//									getFileManager().Savefile(gameState, loadGameState.getSaveSlot(), loadGameState.getData());
 
 									LOGGER.info("Complete Save.");
 									GO_MAIN = false;
-//									gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-//									System.out.println(gameState.getLevel());
-//									System.out.println(gameState.getScore());
-//									System.out.println(gameState.getLivesRemaining());
-//									System.out.println(gameState.getBulletsShot());
-//									System.out.println(gameState.getShipsDestroyed());
-									returnCode = 1;
-									break;
+									System.exit(0);
 								}
 							}
 							gameState = new GameState(
@@ -240,8 +239,10 @@ public final class Core {
 									gameState.getShipsDestroyed()
 							);
 						}
+						System.out.println(gameState.getLevel());
+//						System.out.println(gameState.getScore() <= NUM_LEVELS);
 					} while (gameState.getLivesRemaining() > 0
-							&& gameState.getLevel() <= NUM_LEVELS);
+							&& gameState.getLevel() < NUM_LEVELS);
 					if ((gameScreen != null && gameScreen.getInterrupt()) || !GO_MAIN)
 						break;
 //					getFileManager().Savefile(new GameState(0, 0, 3, 0, 0), loadGameState.getSaveSlot());
@@ -254,8 +255,14 @@ public final class Core {
 					currentScreen = new ScoreScreen(width, height, FPS, gameState);
 					returnCode = frame.setScreen(currentScreen);
 					LOGGER.info("Closing score screen.");
-					// 다 깼을 때
-					if (gameState.getLivesRemaining() == 0 || gameState.getLevel() == NUM_LEVELS + 1){
+
+					if(gameState.getLivesRemaining() == 0){
+						gameState = loadGameState.getGameState();
+						GO_MAIN=false;
+						returnCode=-1;
+					}
+					// 다 깼을 때 문제 발생
+					if (gameState.getLevel() == 8){
 						loadGameState.setGameState(new GameState(
 								7,
 								gameState.getScore(),
@@ -264,6 +271,7 @@ public final class Core {
 								gameState.getShipsDestroyed())
 						);
 						gameState = loadGameState.getGameState();
+						returnCode = 0;
 					}
 
 					break;
