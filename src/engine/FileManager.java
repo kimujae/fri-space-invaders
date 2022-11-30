@@ -584,5 +584,30 @@ public final class FileManager {
 			return cashitem;
 		}
 	}
+
+	public static void saveCashitem(int item, int item_amount) {
+		try {
+			String cashitem[] = loadCashItem();
+			System.out.println(cashitem.length);
+			String jarPath = FileManager.class.getProtectionDomain()
+					.getCodeSource().getLocation().getPath();
+			jarPath = URLDecoder.decode(jarPath, "UTF-8");
+			File file = new File(jarPath + "../cashitem");
+			BufferedWriter savecashitem = new BufferedWriter(new FileWriter(file));
+
+			cashitem[item-1] = Integer.toString(item_amount);
+			String cashitemstr ="";
+			for(int i = 0; i <6 ; i++){
+				if(i != 5) cashitemstr += cashitem[i] +" ";
+				else cashitemstr += cashitem[i];
+			}
+
+			savecashitem.write(cashitemstr);
+
+			savecashitem.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
 
