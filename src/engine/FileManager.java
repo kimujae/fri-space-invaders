@@ -343,8 +343,8 @@ public final class FileManager {
 		return savedCoins;
 	}
 
-	public static int loadCoins(final int slotNum) throws IOException {
-		String[] coins = {"0", "0", "0"};
+	public static int loadCoins() throws IOException {
+		String coins = "0";
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
@@ -355,7 +355,7 @@ public final class FileManager {
 			File saveFile = new File(savePath);
 			BufferedReader br = new BufferedReader(new FileReader(saveFile));
 			String save_info = br.readLine();
-			coins = save_info.split(" ");
+			coins = save_info;
 			logger.info("Finish loading.");
 			br.close();
 
@@ -363,18 +363,16 @@ public final class FileManager {
 			throw new RuntimeException(e);
 		}  finally {
 
-			return Integer.parseInt(coins[slotNum]);
+			return Integer.parseInt(coins);
 		}
 	}
 
-	public static void saveCoins(final int coin, int slotNum){
+	public static void saveCoins(int inCoins){
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
 
 		try	{
-			int coin1 = loadCoins(0);
-			int coin2 = loadCoins(1);
-			int coin3 = loadCoins(2);
+			int coin = inCoins;
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
 			jarPath = URLDecoder.decode(jarPath, "UTF-8");
@@ -389,32 +387,11 @@ public final class FileManager {
 				coinsFile.createNewFile();
 			}
 
-
-			String saveCoins = null;
-
-
-			switch (slotNum) {
-				case 0:
-					saveCoins = coin + " " +
-							coin2 + " " +
-							coin3;
-					break;
-				case 1:
-					saveCoins = coin1 + " " +
-							coin + " " +
-							coin3;
-					break;
-				case 2:
-					saveCoins = coin1 + " " +
-							coin2 + " " +
-							coin;
-			}
+			String saveCoins = String.valueOf(coin);
 
 			outputStream = new FileOutputStream(coinsFile);
 			bufferedWriter = new BufferedWriter(new OutputStreamWriter(
 					outputStream, Charset.forName("UTF-8")));
-
-//			logger.info("Saving coins");
 
 			bufferedWriter.write(saveCoins);
 			bufferedWriter.close();
