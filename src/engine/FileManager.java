@@ -562,5 +562,27 @@ public final class FileManager {
 		else if(playerShipColor == 2) return Color.darkGray;
 		else return Color.GREEN;
 	}
+	public static String[] loadCashItem(){
+		String[] cashitem = {"0", "0", "0", "0", "0", "0"};
+		try {
+			String jarPath = FileManager.class.getProtectionDomain()
+					.getCodeSource().getLocation().getPath();
+			jarPath = URLDecoder.decode(jarPath, "UTF-8");
+			String cashitemPath = new File(jarPath).getParent();
+			cashitemPath += File.separator;
+			cashitemPath += "cashitem";
+			File saveFile = new File(cashitemPath);
+			BufferedReader br = new BufferedReader(new FileReader(saveFile));
+			String savecashitem_info = br.readLine();
+			cashitem = savecashitem_info.split(" ");
+			logger.info("Finish loading.");
+			br.close();
+
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}  finally {
+			return cashitem;
+		}
+	}
 }
 
