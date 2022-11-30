@@ -1347,29 +1347,37 @@ public final class DrawManager {
 					+ fontBigMetrics.getHeight() / 3);
 	}
 
-	public void drawStageClearScreen(final Screen screen, final int option){
+	public void drawStageClearScreen(final Screen screen, final int option, int lev){
 		String continueString = "Continue";
-		String saveString = "Save & Exit";
+		String exitString = "Exit";//게임 클리어하면 continue든 exit이든 세이브가 됨
 
-		if(option == 1)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, continueString,
-				screen.getHeight() / 3 * 2);
+		if (lev < 7) {
+			if(option == 1)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			drawCenteredRegularString(screen, continueString,
+					screen.getHeight() / 3 * 2);
 
-		if(option == 2)
+			if(option == 2)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			drawCenteredRegularString(screen, exitString,
+					screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 2);
+		}
+		else {
 			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, saveString,
-				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 2);
+			drawCenteredRegularString(screen, exitString,
+					screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 2);
+		}
+
 	}
 
 	public void drawPauseStateScreen(final Screen screen, final int option){
 		String continueString = "Continue Game";
 		//String storeString = "Store";
-		String saveString ="Save Game";
+//		String saveString ="Save Game"; 일시정지 때 세이브 기능 없앰
 		String MenuString ="Menu";
 		String ExitString = "Exit Program";
 
@@ -1388,27 +1396,25 @@ public final class DrawManager {
             screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 2);
       */
 
+//		if(option == 2)
+//			backBufferGraphics.setColor(Color.GREEN);
+//		else
+//			backBufferGraphics.setColor(Color.WHITE);
+//		drawCenteredRegularString(screen, saveString,
+//				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight());
 		if(option == 2)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, saveString,
+		drawCenteredRegularString(screen, MenuString,
 				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight());
-
 
 		if(option == 3)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, MenuString,
-				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 3);
-
-		if(option == 4)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, ExitString,
-				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 5);
+				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 3);
 
 	}
 
