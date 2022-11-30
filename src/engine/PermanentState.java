@@ -56,11 +56,6 @@ public final class PermanentState {
 
 	}
 
-	public void setInitCoin(){
-		FileManager.getInstance().saveCoins(0);
-
-	}
-
 	public int getShipShape() {
 		return shipShape;
 	}

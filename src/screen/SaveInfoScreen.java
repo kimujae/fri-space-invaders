@@ -148,7 +148,6 @@ public class SaveInfoScreen extends Screen {
                             0),
                             menuCode, loadGameState.getData());
                     loadGameState.initData(getFileManager().loadInfo());
-                    permanentState.setInitCoin(menuCode);
                     save = getFileManager().loadInfo();
                     infoUpdate();
                 }
