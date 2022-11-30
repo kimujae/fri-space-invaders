@@ -367,14 +367,12 @@ public final class FileManager {
 		}
 	}
 
-	public static void saveCoins(final int coin, int slotNum){
+	public static void saveCoins(int inCoins){
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
 
 		try	{
-			int coin1 = loadCoins();
-			int coin2 = loadCoins();
-			int coin3 = loadCoins();
+			int coin = inCoins;
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
 			jarPath = URLDecoder.decode(jarPath, "UTF-8");
@@ -389,32 +387,11 @@ public final class FileManager {
 				coinsFile.createNewFile();
 			}
 
-
-			String saveCoins = null;
-
-
-			switch (slotNum) {
-				case 0:
-					saveCoins = coin + " " +
-							coin2 + " " +
-							coin3;
-					break;
-				case 1:
-					saveCoins = coin1 + " " +
-							coin + " " +
-							coin3;
-					break;
-				case 2:
-					saveCoins = coin1 + " " +
-							coin2 + " " +
-							coin;
-			}
+			String saveCoins = String.valueOf(coin);
 
 			outputStream = new FileOutputStream(coinsFile);
 			bufferedWriter = new BufferedWriter(new OutputStreamWriter(
 					outputStream, Charset.forName("UTF-8")));
-
-//			logger.info("Saving coins");
 
 			bufferedWriter.write(saveCoins);
 			bufferedWriter.close();

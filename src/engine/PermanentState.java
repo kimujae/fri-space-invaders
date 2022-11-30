@@ -52,12 +52,12 @@ public final class PermanentState {
 
 	public void setCoin(int income) {
 		this.coin += income;
-		FileManager.getInstance().saveCoins(coin,slotNum);
+		FileManager.getInstance().saveCoins(coin);
 
 	}
 
-	public void setInitCoin(int slotNum){
-		FileManager.getInstance().saveCoins(0,slotNum);
+	public void setInitCoin(){
+		FileManager.getInstance().saveCoins(0);
 
 	}
 
