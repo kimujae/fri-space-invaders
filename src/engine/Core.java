@@ -40,29 +40,29 @@ public final class Core {
 	/** Difficulty settings for level 1. */
 	private static final GameSettings SETTINGS_LEVEL_1 =
 
-			new GameSettings(1, 1, 1, 60, 2000);
+			new GameSettings(1, 5, 4, 60, 2000);
 	/** Difficulty settings for level 2. */
 	private static final GameSettings SETTINGS_LEVEL_2 =
-			new GameSettings(2, 1, 1, 50, 2500);
+			new GameSettings(2, 5, 5, 50, 2500);
 	/** Difficulty settings for level 3. */
 	private static final GameSettings SETTINGS_LEVEL_3 =
-			new GameSettings(3, 1, 1, 40, 1500);
+			new GameSettings(3, 6, 5, 40, 1500);
 	/** Difficulty settings for level 4. */
 	private static final GameSettings SETTINGS_LEVEL_4 =
-			new GameSettings(4, 1, 1, 30, 1500);
+			new GameSettings(4, 6, 6, 30, 1500);
 	/** Difficulty settings for level 5. */
 	private static final GameSettings SETTINGS_LEVEL_5 =
-			new GameSettings(5, 1, 1, 20, 1000);
+			new GameSettings(5, 7, 6, 20, 1000);
 	/** Difficulty settings for level 6. */
 	private static final GameSettings SETTINGS_LEVEL_6 =
-			new GameSettings(6, 1, 1, 10, 1000);
+			new GameSettings(6, 7, 7, 10, 1000);
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
-			new GameSettings(7,1, 1, 100, 1000);
+			new GameSettings(7,7, 8, 5, 500);
 
 	/** add boss stage **/
 	private static final GameSettings SETTINGS_Boss_Stage=
-			new GameSettings(8, 1,1, 100, 1000);
+			new GameSettings(8, 3,3, 0, 1000);
 
 	/** Frame to draw the screen on. */
 	private static Frame frame;
