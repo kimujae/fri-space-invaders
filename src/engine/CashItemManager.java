@@ -18,7 +18,7 @@ public class CashItemManager {
     //int speeduppotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[6]);
     //int invincibilitypotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[7]);
 
-    private CashItemManager() {
+    CashItemManager() {
         this.itemtype = null;
         this.potionItem = null;
     }

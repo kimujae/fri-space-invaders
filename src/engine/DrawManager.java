@@ -1454,64 +1454,19 @@ public final class DrawManager {
 
 	}
 
-	public void drawSelectItemScreen (final  Screen screen,final int row) {
+	public void drawSelectItemScreen (final  Screen screen, final int row) {
 		String[] items = FileManager.getInstance().loadCashItem();
+		String title = "Choose your cash item";
 		String[] rows = {"No Use",
-				"BulletSpeed Box\t\t" + items[0] + "/10",
-				"Point Box\t\t" + items[1] + "/10",
-				"Shield Box\t\t" + items[2] + "/10",
-				"Speed Box\t\t" + items[3] + "/10",
-				"Life Box\t\t" + items[4] + "/10",
-				"MachineGun Box\t\t" + items[5] + "/10"};
-//		String nouse = "No Use";
-//		String bulletspeedup = "BulletSpeed Box\t\t" + items[0] + "/10";
-//		String pointup = "Point Box\t\t" + items[1] + "/10";
-//		String shield = "Shield Box\t\t" + items[2] + "/10";
-//		String speedup = "Speed Box\t\t" + items[3] + "/10";
-//		String extralife = "Life Box\t\t" + items[4] + "/10";
-//		String machinegun = "MachineGun Box\t\t" + items[5] + "/10";
+				"BulletSpeed Box    " + items[0] + "/10",
+				"Point Box    " + items[1] + "/10",
+				"Shield Box     " + items[2] + "/10",
+				"Speed Box    " + items[3] + "/10",
+				"Life Box     " + items[4] + "/10",
+				"MachineGun Box    " + items[5] + "/10"};
 
-//		if (row == 0)
-//			backBufferGraphics.setColor(Color.GREEN);
-//		else
-//			backBufferGraphics.setColor(Color.WHITE);
-//		drawCenteredRegularString(screen, rows[0], screen.getHeight()/3);
-//		if (row == 1)
-//			backBufferGraphics.setColor(Color.GREEN);
-//		else
-//			backBufferGraphics.setColor(Color.WHITE);
-//		drawCenteredRegularString(screen, rows[1], screen.getHeight()/3
-//				+ fontRegularMetrics.getHeight() * 2);
-//		if (row == 2)
-//			backBufferGraphics.setColor(Color.GREEN);
-//		else
-//			backBufferGraphics.setColor(Color.WHITE);
-//		drawCenteredRegularString(screen, rows[2], screen.getHeight()/3
-//				+ fontRegularMetrics.getHeight() * 4);
-//		if (row == 3)
-//			backBufferGraphics.setColor(Color.GREEN);
-//		else
-//			backBufferGraphics.setColor(Color.WHITE);
-//		drawCenteredRegularString(screen, rows[3], screen.getHeight()/3
-//				+ fontRegularMetrics.getHeight() * 4);
-//		if (row == 4)
-//			backBufferGraphics.setColor(Color.GREEN);
-//		else
-//			backBufferGraphics.setColor(Color.WHITE);
-//		drawCenteredRegularString(screen, rows[4], screen.getHeight()/3
-//				+ fontRegularMetrics.getHeight() * 4);
-//		if (row == 5)
-//			backBufferGraphics.setColor(Color.GREEN);
-//		else
-//			backBufferGraphics.setColor(Color.WHITE);
-//		drawCenteredRegularString(screen, rows[5], screen.getHeight()/3
-//				+ fontRegularMetrics.getHeight() * 4);
-//		if (row == 6)
-//			backBufferGraphics.setColor(Color.GREEN);
-//		else
-//			backBufferGraphics.setColor(Color.WHITE);
-//		drawCenteredRegularString(screen, rows[6], screen.getHeight()/3
-//				+ fontRegularMetrics.getHeight() * 4);
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, title, 75);
 
 		for (int i = 0; i <= 6; i++) {
 			if (row == i) {
@@ -1520,7 +1475,7 @@ public final class DrawManager {
 			else {
 				backBufferGraphics.setColor(Color.WHITE);
 			}
-			drawCenteredRegularString(screen, rows[i], screen.getHeight() * 2 * i / 14);
+			drawCenteredRegularString(screen, rows[i], 150 + screen.getHeight() * (2 *  i) / 20);
 		}
 	}
 

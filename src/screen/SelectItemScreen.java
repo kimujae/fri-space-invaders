@@ -24,6 +24,10 @@ public class SelectItemScreen extends Screen{
 
     private GameScreen gameScreen;
 
+    private GameState gameState;
+
+    private LoadGameState loadGameState;
+
 
     /**
      * Constructor, establishes the properties of the screen.
@@ -126,8 +130,6 @@ public class SelectItemScreen extends Screen{
      */
     private void draw() {
         drawManager.initDrawing(this);
-
-        drawManager.drawCenteredBigString(this, "Choose one of your cash item", getHeight() / 10);
 
         drawManager.drawSelectItemScreen(this, menuCode);
 
