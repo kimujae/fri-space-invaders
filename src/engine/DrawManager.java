@@ -1154,7 +1154,7 @@ public final class DrawManager {
 			}
 		}
 		if (menu == 4) {
-			backBufferGraphics.drawRect(x , y, 240, 240);
+			backBufferGraphics.drawRect(x+20 , y, 220, 240);
 		}
 		else {
 			backBufferGraphics.drawRect(screen.getWidth() / 2 + 50, screen.getHeight() / 2, 100, 100);
@@ -1188,12 +1188,13 @@ public final class DrawManager {
 			backBufferGraphics.drawString(Integer.toString(permanentState.getBGM()), screen.getWidth() / 2 + 96, screen.getHeight() / 2 + 60);
 			backBufferGraphics.setFont(fontRegular);
 		}
-		else if (menu == 4) { // ITEM BOX
-			drawItemBox(screen, x, y);
-		}
+
 	}
 
-	private void drawItemBox(final Screen screen, final int x, final int y) {
+	public void drawItemBox(final Screen screen, final int item_num, final int focusreroll ) {
+
+		int x = screen.getWidth()  * 4 / 10 + 20;
+		int y = screen.getHeight() * 2 / 8;
 
 		String[] items = FileManager.getInstance().loadCashItem();
 		String bulletspeedup = "BulletSpeed Box\t\t" + items[0] + "/10";
@@ -1203,12 +1204,31 @@ public final class DrawManager {
 		String extralife = "Life Box\t\t" + items[4] + "/10";
 		String machinegun = "MachineGun Box\t\t" + items[5] + "/10";
 
-		backBufferGraphics.drawString(bulletspeedup, x + 10, y + 10);
-		backBufferGraphics.drawString(pointup, x + 10, y + 30);
-		backBufferGraphics.drawString(shield, x + 10, y + 50);
-		backBufferGraphics.drawString(speedup, x + 10, y + 70);
-		backBufferGraphics.drawString(extralife, x + 10, y + 90);
-		backBufferGraphics.drawString(machinegun, x + 10, y + 110);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(bulletspeedup, x + 10, y + 20);
+		backBufferGraphics.drawString(pointup, x + 10, y + 60);
+		backBufferGraphics.drawString(shield, x + 10, y + 100);
+		backBufferGraphics.drawString(speedup, x + 10, y + 140);
+		backBufferGraphics.drawString(extralife, x + 10, y + 180);
+		backBufferGraphics.drawString(machinegun, x + 10, y + 220);
+
+
+		backBufferGraphics.setColor(Color.GREEN);
+		if(focusreroll ==1) {
+			if (item_num == 1)
+				backBufferGraphics.drawString(bulletspeedup, x + 10, y + 20);
+			else if (item_num == 2)
+				backBufferGraphics.drawString(pointup, x + 10, y + 60);
+			else if (item_num == 3)
+				backBufferGraphics.drawString(shield, x + 10, y + 100);
+			else if (item_num == 4)
+				backBufferGraphics.drawString(speedup, x + 10, y + 140);
+			else if (item_num == 5)
+				backBufferGraphics.drawString(extralife, x + 10, y + 180);
+			else
+				backBufferGraphics.drawString(machinegun, x + 10, y + 220);
+		}
+
 
 	}
 

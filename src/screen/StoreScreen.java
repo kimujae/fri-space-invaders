@@ -237,7 +237,8 @@ public class StoreScreen extends Screen {
         if (menuCode < 5)
             drawManager.drawStoreGacha(this, menuCode, focusReroll);
         drawManager.drawCoin(this, permanentState.getCoin());
-
+        if(menuCode == 4 )
+            drawManager.drawItemBox(this, cashitemCode, focusReroll);
         drawManager.completeDrawing(this);
     }
 }
