@@ -25,10 +25,11 @@ public class Item extends Entity {
         MachineGun,
         /** item, not used*/
         EnemyShipSpeedItem
-
     };
     public static enum PotionItem {
+        /** speed up potion during one stage */
         SpeedUpPotion,
+        /** invincibility potion during one stage */
         InvincibilityPotion
     }
 
