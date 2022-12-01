@@ -32,13 +32,16 @@ public class StoreScreen extends Screen {
     private int menuCode = 0;
     private int focusReroll = 0;
 
-    int BulletSpeedItem = 1;
-    int PointUpItem = 2;
-    int ShieldItem = 3;
-    int SpeedUpItem = 4;
-    int ExtraLifeItem = 5;
-    int MachineGunItem = 6;
+    private int cashitemCode =1;
 
+    /* item Code는 아래와 같음
+    BulletSpeedItem = 1;
+    ointUpItem = 2;
+    ShieldItem = 3;
+    SpeedUpItem = 4;
+    ExtraLifeItem = 5;
+    MachineGunItem = 6;
+    */
     /**
      * Constructor, establishes the properties of the screen.
      *
@@ -92,12 +95,18 @@ public class StoreScreen extends Screen {
                 && this.inputDelay.checkFinished()) {
             if (inputManager.isKeyDown(KeyEvent.VK_UP)
                     || inputManager.isKeyDown(KeyEvent.VK_W)) {
+                if(menuCode == 4 && focusReroll ==1){
+                    prevCashItem();
+                }
                 if (focusReroll == 0)
                     previousMenuItem();
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_DOWN)
                     || inputManager.isKeyDown(KeyEvent.VK_S)) {
+                if(menuCode == 4 && focusReroll ==1){
+                    nextCashItem();
+                }
                 if (focusReroll == 0)
                     nextMenuItem();
                 this.selectionCooldown.reset();
@@ -118,9 +127,11 @@ public class StoreScreen extends Screen {
                 else {
                     if (focusReroll == 0)
                         focusReroll = 1;
-                    else { // reroll
+                    else if(menuCode < 4) { // reroll
                         rerollItem();
                     }
+                    else
+                        cashItemManager.buyItem(cashitemCode);
                 }
                 soundPlay.play(SoundType.menuClick);
                 this.selectionCooldown.reset();
@@ -148,6 +159,20 @@ public class StoreScreen extends Screen {
         else
             menuCode--;
         soundPlay.play(SoundType.menuSelect);
+    }
+
+    private void nextCashItem(){
+        if(cashitemCode == 6)
+            cashitemCode = 1;
+        else
+            cashitemCode ++;
+    }
+
+    private void prevCashItem(){
+        if(cashitemCode == 1)
+            cashitemCode = 6;
+        else
+            cashitemCode --;
     }
 
     private void rerollItem() {
