@@ -1139,6 +1139,7 @@ public final class DrawManager {
 
 	public void drawStoreGacha(final Screen screen, final int menu, final int focus) {
 		String rerollString = "reroll!(100$)";
+		String buyItem = "Buy item(100$)";
 		String coinLackString = "Not enough coins!";
 		PermanentState permanentState = PermanentState.getInstance();
 		int x = screen.getWidth()  * 4 / 10;
@@ -1159,7 +1160,11 @@ public final class DrawManager {
 		else {
 			backBufferGraphics.drawRect(screen.getWidth() / 2 + 50, screen.getHeight() / 2, 100, 100);
 		}
-		backBufferGraphics.drawString(rerollString, screen.getWidth() / 2 + 100 - fontRegularMetrics.stringWidth(rerollString) / 2, screen.getWidth() / 2 + 180);
+
+		if(menu != 4)
+			backBufferGraphics.drawString(rerollString, screen.getWidth() / 2 + 100 - fontRegularMetrics.stringWidth(rerollString) / 2, screen.getWidth() / 2 + 180);
+		else
+			backBufferGraphics.drawString(buyItem, screen.getWidth() / 2 + 85 - fontRegularMetrics.stringWidth(buyItem) / 2, screen.getWidth() / 2 + 180);
 
 		if(menu < 2) { // shape, color
 			try{

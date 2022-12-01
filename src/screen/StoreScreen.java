@@ -130,8 +130,10 @@ public class StoreScreen extends Screen {
                     else if(menuCode < 4) { // reroll
                         rerollItem();
                     }
-                    else
+                    else {
                         cashItemManager.buyItem(cashitemCode);
+                        permanentState.setCoin(-COST_ITEMBOX);
+                    }
                 }
                 soundPlay.play(SoundType.menuClick);
                 this.selectionCooldown.reset();
@@ -215,15 +217,7 @@ public class StoreScreen extends Screen {
                 permanentState.setCoin(-COST_BGM);
             }
         }
-        else { // ItemBox
-            if (permanentState.getCoin() >= COST_ITEMBOX) {
-                boolean check;
-                do {
-                        check = cashItemManager.buyItem(new Random().nextInt(6) + 1);
-                    } while (!check);
-                permanentState.setCoin(-COST_ITEMBOX);
-            }
-        }
+
     }
 
     /**
