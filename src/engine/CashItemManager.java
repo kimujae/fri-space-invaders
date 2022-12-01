@@ -7,6 +7,7 @@ public class CashItemManager {
 
     private Item.ItemType itemtype;
 
+
     private Item.PotionItem potionItem;
 
     int BulletSpeedItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[0]);
@@ -28,6 +29,7 @@ public class CashItemManager {
             instance = new CashItemManager();
         return instance;
     }
+
 
     public void setItemType(Item.ItemType itemtype){ this.itemtype = itemtype; }
 
@@ -153,6 +155,7 @@ public class CashItemManager {
                 break;
         }
         return amount;
+
     }
 
 
