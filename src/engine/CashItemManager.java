@@ -41,122 +41,75 @@ public class CashItemManager {
 
     public boolean buyItem(int item_Num){
 
-        boolean check = false;
-
-        switch (item_Num){
-            case 1:
-                this.itemtype = Item.ItemType.BulletSpeedItem;
-                if(BulletSpeedItem_count < 10) {
+        if (cashItemAmount(item_Num) == 10){
+            return false;
+        }
+        else {
+            switch (item_Num){
+                case 1:
+                    this.itemtype = Item.ItemType.BulletSpeedItem;
                     BulletSpeedItem_count++;
-                    check = true;
-                }
-                break;
-            case 2:
-                this.itemtype = Item.ItemType.PointUpItem;
-                if(PointUpItem_count < 10) {
+                    break;
+                case 2:
+                    this.itemtype = Item.ItemType.PointUpItem;
                     PointUpItem_count++;
-                    check = true;
-                }
-                break;
-            case 3:
-                this.itemtype = Item.ItemType.ShieldItem;
-                if(ShieldItem_count < 10) {
+                    break;
+                case 3:
+                    this.itemtype = Item.ItemType.ShieldItem;
                     ShieldItem_count++;
-                    check = true;
-                }
-                break;
-            case 4:
-                this.itemtype = Item.ItemType.SpeedUpItem;
-                if(SpeedUpItem_count < 10) {
+                    break;
+                case 4:
+                    this.itemtype = Item.ItemType.SpeedUpItem;
                     SpeedUpItem_count++;
-                    check = true;
-                }
-                break;
-            case 5:
-                this.itemtype = Item.ItemType.ExtraLifeItem;
-                if(ExtraLifeItem_count < 10) {
+                    break;
+                case 5:
+                    this.itemtype = Item.ItemType.ExtraLifeItem;
                     ExtraLifeItem_count++;
-                    check = true;
-                }
-                break;
-            case 6:
-                this.itemtype = Item.ItemType.MachineGun;
-                if(MachineGunItem_count < 10) {
+                    break;
+                case 6:
+                    this.itemtype = Item.ItemType.MachineGun;
                     MachineGunItem_count++;
-                    check = true;
-                }
-                break;
-//            case 7:
-//                this.itemtype = Item.ItemType.BulletSpeedItem;
-//                if(speeduppotion_count < 10) {
-//                    speeduppotion_count++;
-//                    check = true;
-//                }
-//                break;
-//            case 8:
-//                this.itemtype = Item.ItemType.BulletSpeedItem;
-//                if(invincibilitypotion_count < 10) {
-//                    invincibilitypotion_count++;
-//                    check = true;
-//                }
-//                break;
+                    break;
+            }
         }
         FileManager.saveCashitem(item_Num, cashItemAmount(item_Num));
-        return check;
+        return true;
     }
 
-    public void useItem(int item_Num){
-        switch (item_Num){
-            case 1:
-                if(BulletSpeedItem_count > 0) {
+    public boolean useItem(int item_Num){
+        if (cashItemAmount(item_Num) == 0) {
+            return false;
+        }
+        else {
+            switch (item_Num){
+                case 1:
                     BulletSpeedItem_count--;
                     this.itemtype = Item.ItemType.BulletSpeedItem;
-                }
-                break;
-            case 2:
-                if(PointUpItem_count > 0) {
+                    break;
+                case 2:
                     PointUpItem_count--;
                     this.itemtype = Item.ItemType.PointUpItem;
-                }
-                break;
-            case 3:
-                if(ShieldItem_count > 0) {
+                    break;
+                case 3:
                     ShieldItem_count--;
                     this.itemtype = Item.ItemType.ShieldItem;
-                }
-                break;
-            case 4:
-                if(SpeedUpItem_count > 0) {
+                    break;
+                case 4:
                     SpeedUpItem_count--;
                     this.itemtype = Item.ItemType.SpeedUpItem;
-                }
-                break;
-            case 5:
-                if(ExtraLifeItem_count > 0) {
+                    break;
+                case 5:
                     ExtraLifeItem_count--;
                     this.itemtype = Item.ItemType.ExtraLifeItem;
-                }
-                break;
-            case 6:
-                if(MachineGunItem_count > 0) {
+                    break;
+                case 6:
                     MachineGunItem_count--;
                     this.itemtype = Item.ItemType.MachineGun;
-                }
-                break;
-//            case 7:
-//                if(speeduppotion_count > 0) {
-//                    speeduppotion_count--;
-//                    this.potionItem = Item.PotionItem.SpeedUpPotion;
-//                }
-//                break;
-//            case 8:
-//                if(invincibilitypotion_count > 0) {
-//                    invincibilitypotion_count--;
-//                    this.potionItem = Item.PotionItem.InvincibilityPotion;
-//                }
-//                break;
+                    break;
+            }
         }
         FileManager.saveCashitem(item_Num, cashItemAmount(item_Num));
+        return true;
     }
 
 //    public void usePotionItem(int item_Num) {
@@ -198,12 +151,6 @@ public class CashItemManager {
             case 6:
                 amount = this.MachineGunItem_count;
                 break;
-//            case 7:
-//                amount = this.speeduppotion_count;
-//                break;
-//            case 8:
-//                amount = this.invincibilitypotion_count;
-//                break;
         }
         return amount;
     }

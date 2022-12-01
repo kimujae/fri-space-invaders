@@ -192,8 +192,10 @@ public class StoreScreen extends Screen {
         }
         else { // ItemBox
             if (permanentState.getCoin() >= COST_ITEMBOX) {
-                    int x = new Random().nextInt(6) + 1;
-                    cashItemManager.buyItem(x);
+                boolean check;
+                do {
+                        check = cashItemManager.buyItem(new Random().nextInt(6) + 1);
+                    } while (!check);
                 permanentState.setCoin(-COST_ITEMBOX);
             }
         }
