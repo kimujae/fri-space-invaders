@@ -3,7 +3,6 @@ package engine;
 import entity.EnemyShipFormation;
 import entity.Item;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -45,9 +44,9 @@ public class ItemManager {
      * constructor.
      * randomly shuffling items
      */
-    public ItemManager() {
+    public ItemManager(Item.ItemType itemType) {
 
-        this.addlist();
+        this.addlist(itemType);
         Collections.shuffle(item_list);
         this.addqueue();
 
@@ -59,7 +58,6 @@ public class ItemManager {
      * @param  enemyshipformation
      */
         public void assignHasItem(EnemyShipFormation enemyshipformation) {
-            //이예나
             /*enemyshipformation의 enemyship에 0,1 값 할당
               1이면 hasItem
               30퍼센트의 적이 hasItem값 할당
@@ -85,7 +83,6 @@ public class ItemManager {
      * @param  enemyshipformation
      */
         public void assignItem (EnemyShipFormation enemyshipformation, int i, int j){
-            //노은솔
             /*enemyshipformation의 enemyship의 hasItem값이 1이면 item_queue에서 아이템타입 할당
              */
             Item.ItemType tmpitem = null;
@@ -103,23 +100,30 @@ public class ItemManager {
     /**
      * used for shuffling items.
      */
-        private void addlist () {
+        private void addlist (Item.ItemType itemType) {
             /*
             아이템타입의 리스트
              */
-            item_list.add(pointupitem);
-            item_list.add(speedupitem);
-            item_list.add(shielditem);
-            item_list.add(extralifeitem);
-            item_list.add(bulletspeeditem);
-            item_list.add(machinegun);
+            if (itemType == null) {
+                item_list.add(pointupitem);
+                item_list.add(speedupitem);
+                item_list.add(shielditem);
+                item_list.add(extralifeitem);
+                item_list.add(bulletspeeditem);
+                item_list.add(machinegun);
+            }
+            else {
+                for (int i = 0; i < 6; i++) {
+                    item_list.add(itemType);
+                }
+            }
+
         }
 
     /**
      * used for assigning items.
      */
         private void addqueue () {
-            //박용수
             /*
             아이템타입들이 셔플된 큐
              */
