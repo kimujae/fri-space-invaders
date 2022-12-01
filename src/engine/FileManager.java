@@ -552,7 +552,7 @@ public final class FileManager {
 		index 7: InvincibilityPotion
 		*/
 
-		String[] cashitem = {"0", "0", "0", "0", "0", "0"};
+		String[] cashitem = {"0", "0", "0", "0", "0", "0", "0", "0"};
 
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
