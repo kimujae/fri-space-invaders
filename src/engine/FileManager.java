@@ -539,5 +539,52 @@ public final class FileManager {
 		else if(playerShipColor == 2) return Color.darkGray;
 		else return Color.GREEN;
 	}
+	public static String[] loadCashItem(){
+		String[] cashitem = {"0", "0", "0", "0", "0", "0"};
+		try {
+			String jarPath = FileManager.class.getProtectionDomain()
+					.getCodeSource().getLocation().getPath();
+			jarPath = URLDecoder.decode(jarPath, "UTF-8");
+			String cashitemPath = new File(jarPath).getParent();
+			cashitemPath += File.separator;
+			cashitemPath += "cashitem";
+			File saveFile = new File(cashitemPath);
+			BufferedReader br = new BufferedReader(new FileReader(saveFile));
+			String savecashitem_info = br.readLine();
+			cashitem = savecashitem_info.split(" ");
+			logger.info("Finish loading.");
+			br.close();
+
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}  finally {
+			return cashitem;
+		}
+	}
+
+	public static void saveCashitem(int item, int item_amount) {
+		try {
+			String cashitem[] = loadCashItem();
+			System.out.println(cashitem.length);
+			String jarPath = FileManager.class.getProtectionDomain()
+					.getCodeSource().getLocation().getPath();
+			jarPath = URLDecoder.decode(jarPath, "UTF-8");
+			File file = new File(jarPath + "../cashitem");
+			BufferedWriter savecashitem = new BufferedWriter(new FileWriter(file));
+
+			cashitem[item-1] = Integer.toString(item_amount);
+			String cashitemstr ="";
+			for(int i = 0; i <6 ; i++){
+				if(i != 5) cashitemstr += cashitem[i] +" ";
+				else cashitemstr += cashitem[i];
+			}
+
+			savecashitem.write(cashitemstr);
+
+			savecashitem.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
 
