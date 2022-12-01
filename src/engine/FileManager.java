@@ -540,7 +540,20 @@ public final class FileManager {
 		else return Color.GREEN;
 	}
 	public static String[] loadCashItem(){
-		String[] cashitem = {"0", "0", "0", "0", "0", "0"};
+
+		/*
+		index 0: BulletSpeedUp
+		index 1: PointUp
+		index 2: Shield
+		index 3: Speed
+		index 4: ExtraLife
+		index 5: MachineGun
+		index 6: SpeedUpPotion
+		index 7: InvincibilityPotion
+		*/
+
+		String[] cashitem = {"0", "0", "0", "0", "0", "0", "0", "0"};
+
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
