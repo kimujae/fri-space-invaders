@@ -31,6 +31,10 @@ public class ItemManager {
     private Item.ItemType bulletspeeditem = Item.ItemType.BulletSpeedItem;
     /** machinegun itemtype  */
     private Item.ItemType machinegun = Item.ItemType.MachineGun;
+    /** speeduppotion itemtype  */
+    private Item.PotionItem speeduppotion = Item.PotionItem.SpeedUpPotion;
+    /** invincibilitypotion itemtype  */
+    private Item.PotionItem invincibilitypotion = Item.PotionItem.InvincibilityPotion;
     /** enemyshipspeeditem itemtype, not used */
 
     private Item.ItemType  enemyshipspeeditem = Item.ItemType.EnemyShipSpeedItem;
