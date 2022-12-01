@@ -1096,6 +1096,7 @@ public final class DrawManager {
 		String shipColorString = "ship color";
 		String bulletEffectString = "bullet effect";
 		String BGMString = "BGM";
+		String ITEMBOX = "ITEM BOX";
 		String exitString = "exit";
 
 		if (menu == 0 && focus == 0)
@@ -1126,17 +1127,25 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(exitString, screen.getWidth() / 2 - 170,
+		backBufferGraphics.drawString(ITEMBOX, screen.getWidth() / 2 - 170,
 				screen.getHeight() / 2 + fontRegularMetrics.getHeight() * 8);
+		if (menu == 5 && focus == 0)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(exitString, screen.getWidth() / 2 - 170,
+				screen.getHeight() / 2 + fontRegularMetrics.getHeight() * 10);
 	}
 
 	public void drawStoreGacha(final Screen screen, final int menu, final int focus) {
 		String rerollString = "reroll!(100$)";
 		String coinLackString = "Not enough coins!";
 		PermanentState permanentState = PermanentState.getInstance();
+		int x = screen.getWidth()  * 4 / 10;
+		int y = screen.getHeight() * 2 / 8;
 		if (focus == 0)
 			backBufferGraphics.setColor(Color.WHITE);
-		else {
+		else { // focus == 1
 			backBufferGraphics.setColor(Color.GREEN);
 			if (permanentState.getCoin() < 100) {
 				backBufferGraphics.setColor(Color.RED);
@@ -1144,7 +1153,12 @@ public final class DrawManager {
 						screen.getHeight() / 2 + 180);
 			}
 		}
-		backBufferGraphics.drawRect(screen.getWidth() / 2 + 50, screen.getHeight() / 2, 100, 100);
+		if (menu == 4) {
+			backBufferGraphics.drawRect(x , y, 240, 240);
+		}
+		else {
+			backBufferGraphics.drawRect(screen.getWidth() / 2 + 50, screen.getHeight() / 2, 100, 100);
+		}
 		backBufferGraphics.drawString(rerollString, screen.getWidth() / 2 + 100 - fontRegularMetrics.stringWidth(rerollString) / 2, screen.getWidth() / 2 + 180);
 
 		if(menu < 2) { // shape, color
@@ -1174,6 +1188,28 @@ public final class DrawManager {
 			backBufferGraphics.drawString(Integer.toString(permanentState.getBGM()), screen.getWidth() / 2 + 96, screen.getHeight() / 2 + 60);
 			backBufferGraphics.setFont(fontRegular);
 		}
+		else if (menu == 4) { // ITEM BOX
+			drawItemBox(screen, x, y);
+		}
+	}
+
+	private void drawItemBox(final Screen screen, final int x, final int y) {
+
+		String[] items = FileManager.getInstance().loadCashItem();
+		String bulletspeedup = "BulletSpeed Box\t\t" + items[0] + "/10";
+		String pointup = "Point Box\t\t" + items[1] + "/10";
+		String shield = "Shield Box\t\t" + items[2] + "/10";
+		String speedup = "Speed Box\t\t" + items[3] + "/10";
+		String extralife = "Life Box\t\t" + items[4] + "/10";
+		String machinegun = "MachineGun Box\t\t" + items[5] + "/10";
+
+		backBufferGraphics.drawString(bulletspeedup, x + 10, y + 10);
+		backBufferGraphics.drawString(pointup, x + 10, y + 30);
+		backBufferGraphics.drawString(shield, x + 10, y + 50);
+		backBufferGraphics.drawString(speedup, x + 10, y + 70);
+		backBufferGraphics.drawString(extralife, x + 10, y + 90);
+		backBufferGraphics.drawString(machinegun, x + 10, y + 110);
+
 	}
 
 	public void drawCoin(final Screen screen, final int coin) {
