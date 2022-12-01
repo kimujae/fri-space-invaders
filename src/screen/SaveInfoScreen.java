@@ -73,7 +73,7 @@ public class SaveInfoScreen extends Screen {
         this.loadGameState = loadGameState;
 //        this.gameScreen = gameScreen;
         this.gameState = gameState;
-        this.returnCode = 1;
+        this.returnCode = -2;
 //        save_or_init = from;
 //        if (Objects.equals(from, "Load") || Objects.equals(from, "init") )
 //            this.returnCode = 1;
@@ -133,7 +133,7 @@ public class SaveInfoScreen extends Screen {
                 loadGameState.setSaveSlot(menuCode);
                 // start 버튼
                 if (start_or_delete == 1) {
-                    this.returnCode = 1;
+                    this.returnCode = -2;
                     loadGameState.setSaveSlot(menuCode);
                     loadGameState.setGameState(loadGameState.getGameState());
                     this.isRunning = false;

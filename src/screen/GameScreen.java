@@ -141,7 +141,8 @@ public class GameScreen extends Screen {
 		this.bulletsShot = gameState.getBulletsShot();
 		this.shipsDestroyed = gameState.getShipsDestroyed();
 
-		this.itemmanager = new ItemManager();
+		this.itemmanager = new ItemManager(CashItemManager.getInstance().getItemType());
+		CashItemManager.getInstance().setItemType(null);
 
 		if (this.itempool == null) {
 			this.itempool = new ItemPool();

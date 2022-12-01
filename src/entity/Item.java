@@ -27,6 +27,10 @@ public class Item extends Entity {
         EnemyShipSpeedItem
 
     };
+    public static enum PotionItem {
+        SpeedUpPotion,
+        InvincibilityPotion
+    }
 
     private ItemType itemtype;
 

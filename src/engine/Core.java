@@ -124,6 +124,7 @@ public final class Core {
 		GameState gameState = new GameState(0,0,0,0,0);
 		PermanentState permanentState = PermanentState.getInstance();
 		LoadGameState loadGameState = new LoadGameState();
+		CashItemManager cashItemManager = new CashItemManager();
 
 		String[] OriginalData = getFileManager().loadInfo();
 		loadGameState.initData(OriginalData);
@@ -138,9 +139,18 @@ public final class Core {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " save info screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);
+					System.out.println(returnCode);
 					LOGGER.info("Closing save info screen.");
 					gameState = loadGameState.getGameState();
 					permanentState.setSlot(loadGameState.getSaveSlot());
+					break;
+
+				case -2:
+					currentScreen = new SelectItemScreen(width, height, FPS);
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " select item screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing select item screen.");
 					break;
 
 				case 1:

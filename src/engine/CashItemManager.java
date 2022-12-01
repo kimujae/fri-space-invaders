@@ -7,16 +7,21 @@ public class CashItemManager {
 
     private Item.ItemType itemtype;
 
-    //pr 후 아래 주석 해제
-    //int BulletSpeedItem_count = FileManager.getInstance().loadCashItem()[0];
-    //int PointUpItem_count = FileManager.getInstance().loadCashItem()[];
-    //int ShieldItem_count = FileManager.getInstance().loadCashItem()[];\
-    //int SpeedUpItem_count = FileManager.getInstance().loadCashItem()[];\
-    //int ExtraLifeItem_count = FileManager.getInstance().loadCashItem()[];
-    //int MachineGunItem_count = FileManager.getInstance().loadCashItem()[];
 
-    private CashItemManager() {
+    private Item.PotionItem potionItem;
+
+    int BulletSpeedItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[0]);
+    int PointUpItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[1]);
+    int ShieldItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[2]);
+    int SpeedUpItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[3]);
+    int ExtraLifeItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[4]);
+    int MachineGunItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[5]);
+    //int speeduppotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[6]);
+    //int invincibilitypotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[7]);
+
+    CashItemManager() {
         this.itemtype = null;
+        this.potionItem = null;
     }
 
     public static CashItemManager getInstance(){
@@ -25,36 +30,132 @@ public class CashItemManager {
         return instance;
     }
 
-    public void setItemType(Item.ItemType itemtype){
-        //cashitem을 선택하면, 선택한 itemtype을 set 했다가, get으로 itemtype을 반환 할 것.
-    }
 
-    public Item.ItemType getItemtype(){
+    public void setItemType(Item.ItemType itemtype){ this.itemtype = itemtype; }
+
+//    public void setPotionItem(Item.PotionItem potionItem) { this.potionItem = potionItem; }
+
+    public Item.ItemType getItemType(){
         return this.itemtype;
     }
 
+//    public Item.PotionItem getPotionItem() { return this.potionItem; }
+
     public boolean buyItem(int item_Num){
-        //설명에 맞게 구현
 
-        return true; // 임시로 달아둔 return문 구현 후 제거 바랍니다.
+        if (cashItemAmount(item_Num) == 10){
+            return false;
+        }
+        else {
+            switch (item_Num){
+                case 1:
+                    this.itemtype = Item.ItemType.BulletSpeedItem;
+                    BulletSpeedItem_count++;
+                    break;
+                case 2:
+                    this.itemtype = Item.ItemType.PointUpItem;
+                    PointUpItem_count++;
+                    break;
+                case 3:
+                    this.itemtype = Item.ItemType.ShieldItem;
+                    ShieldItem_count++;
+                    break;
+                case 4:
+                    this.itemtype = Item.ItemType.SpeedUpItem;
+                    SpeedUpItem_count++;
+                    break;
+                case 5:
+                    this.itemtype = Item.ItemType.ExtraLifeItem;
+                    ExtraLifeItem_count++;
+                    break;
+                case 6:
+                    this.itemtype = Item.ItemType.MachineGun;
+                    MachineGunItem_count++;
+                    break;
+            }
+        }
+        FileManager.saveCashitem(item_Num, cashItemAmount(item_Num));
+        return true;
     }
 
-    public void useItem(int item_Num){
-        //설명에 맞게 구현
+    public boolean useItem(int item_Num){
+        if (cashItemAmount(item_Num) == 0) {
+            return false;
+        }
+        else {
+            switch (item_Num){
+                case 1:
+                    BulletSpeedItem_count--;
+                    this.itemtype = Item.ItemType.BulletSpeedItem;
+                    break;
+                case 2:
+                    PointUpItem_count--;
+                    this.itemtype = Item.ItemType.PointUpItem;
+                    break;
+                case 3:
+                    ShieldItem_count--;
+                    this.itemtype = Item.ItemType.ShieldItem;
+                    break;
+                case 4:
+                    SpeedUpItem_count--;
+                    this.itemtype = Item.ItemType.SpeedUpItem;
+                    break;
+                case 5:
+                    ExtraLifeItem_count--;
+                    this.itemtype = Item.ItemType.ExtraLifeItem;
+                    break;
+                case 6:
+                    MachineGunItem_count--;
+                    this.itemtype = Item.ItemType.MachineGun;
+                    break;
+            }
+        }
+        FileManager.saveCashitem(item_Num, cashItemAmount(item_Num));
+        return true;
     }
 
+//    public void usePotionItem(int item_Num) {
+//        switch (item_Num) {
+//            case 7:
+//                if(speeduppotion_count > 0) {
+//                    speeduppotion_count--;
+//                    this.potionItem = Item.PotionItem.SpeedUpPotion;
+//                }
+//                break;
+//            case 8:
+//                if(invincibilitypotion_count > 0) {
+//                    invincibilitypotion_count--;
+//                    this.potionItem = Item.PotionItem.InvincibilityPotion;
+//                }
+//                break;
+//        }
+//    }
     public int cashItemAmount(int item_num){
-        /*
-        BulletSpeedItem =1;
-        PointUpItem =2;
-        ShieldItem =3;
-        SpeedUpItem =4;
-        ExtraLifeItem =5;
-        MachineGunItem = 6;
 
-        ex_ item_num == 1 일 경우, return BulletSpeedItme_count;
-         */
-        return 0; // 임시로 달아둔 return문 구현 후 제거 바랍니다.
+        int amount = 0;
+
+        switch (item_num) {
+            case 1:
+                amount = this.BulletSpeedItem_count;
+                break;
+            case 2:
+                amount = this.PointUpItem_count;
+                break;
+            case 3:
+                amount = this.ShieldItem_count;
+                break;
+            case 4:
+                amount = this.SpeedUpItem_count;
+                break;
+            case 5:
+                amount = this.ExtraLifeItem_count;
+                break;
+            case 6:
+                amount = this.MachineGunItem_count;
+                break;
+        }
+        return amount;
+
     }
 
 

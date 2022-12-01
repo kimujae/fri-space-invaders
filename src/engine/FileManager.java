@@ -540,7 +540,20 @@ public final class FileManager {
 		else return Color.GREEN;
 	}
 	public static String[] loadCashItem(){
+
+		/*
+		index 0: BulletSpeedUp
+		index 1: PointUp
+		index 2: Shield
+		index 3: Speed
+		index 4: ExtraLife
+		index 5: MachineGun
+		index 6: SpeedUpPotion
+		index 7: InvincibilityPotion
+		*/
+
 		String[] cashitem = {"0", "0", "0", "0", "0", "0"};
+
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
@@ -574,7 +587,7 @@ public final class FileManager {
 
 			cashitem[item-1] = Integer.toString(item_amount);
 			String cashitemstr ="";
-			for(int i = 0; i <6 ; i++){
+			for(int i = 0; i < 6 ; i++){
 				if(i != 5) cashitemstr += cashitem[i] +" ";
 				else cashitemstr += cashitem[i];
 			}
