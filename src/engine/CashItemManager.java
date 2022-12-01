@@ -10,12 +10,14 @@ public class CashItemManager {
     private Item.PotionItem potionItem;
 
     //pr 후 아래 주석 해제
-    //int BulletSpeedItem_count = FileManager.getInstance().loadCashItem()[0];
-    //int PointUpItem_count = FileManager.getInstance().loadCashItem()[];
-    //int ShieldItem_count = FileManager.getInstance().loadCashItem()[];\
-    //int SpeedUpItem_count = FileManager.getInstance().loadCashItem()[];\
-    //int ExtraLifeItem_count = FileManager.getInstance().loadCashItem()[];
-    //int MachineGunItem_count = FileManager.getInstance().loadCashItem()[];
+    int BulletSpeedItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[0]);
+    int PointUpItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[1]);
+    int ShieldItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[2]);
+    int SpeedUpItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[3]);
+    int ExtraLifeItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[4]);
+    int MachineGunItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[5]);
+    int speeduppotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[6]);
+    int invincibilitypotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[7]);
 
     private CashItemManager() {
 
@@ -29,11 +31,11 @@ public class CashItemManager {
         return instance;
     }
 
-    public void setItemType(Item.ItemType itemtype){
-        //cashitem을 선택하면, 선택한 itemtype을 set 했다가, get으로 itemtype을 반환 할 것.
-    }
+    public void setItemType(Item.ItemType itemtype){ this.itemtype = itemtype; }
 
-    public Item.ItemType getItemtype(){
+    public void setPotionItem(Item.PotionItem potionItem) { this.potionItem = potionItem; }
+
+    public Item.ItemType getItemType(){
         return this.itemtype;
     }
 
