@@ -15,8 +15,8 @@ public class CashItemManager {
     int SpeedUpItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[3]);
     int ExtraLifeItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[4]);
     int MachineGunItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[5]);
-    int speeduppotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[6]);
-    int invincibilitypotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[7]);
+    //int speeduppotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[6]);
+    //int invincibilitypotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[7]);
 
     private CashItemManager() {
         this.itemtype = null;

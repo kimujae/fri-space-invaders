@@ -1,7 +1,9 @@
 package screen;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import engine.*;
 import sound.SoundPlay;
@@ -29,6 +31,13 @@ public class StoreScreen extends Screen {
 
     private int menuCode = 0;
     private int focusReroll = 0;
+
+    int BulletSpeedItem = 1;
+    int PointUpItem = 2;
+    int ShieldItem = 3;
+    int SpeedUpItem = 4;
+    int ExtraLifeItem = 5;
+    int MachineGunItem = 6;
 
     /**
      * Constructor, establishes the properties of the screen.
