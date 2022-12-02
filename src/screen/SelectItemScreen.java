@@ -78,7 +78,10 @@ public class SelectItemScreen extends Screen{
                 if (menuCode != 0) {
                     boolean check;
                     do {
-                        check = cashItemManager.useItem(menuCode);
+                        if(menuCode < 7)
+                            check = cashItemManager.useItem(menuCode);
+                        else
+                            check = cashItemManager.usePotionItem(menuCode);
                     } while (!check);
                 }
                 this.isRunning = false;

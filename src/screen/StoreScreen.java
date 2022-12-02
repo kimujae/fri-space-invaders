@@ -31,16 +31,17 @@ public class StoreScreen extends Screen {
 
     private int menuCode = 0;
     private int focusReroll = 0;
-
     private int cashitemCode =1;
 
     /* item Code는 아래와 같음
     BulletSpeedItem = 1;
-    ointUpItem = 2;
+    PointUpItem = 2;
     ShieldItem = 3;
     SpeedUpItem = 4;
     ExtraLifeItem = 5;
     MachineGunItem = 6;
+    speedUpPotion = 7;
+    invincibilityPotion = 8 ;
     */
     /**
      * Constructor, establishes the properties of the screen.
@@ -59,19 +60,13 @@ public class StoreScreen extends Screen {
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
     }
-// 71 사진봤음?? 예쓰
-    //메뉴코드가
     // /*
-    // 0 item box
-    // 1 ship shape
-    // 2 ship color
-    // 3 bullet effect
-    // 4 bgm
+    // 0 ship shape
+    // 1 ship color
+    // 2 bullet effect
+    // 3 bgm
+    // 4 item box
     // 5 exit
-    // 2.reroll()에 itembox 선택 조건 추가 : 선택할 때 마다 buyItem(선언한 아이템명 변수)호출
-    // 포함하는게 맞나봐요?
-    // 지금 그니까 itembox탭을 추가해야되는것같아
-    // itembox탭열면 이제 아이템박스 사고, 거기에 포션도 넣어야 하지않을까? 포션은 아이템 박스 위치에 있으니까
     // */
     /**
      * Starts the action.
@@ -95,7 +90,7 @@ public class StoreScreen extends Screen {
                 && this.inputDelay.checkFinished()) {
             if (inputManager.isKeyDown(KeyEvent.VK_UP)
                     || inputManager.isKeyDown(KeyEvent.VK_W)) {
-                if(menuCode == 4 && focusReroll ==1){
+                if(menuCode == 4 && focusReroll == 1){
                     prevCashItem();
                 }
                 if (focusReroll == 0)
@@ -104,7 +99,7 @@ public class StoreScreen extends Screen {
             }
             if (inputManager.isKeyDown(KeyEvent.VK_DOWN)
                     || inputManager.isKeyDown(KeyEvent.VK_S)) {
-                if(menuCode == 4 && focusReroll ==1){
+                if(menuCode == 4 && focusReroll == 1){
                     nextCashItem();
                 }
                 if (focusReroll == 0)
@@ -122,7 +117,7 @@ public class StoreScreen extends Screen {
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE)){
-                if (menuCode == 5)
+                if (menuCode == 5) //EXIT
                     this.isRunning = false;
                 else {
                     if (focusReroll == 0)
@@ -217,7 +212,6 @@ public class StoreScreen extends Screen {
                 permanentState.setCoin(-COST_BGM);
             }
         }
-
     }
 
     /**

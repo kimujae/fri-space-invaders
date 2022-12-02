@@ -118,21 +118,28 @@ public class CashItemManager {
         return true;
     }
 
-    public void usePotionItem(int item_Num) {
-        switch (item_Num) {
-            case 7:
-                if(speeduppotion_count > 0) {
-                    this.potionItem = Item.PotionItem.SpeedUpPotion;
-                    speeduppotion_count--;
-                }
-                break;
-            case 8:
-                if(invincibilitypotion_count > 0) {
-                    this.potionItem = Item.PotionItem.InvincibilityPotion;
-                    invincibilitypotion_count--;
-                }
-                break;
+    public boolean usePotionItem(int item_Num) {
+        if (cashItemAmount(item_Num) == 0) {
+            return false;
         }
+        else {
+            switch (item_Num) {
+                case 7:
+                    if (speeduppotion_count > 0) {
+                        this.potionItem = Item.PotionItem.SpeedUpPotion;
+                        speeduppotion_count--;
+                    }
+                    break;
+                case 8:
+                    if (invincibilitypotion_count > 0) {
+                        this.potionItem = Item.PotionItem.InvincibilityPotion;
+                        invincibilitypotion_count--;
+                    }
+                    break;
+            }
+        }
+        FileManager.saveCashitem(item_Num, cashItemAmount(item_Num));
+        return true;
     }
     public int cashItemAmount(int item_num){
 
