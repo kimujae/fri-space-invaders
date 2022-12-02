@@ -20,6 +20,7 @@ import sound.SoundType;
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
  *
  */
+//test
 public final class Core {
 
 	/** Width of current screen. */
@@ -124,7 +125,9 @@ public final class Core {
 		GameState gameState = new GameState(0,0,0,0,0);
 		PermanentState permanentState = PermanentState.getInstance();
 		LoadGameState loadGameState = new LoadGameState();
+
 		CashItemManager cashItemManager = new CashItemManager();
+
 
 		String[] OriginalData = getFileManager().loadInfo();
 		loadGameState.initData(OriginalData);
@@ -139,11 +142,14 @@ public final class Core {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " save info screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);
+
 					System.out.println(returnCode);
+
 					LOGGER.info("Closing save info screen.");
 					gameState = loadGameState.getGameState();
 					permanentState.setSlot(loadGameState.getSaveSlot());
 					break;
+
 
 				case -2:
 					currentScreen = new SelectItemScreen(width, height, FPS);
@@ -152,6 +158,7 @@ public final class Core {
 					returnCode = frame.setScreen(currentScreen);
 					LOGGER.info("Closing select item screen.");
 					break;
+
 
 				case 1:
 					// Main menu.

@@ -66,7 +66,7 @@ public class ItemManager {
             final int nShipsWide = enemyshipformation.getnshipsWide();
             final int nShipsHigh = enemyshipformation.getnShipsHigh();
 
-            Integer[][] random = new Integer[nShipsWide][nShipsHigh];
+            //Integer[][] random = new Integer[nShipsWide][nShipsHigh];
 
 
             for (int i = 0; i < nShipsWide; i++) {

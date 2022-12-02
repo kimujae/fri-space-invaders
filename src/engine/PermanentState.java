@@ -44,7 +44,9 @@ public final class PermanentState {
 	public void setSlot(int slotNum){
 		this.slotNum = slotNum;
 		try {
+
 			this.coin = Core.getFileManager().loadCoins();
+
 		} catch (IOException e) {
 			logger.warning("Couldn't load coins!");
 		}
@@ -52,7 +54,9 @@ public final class PermanentState {
 
 	public void setCoin(int income) {
 		this.coin += income;
+
 		FileManager.getInstance().saveCoins(coin);
+
 
 	}
 

@@ -1479,6 +1479,7 @@ public final class DrawManager {
 
 	}
 
+
 	public void drawSelectItemScreen (final  Screen screen, final int row) {
 		String[] items = FileManager.getInstance().loadCashItem();
 		String title = "Choose your cash item";
@@ -1503,6 +1504,7 @@ public final class DrawManager {
 			drawCenteredRegularString(screen, rows[i], 150 + screen.getHeight() * (2 *  i) / 20);
 		}
 	}
+
 
 
 }

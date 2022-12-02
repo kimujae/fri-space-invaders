@@ -343,8 +343,10 @@ public final class FileManager {
 		return savedCoins;
 	}
 
+
 	public static int loadCoins() throws IOException {
 		String coins = "0";
+
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
@@ -355,7 +357,9 @@ public final class FileManager {
 			File saveFile = new File(savePath);
 			BufferedReader br = new BufferedReader(new FileReader(saveFile));
 			String save_info = br.readLine();
+
 			coins = save_info;
+
 			logger.info("Finish loading.");
 			br.close();
 
@@ -363,16 +367,20 @@ public final class FileManager {
 			throw new RuntimeException(e);
 		}  finally {
 
+
 			return Integer.parseInt(coins);
 		}
 	}
 
 	public static void saveCoins(int inCoins){
+
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
 
 		try	{
+
 			int coin = inCoins;
+
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
 			jarPath = URLDecoder.decode(jarPath, "UTF-8");
@@ -387,14 +395,18 @@ public final class FileManager {
 				coinsFile.createNewFile();
 			}
 
+
 			String saveCoins = String.valueOf(coin);
+
 
 			outputStream = new FileOutputStream(coinsFile);
 			bufferedWriter = new BufferedWriter(new OutputStreamWriter(
 					outputStream, Charset.forName("UTF-8")));
 
+
 			bufferedWriter.write(saveCoins);
 			bufferedWriter.close();
+
 
 		} catch (Exception e) {
 			e.printStackTrace();

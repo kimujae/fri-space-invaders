@@ -40,7 +40,9 @@ public class VolumeScreen extends Screen {
 	public VolumeScreen(final int width, final int height, final int fps) {
 		super(width, height, fps);
 		this.menuCode = 1;
+
 		this.bgmVolumeControl(5);
+
 		this.soundCode = 100;
 		// Defaults to play.
 		this.returnCode = 0;
@@ -128,6 +130,7 @@ public class VolumeScreen extends Screen {
 
 
 
+
 	/**
 	 * Shifts the focus to the next menu item.
 	 */
@@ -146,11 +149,13 @@ public class VolumeScreen extends Screen {
 			this.menuCode =1;
 
 		}
+
 		else if(menuCode <=10)
 		next_bgmVolume.control(leftright,menuCode);
 
 		else
 		next_effectVolume.control(leftright,menuCode);
+
 
 
 		soundPlay.play(SoundType.menuSelect);
@@ -182,6 +187,7 @@ public class VolumeScreen extends Screen {
 
 		else
 			prev_effectVolume.control(leftright,menuCode);
+
 
 
 		soundPlay.play(SoundType.menuSelect);
