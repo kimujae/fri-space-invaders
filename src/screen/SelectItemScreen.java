@@ -92,7 +92,7 @@ public class SelectItemScreen extends Screen{
      * Shifts the focus to the next menu item.
      */
     private void nextRow() {
-        if (menuCode == 6) {
+        if (menuCode == 7) {
             menuCode = 0;
         }
         else {
@@ -106,7 +106,7 @@ public class SelectItemScreen extends Screen{
      */
     private void prevRow() {
         if (menuCode == 0)
-            menuCode = 6;
+            menuCode = 7;
         else
             menuCode--;
         soundPlay.play(SoundType.menuSelect);
