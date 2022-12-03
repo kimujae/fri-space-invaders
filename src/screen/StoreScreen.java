@@ -21,6 +21,8 @@ public class StoreScreen extends Screen {
 
     private static final int COST_ITEMBOX = 100;
 
+    private static final int COST_POTION = 100;
+
     /** Time between changes in user selection. */
     private Cooldown selectionCooldown;
     private PermanentState permanentState = PermanentState.getInstance();
@@ -66,7 +68,8 @@ public class StoreScreen extends Screen {
     // 2 bullet effect
     // 3 bgm
     // 4 item box
-    // 5 exit
+    // 5 potion
+    // 6 exit
     // */
     /**
      * Starts the action.
@@ -90,7 +93,7 @@ public class StoreScreen extends Screen {
                 && this.inputDelay.checkFinished()) {
             if (inputManager.isKeyDown(KeyEvent.VK_UP)
                     || inputManager.isKeyDown(KeyEvent.VK_W)) {
-                if(menuCode == 4 && focusReroll == 1){
+                if((menuCode == 4 || menuCode == 5) && focusReroll == 1){
                     prevCashItem();
                 }
                 if (focusReroll == 0)
@@ -99,7 +102,7 @@ public class StoreScreen extends Screen {
             }
             if (inputManager.isKeyDown(KeyEvent.VK_DOWN)
                     || inputManager.isKeyDown(KeyEvent.VK_S)) {
-                if(menuCode == 4 && focusReroll == 1){
+                if((menuCode == 4 || menuCode == 5) && focusReroll == 1){
                     nextCashItem();
                 }
                 if (focusReroll == 0)
@@ -108,16 +111,16 @@ public class StoreScreen extends Screen {
             }
             if (inputManager.isKeyDown(KeyEvent.VK_RIGHT) // 뽑기 버튼으로 가기
                     || inputManager.isKeyDown(KeyEvent.VK_D)) {
-                if (menuCode != 5) focusReroll = 1;
+                if (menuCode != 6) focusReroll = 1;
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_LEFT) // 메뉴 선택으로 되돌아가기
                     || inputManager.isKeyDown(KeyEvent.VK_A)) {
-                if (menuCode != 5) focusReroll = 0;
+                if (menuCode != 6) focusReroll = 0;
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE)){
-                if (menuCode == 5) //EXIT
+                if (menuCode == 6) //EXIT
                     this.isRunning = false;
                 else {
                     if (focusReroll == 0)
@@ -125,10 +128,14 @@ public class StoreScreen extends Screen {
                     else if(menuCode < 4) { // reroll
                         rerollItem();
                     }
-                    else {
+                    else if (menuCode == 4) {
                         cashItemManager.buyItem(cashitemCode);
                         permanentState.setCoin(-COST_ITEMBOX);
                     }
+                    else
+                        cashItemManager.buyPotion(cashitemCode);
+                        permanentState.setCoin(-COST_POTION);
+
                 }
                 soundPlay.play(SoundType.menuClick);
                 this.selectionCooldown.reset();
@@ -140,7 +147,7 @@ public class StoreScreen extends Screen {
      * Shifts the focus to the next menu item.
      */
     private void nextMenuItem() {
-        if (menuCode == 5)
+        if (menuCode == 6)
             menuCode = 0;
         else
             menuCode++;
@@ -152,24 +159,36 @@ public class StoreScreen extends Screen {
      */
     private void previousMenuItem() {
         if (menuCode == 0)
-            menuCode = 5;
+            menuCode = 6;
         else
             menuCode--;
         soundPlay.play(SoundType.menuSelect);
     }
 
     private void nextCashItem(){
-        if(cashitemCode == 6)
-            cashitemCode = 1;
+        if(menuCode == 4)
+            if(cashitemCode == 6)
+                cashitemCode = 1;
+            else
+                cashitemCode ++;
         else
-            cashitemCode ++;
+            if(cashitemCode == 2)
+                cashitemCode = 1;
+            else
+                cashitemCode++;
     }
 
     private void prevCashItem(){
-        if(cashitemCode == 1)
-            cashitemCode = 6;
+        if(menuCode == 4)
+            if(cashitemCode == 1)
+                cashitemCode = 6;
+            else
+                cashitemCode --;
         else
-            cashitemCode --;
+            if(cashitemCode == 1)
+                cashitemCode = 2;
+            else
+                cashitemCode--;
     }
 
     private void rerollItem() {
@@ -222,11 +241,14 @@ public class StoreScreen extends Screen {
 
         drawManager.drawStoreTitle(this);
         drawManager.drawStoreMenu(this, menuCode, focusReroll);
-        if (menuCode < 5)
+        if (menuCode < 6)
             drawManager.drawStoreGacha(this, menuCode, focusReroll);
         drawManager.drawCoin(this, permanentState.getCoin());
         if(menuCode == 4 )
             drawManager.drawItemBox(this, cashitemCode, focusReroll);
+        drawManager.completeDrawing(this);
+        if(menuCode == 5) //Potion
+            drawManager.drawPotion(this, cashitemCode, focusReroll);
         drawManager.completeDrawing(this);
     }
 }

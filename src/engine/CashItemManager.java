@@ -70,12 +70,27 @@ public class CashItemManager {
                     this.itemtype = Item.ItemType.MachineGun;
                     MachineGunItem_count++;
                     break;
+            }
+        }
+        FileManager.saveCashitem(item_Num, cashItemAmount(item_Num));
+        return true;
+    }
+
+    public boolean buyPotion(int item_Num){
+
+        if (cashItemAmount(item_Num) == 10){
+            return false;
+        }
+        else {
+            switch (item_Num){
                 case 7:
                     this.potionItem = Item.PotionItem.SpeedUpPotion;
                     speeduppotion_count++;
+                    break;
                 case 8:
                     this.potionItem = Item.PotionItem.InvincibilityPotion;
                     invincibilitypotion_count++;
+                    break;
             }
         }
         FileManager.saveCashitem(item_Num, cashItemAmount(item_Num));
