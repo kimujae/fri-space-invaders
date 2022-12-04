@@ -179,6 +179,12 @@ public class CashItemManager {
             case 6:
                 amount = this.MachineGunItem_count;
                 break;
+            case 7:
+                amount = this.speeduppotion_count;
+                break;
+            case 8:
+                amount = this.invincibilitypotion_count;
+                break;
         }
         return amount;
     }

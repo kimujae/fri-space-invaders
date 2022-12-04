@@ -132,7 +132,7 @@ public class StoreScreen extends Screen {
                         cashItemManager.buyItem(cashitemCode);
                         permanentState.setCoin(-COST_ITEMBOX);
                     }
-                    else
+                    else //menuCode == 5
                         cashItemManager.buyPotion(cashitemCode);
                         permanentState.setCoin(-COST_POTION);
 
@@ -171,9 +171,9 @@ public class StoreScreen extends Screen {
                 cashitemCode = 1;
             else
                 cashitemCode ++;
-        else
-            if(cashitemCode == 2)
-                cashitemCode = 1;
+        else if (menuCode == 5)
+            if(cashitemCode == 8)
+                cashitemCode = 7;
             else
                 cashitemCode++;
     }
@@ -184,9 +184,9 @@ public class StoreScreen extends Screen {
                 cashitemCode = 6;
             else
                 cashitemCode --;
-        else
-            if(cashitemCode == 1)
-                cashitemCode = 2;
+        else if (menuCode == 5)
+            if(cashitemCode == 7)
+                cashitemCode = 8;
             else
                 cashitemCode--;
     }

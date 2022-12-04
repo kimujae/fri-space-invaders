@@ -92,7 +92,7 @@ public class GameScreen extends Screen {
 	/** Checks if the level is finished. */
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
-	//private boolean invincibility;
+	private boolean invincibility;
 	/** Checks if invincibility potion */
 	private boolean bonusLife;
 
@@ -185,8 +185,8 @@ public class GameScreen extends Screen {
 				break;
 		}
 
-//		managePotionItem(CashItemManager.getInstance().getPotionItem());
-//		CashItemManager.getInstance().setPotionItem(null);
+		managePotionItem(CashItemManager.getInstance().getPotionItem());
+		CashItemManager.getInstance().setPotionItem(null);
 
 		// Appears each 10-30 seconds.
 		this.enemyShipSpecialCooldown = Core.getVariableCooldown(
@@ -427,11 +427,11 @@ public class GameScreen extends Screen {
 		BulletPool.recycle(recyclable);
 	}
 
-//	public void managePotionItem(Item.PotionItem potionItem){
-//		if(potionItem = Item.PotionItem.InvincibilityPotion){
-//			invincibility = true;
-//		}
-//	}
+	public void managePotionItem(Item.PotionItem potionItem){
+		if(potionItem == Item.PotionItem.InvincibilityPotion){
+			invincibility = true;
+		}
+	}
 	/**
 	 * Manages collisions between bullets and ships.
 	 */
@@ -441,16 +441,21 @@ public class GameScreen extends Screen {
 			if (bullet.getSpeed() > 0) {
 				if (checkCollision(bullet, this.ship) && !this.levelFinished) {
 					recyclable.add(bullet);
-
-
-					if (shield == null && !this.ship.isDestroyed()) {
+					if (invincibility == true){
+						this.logger.info("Using invincibility potion, " + this.lives
+								+ " lives remaining.");
+						if(this.levelFinished == true){
+							this.invincibility = false;
+						}
+						break;
+					}
+					if (shield == null && !this.ship.isDestroyed() ) {
 						SoundPlay.getInstance().play(SoundType.hit);
 						this.ship.destroy();
 						this.lives--;
 						this.logger.info("Hit on player ship, " + this.lives
 								+ " lives remaining.");
 							this.clearItem();
-
 					} else if (!this.ship.isDestroyed()) {
 						shield = null;
 					}

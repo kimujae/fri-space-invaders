@@ -1165,7 +1165,7 @@ public final class DrawManager {
 			backBufferGraphics.drawRect(x+20 , y, 220, 240);
 		}
 		else if(menu == 5){
-			backBufferGraphics.drawRect(x+20 , y+10, 240, 200);
+			backBufferGraphics.drawRect(x+20 , y+80, 240, 150);
 		}
 		else {
 			backBufferGraphics.drawRect(screen.getWidth() / 2 + 50, screen.getHeight() / 2, 100, 100);
@@ -1253,15 +1253,19 @@ public final class DrawManager {
 		int y = screen.getHeight() * 2 / 8;
 
 		String[] items = FileManager.getInstance().loadCashItem();
+		String speedup = "Speed UP Potion\t\t" + items[6] + "/10";
 		String invincibility = "Invincibility Potion\t\t" + items[7] + "/10";
 
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(invincibility, x + 10, y + 100);
+		backBufferGraphics.drawString(speedup, x + 10, y + 140);
+		backBufferGraphics.drawString(invincibility, x + 10, y + 180);
 
 		backBufferGraphics.setColor(Color.GREEN);
-		if(focusreroll ==1) {
+		if(focusreroll == 1) {
 			if (item_num == 7)
-				backBufferGraphics.drawString(invincibility, x + 10, y + 100);
+				backBufferGraphics.drawString(speedup, x + 10, y + 140);
+			else if (item_num == 8)
+				backBufferGraphics.drawString(invincibility, x + 10, y + 180);
 		}
 	}
 
@@ -1516,19 +1520,20 @@ public final class DrawManager {
 				"Speed Box    " + items[3] + "/10",
 				"Life Box     " + items[4] + "/10",
 				"MachineGun Box    " + items[5] + "/10",
-				"Invincibility Potion    " + items[6] + "/10" };
+				"SpeedUp Potion    " + items[6] + "/10",
+				"Invincibility Potion    " + items[7] + "/10" };
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, title, 75);
 
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i <= 8; i++) {
 			if (row == i) {
 				backBufferGraphics.setColor(Color.GREEN);
 			}
 			else {
 				backBufferGraphics.setColor(Color.WHITE);
 			}
-			drawCenteredRegularString(screen, rows[i], 150 + screen.getHeight() * (2 *  i) / 30);
+			drawCenteredRegularString(screen, rows[i], 150 + screen.getHeight() * (2 *  i) / 25);
 		}
 	}
 }
