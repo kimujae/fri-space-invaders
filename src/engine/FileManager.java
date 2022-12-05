@@ -504,11 +504,11 @@ public final class FileManager {
 	}
 
 	public static void setPlayerShipShape() throws IOException {
-		FileReader fileReader = new FileReader("res/ship");
+		FileReader fileReader = new FileReader("fri-space-invaders/res/ship");
 		fileReader.read();
 		int colorNum = fileReader.read();
 		fileReader.close();
-		FileWriter fileWriter = new FileWriter("res/ship");
+		FileWriter fileWriter = new FileWriter("fri-space-invaders/res/ship");
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		printWriter.print(shipShape+1);
 		playerShipShape = shipShape;
@@ -521,10 +521,10 @@ public final class FileManager {
 	}
 	public static void setPlayerShipColor(int shipColor) {
 		try {
-			FileReader fileReader = new FileReader("res/ship");
+			FileReader fileReader = new FileReader("fri-space-invaders/res/ship");
 			int shapeNum = fileReader.read();
 			fileReader.close();
-			FileWriter fileWriter = new FileWriter("res/ship");
+			FileWriter fileWriter = new FileWriter("fri-space-invaders/res/ship");
 			PrintWriter printWriter = new PrintWriter(fileWriter);
 			printWriter.print(shapeNum - 48);
 			printWriter.print(shipColor+1);

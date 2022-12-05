@@ -462,7 +462,7 @@ public final class DrawManager {
 		String highScoresString = "High scores";
 		String exitString = "exit";
 		String setString = "setting";
-		String loadString = "load";
+		//String loadString = "load";
 		String storeString = "store";
 		String helpString = "help";
 				
@@ -472,32 +472,32 @@ public final class DrawManager {
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, playString,
-				screen.getHeight()/3);
+				screen.getHeight()/3 + fontRegularMetrics.getHeight() * 2);
 		if (option == 3)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, highScoresString, screen.getHeight()/3
-				 + fontRegularMetrics.getHeight() * 2);
+				 + fontRegularMetrics.getHeight() * 4);
 		if (option == 4)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, storeString, screen.getHeight()
-				/ 3 + fontRegularMetrics.getHeight() * 4);
-		if (option == 5)
+				/ 3 + fontRegularMetrics.getHeight() * 6);
+		/*if (option == 5)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, loadString, screen.getHeight() / 
-				 3 + fontRegularMetrics.getHeight() * 6);
-		if (option == 6)
+				 3 + fontRegularMetrics.getHeight() * 6);*/
+		if (option == 5)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, setString, screen.getHeight() / 
 				 3 + fontRegularMetrics.getHeight() * 8);
-		if (option == 7)
+		if (option == 6)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);

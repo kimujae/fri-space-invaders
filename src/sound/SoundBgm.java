@@ -21,7 +21,7 @@ public class SoundBgm {
     public SoundBgm(String filename){
         this.logger = Core.getLogger();
         try{
-            String soundPath = "res/sound/" + filename;
+            String soundPath = "fri-space-invaders/res/sound/" + filename;
             bgmFileLoader = new File(soundPath);
             AudioInputStream bgmInputStream = AudioSystem.getAudioInputStream(bgmFileLoader);
             bgmClip = AudioSystem.getClip();

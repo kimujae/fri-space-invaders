@@ -20,7 +20,7 @@ public class SoundEffect {
         this.logger = Core.getLogger();
 
         try{
-            String soundPath = "res/sound/" + filename;
+            String soundPath = "fri-space-invaders/res/sound/" + filename;
 
             effectFileLoader = new File(soundPath);
 
