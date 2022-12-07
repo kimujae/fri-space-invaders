@@ -306,7 +306,7 @@ public final class Core {
 				LOGGER.info("Closing store screen.");
 				break;
 
-			case 5:
+			/*case 5:
 				break;
 				// Load
 				/*
@@ -326,7 +326,7 @@ public final class Core {
 				break;
 				*/
 				
-			case 6:
+			case 5:
 				// Setting.
 				currentScreen = new SettingScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -335,7 +335,7 @@ public final class Core {
 				LOGGER.info("Closing setting screen.");
 				break;
 				
-			case 7: //Help
+			case 6: //Help
 				currentScreen = new HelpScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " setting screen at " + FPS + " fps.");
@@ -343,7 +343,7 @@ public final class Core {
 				LOGGER.info("Closing help screen.");
 				break;
 				
-			case 8: //Volume //mainmenu 1014
+			case 7: //Volume //mainmenu 1014
 				currentScreen = new VolumeScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " setting screen at " + FPS + " fps.");
@@ -351,7 +351,7 @@ public final class Core {
 				LOGGER.info("Closing help screen.");
 				break;
 
-				case 9:
+				case 8:
 					// Help(operation)
 					currentScreen = new HelpOperationScreen(width, height, FPS);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -360,7 +360,7 @@ public final class Core {
 					LOGGER.info("Closing operation screen.");
 					break;
 
-				case 10:
+				case 9:
 					// Help(item description)
 					currentScreen = new HelpItemDescriptionScreen(width, height, FPS);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -371,7 +371,7 @@ public final class Core {
 
 
 
-				case 11: //pauseStateScreen
+				case 10: //pauseStateScreen
 				currentScreen = new PauseStateScreen(width, height, FPS, gameScreen);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " pause screen at " + FPS + " fps.");
