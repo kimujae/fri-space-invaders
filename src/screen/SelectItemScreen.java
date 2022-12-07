@@ -78,7 +78,10 @@ public class SelectItemScreen extends Screen{
                 if (menuCode != 0) {
                     boolean check;
                     do {
-                        check = cashItemManager.useItem(menuCode);
+                        if(menuCode < 7)
+                            check = cashItemManager.useItem(menuCode);
+                        else
+                            check = cashItemManager.usePotionItem(menuCode);
                     } while (!check);
                 }
                 this.isRunning = false;
@@ -89,7 +92,7 @@ public class SelectItemScreen extends Screen{
      * Shifts the focus to the next menu item.
      */
     private void nextRow() {
-        if (menuCode == 6) {
+        if (menuCode == 8) {
             menuCode = 0;
         }
         else {
@@ -103,7 +106,7 @@ public class SelectItemScreen extends Screen{
      */
     private void prevRow() {
         if (menuCode == 0)
-            menuCode = 6;
+            menuCode = 8;
         else
             menuCode--;
         soundPlay.play(SoundType.menuSelect);

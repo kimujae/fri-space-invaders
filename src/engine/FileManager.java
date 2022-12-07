@@ -552,7 +552,7 @@ public final class FileManager {
 		index 7: InvincibilityPotion
 		*/
 
-		String[] cashitem = {"0", "0", "0", "0", "0", "0"};
+		String[] cashitem = {"0", "0", "0", "0", "0", "0", "0", "0"};
 
 		try {
 			String jarPath = FileManager.class.getProtectionDomain()
@@ -587,8 +587,8 @@ public final class FileManager {
 
 			cashitem[item-1] = Integer.toString(item_amount);
 			String cashitemstr ="";
-			for(int i = 0; i < 6 ; i++){
-				if(i != 5) cashitemstr += cashitem[i] +" ";
+			for(int i = 0; i < 8 ; i++){
+				if(i != 7) cashitemstr += cashitem[i] +" ";
 				else cashitemstr += cashitem[i];
 			}
 

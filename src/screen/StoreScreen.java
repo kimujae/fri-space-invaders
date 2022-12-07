@@ -21,6 +21,8 @@ public class StoreScreen extends Screen {
 
     private static final int COST_ITEMBOX = 100;
 
+    private static final int COST_POTION = 100;
+
     /** Time between changes in user selection. */
     private Cooldown selectionCooldown;
     private PermanentState permanentState = PermanentState.getInstance();
@@ -31,16 +33,17 @@ public class StoreScreen extends Screen {
 
     private int menuCode = 0;
     private int focusReroll = 0;
-
     private int cashitemCode =1;
 
     /* item Code는 아래와 같음
     BulletSpeedItem = 1;
-    ointUpItem = 2;
+    PointUpItem = 2;
     ShieldItem = 3;
     SpeedUpItem = 4;
     ExtraLifeItem = 5;
     MachineGunItem = 6;
+    speedUpPotion = 7;
+    invincibilityPotion = 8 ;
     */
     /**
      * Constructor, establishes the properties of the screen.
@@ -59,19 +62,14 @@ public class StoreScreen extends Screen {
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
     }
-// 71 사진봤음?? 예쓰
-    //메뉴코드가
     // /*
-    // 0 item box
-    // 1 ship shape
-    // 2 ship color
-    // 3 bullet effect
-    // 4 bgm
-    // 5 exit
-    // 2.reroll()에 itembox 선택 조건 추가 : 선택할 때 마다 buyItem(선언한 아이템명 변수)호출
-    // 포함하는게 맞나봐요?
-    // 지금 그니까 itembox탭을 추가해야되는것같아
-    // itembox탭열면 이제 아이템박스 사고, 거기에 포션도 넣어야 하지않을까? 포션은 아이템 박스 위치에 있으니까
+    // 0 ship shape
+    // 1 ship color
+    // 2 bullet effect
+    // 3 bgm
+    // 4 item box
+    // 5 potion
+    // 6 exit
     // */
     /**
      * Starts the action.
@@ -95,7 +93,7 @@ public class StoreScreen extends Screen {
                 && this.inputDelay.checkFinished()) {
             if (inputManager.isKeyDown(KeyEvent.VK_UP)
                     || inputManager.isKeyDown(KeyEvent.VK_W)) {
-                if(menuCode == 4 && focusReroll ==1){
+                if((menuCode == 4 || menuCode == 5) && focusReroll == 1){
                     prevCashItem();
                 }
                 if (focusReroll == 0)
@@ -104,7 +102,7 @@ public class StoreScreen extends Screen {
             }
             if (inputManager.isKeyDown(KeyEvent.VK_DOWN)
                     || inputManager.isKeyDown(KeyEvent.VK_S)) {
-                if(menuCode == 4 && focusReroll ==1){
+                if((menuCode == 4 || menuCode == 5) && focusReroll == 1){
                     nextCashItem();
                 }
                 if (focusReroll == 0)
@@ -113,16 +111,16 @@ public class StoreScreen extends Screen {
             }
             if (inputManager.isKeyDown(KeyEvent.VK_RIGHT) // 뽑기 버튼으로 가기
                     || inputManager.isKeyDown(KeyEvent.VK_D)) {
-                if (menuCode != 5) focusReroll = 1;
+                if (menuCode != 6) focusReroll = 1;
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_LEFT) // 메뉴 선택으로 되돌아가기
                     || inputManager.isKeyDown(KeyEvent.VK_A)) {
-                if (menuCode != 5) focusReroll = 0;
+                if (menuCode != 6) focusReroll = 0;
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE)){
-                if (menuCode == 5)
+                if (menuCode == 6) //EXIT
                     this.isRunning = false;
                 else {
                     if (focusReroll == 0)
@@ -130,10 +128,14 @@ public class StoreScreen extends Screen {
                     else if(menuCode < 4) { // reroll
                         rerollItem();
                     }
-                    else {
+                    else if (menuCode == 4) {
                         cashItemManager.buyItem(cashitemCode);
                         permanentState.setCoin(-COST_ITEMBOX);
                     }
+                    else //menuCode == 5
+                        cashItemManager.buyPotion(cashitemCode);
+                        permanentState.setCoin(-COST_POTION);
+
                 }
                 soundPlay.play(SoundType.menuClick);
                 this.selectionCooldown.reset();
@@ -145,7 +147,7 @@ public class StoreScreen extends Screen {
      * Shifts the focus to the next menu item.
      */
     private void nextMenuItem() {
-        if (menuCode == 5)
+        if (menuCode == 6)
             menuCode = 0;
         else
             menuCode++;
@@ -157,24 +159,36 @@ public class StoreScreen extends Screen {
      */
     private void previousMenuItem() {
         if (menuCode == 0)
-            menuCode = 5;
+            menuCode = 6;
         else
             menuCode--;
         soundPlay.play(SoundType.menuSelect);
     }
 
     private void nextCashItem(){
-        if(cashitemCode == 6)
-            cashitemCode = 1;
-        else
-            cashitemCode ++;
+        if(menuCode == 4)
+            if(cashitemCode == 6)
+                cashitemCode = 1;
+            else
+                cashitemCode ++;
+        else if (menuCode == 5)
+            if(cashitemCode == 8)
+                cashitemCode = 7;
+            else
+                cashitemCode++;
     }
 
     private void prevCashItem(){
-        if(cashitemCode == 1)
-            cashitemCode = 6;
-        else
-            cashitemCode --;
+        if(menuCode == 4)
+            if(cashitemCode == 1)
+                cashitemCode = 6;
+            else
+                cashitemCode --;
+        else if (menuCode == 5)
+            if(cashitemCode == 7)
+                cashitemCode = 8;
+            else
+                cashitemCode--;
     }
 
     private void rerollItem() {
@@ -217,7 +231,6 @@ public class StoreScreen extends Screen {
                 permanentState.setCoin(-COST_BGM);
             }
         }
-
     }
 
     /**
@@ -228,11 +241,14 @@ public class StoreScreen extends Screen {
 
         drawManager.drawStoreTitle(this);
         drawManager.drawStoreMenu(this, menuCode, focusReroll);
-        if (menuCode < 5)
+        if (menuCode < 6)
             drawManager.drawStoreGacha(this, menuCode, focusReroll);
         drawManager.drawCoin(this, permanentState.getCoin());
         if(menuCode == 4 )
             drawManager.drawItemBox(this, cashitemCode, focusReroll);
+        drawManager.completeDrawing(this);
+        if(menuCode == 5) //Potion
+            drawManager.drawPotion(this, cashitemCode, focusReroll);
         drawManager.completeDrawing(this);
     }
 }

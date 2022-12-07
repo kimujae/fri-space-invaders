@@ -1,4 +1,3 @@
-
 package engine;
 
 import java.awt.Color;
@@ -1096,7 +1095,8 @@ public final class DrawManager {
 		String shipColorString = "ship color";
 		String bulletEffectString = "bullet effect";
 		String BGMString = "BGM";
-		String ITEMBOX = "ITEM BOX";
+		String ITEMBOXString = "ITEM BOX";
+		String POTIONString = "POTION";
 		String exitString = "exit";
 
 		if (menu == 0 && focus == 0)
@@ -1104,7 +1104,7 @@ public final class DrawManager {
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(shipShapeString, screen.getWidth() / 2 - 170,
-				screen.getHeight() /2);
+				screen.getHeight() / 2);
 		if (menu == 1 && focus == 0)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
@@ -1127,19 +1127,26 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(ITEMBOX, screen.getWidth() / 2 - 170,
+		backBufferGraphics.drawString(ITEMBOXString, screen.getWidth() / 2 - 170,
 				screen.getHeight() / 2 + fontRegularMetrics.getHeight() * 8);
 		if (menu == 5 && focus == 0)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(POTIONString, screen.getWidth() / 2 - 170,
+				screen.getHeight() / 2 + fontRegularMetrics.getHeight() * 9);
+		if (menu == 6 && focus == 0)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(exitString, screen.getWidth() / 2 - 170,
-				screen.getHeight() / 2 + fontRegularMetrics.getHeight() * 10);
+				screen.getHeight() / 2 + fontRegularMetrics.getHeight() * 11);
 	}
 
 	public void drawStoreGacha(final Screen screen, final int menu, final int focus) {
 		String rerollString = "reroll!(100$)";
 		String buyItem = "Buy item(100$)";
+		String buypotion = "Buy Potion(100$)";
 		String coinLackString = "Not enough coins!";
 		PermanentState permanentState = PermanentState.getInstance();
 		int x = screen.getWidth()  * 4 / 10;
@@ -1157,14 +1164,19 @@ public final class DrawManager {
 		if (menu == 4) {
 			backBufferGraphics.drawRect(x+20 , y, 220, 240);
 		}
+		else if(menu == 5){
+			backBufferGraphics.drawRect(x+20 , y+80, 240, 150);
+		}
 		else {
 			backBufferGraphics.drawRect(screen.getWidth() / 2 + 50, screen.getHeight() / 2, 100, 100);
 		}
 
-		if(menu != 4)
-			backBufferGraphics.drawString(rerollString, screen.getWidth() / 2 + 100 - fontRegularMetrics.stringWidth(rerollString) / 2, screen.getWidth() / 2 + 180);
+		if(menu == 4)
+			backBufferGraphics.drawString(buyItem, screen.getWidth() / 2 + 100 - fontRegularMetrics.stringWidth(buyItem) / 2, screen.getWidth() / 2 + 180);
+		else if(menu == 5)
+			backBufferGraphics.drawString(buypotion, screen.getWidth() / 2 + 100 - fontRegularMetrics.stringWidth(buypotion) / 2, screen.getWidth() / 2 + 180);
 		else
-			backBufferGraphics.drawString(buyItem, screen.getWidth() / 2 + 85 - fontRegularMetrics.stringWidth(buyItem) / 2, screen.getWidth() / 2 + 180);
+			backBufferGraphics.drawString(rerollString, screen.getWidth() / 2 + 100 - fontRegularMetrics.stringWidth(rerollString) / 2, screen.getWidth() / 2 + 180);
 
 		if(menu < 2) { // shape, color
 			try{
@@ -1217,7 +1229,6 @@ public final class DrawManager {
 		backBufferGraphics.drawString(extralife, x + 10, y + 180);
 		backBufferGraphics.drawString(machinegun, x + 10, y + 220);
 
-
 		backBufferGraphics.setColor(Color.GREEN);
 		if(focusreroll ==1) {
 			if (item_num == 1)
@@ -1230,11 +1241,32 @@ public final class DrawManager {
 				backBufferGraphics.drawString(speedup, x + 10, y + 140);
 			else if (item_num == 5)
 				backBufferGraphics.drawString(extralife, x + 10, y + 180);
-			else
+			else if (item_num == 6)
 				backBufferGraphics.drawString(machinegun, x + 10, y + 220);
+
 		}
+	}
 
+	public void drawPotion(final Screen screen, final int item_num, final int focusreroll ) {
 
+		int x = screen.getWidth()  * 4 / 10 + 20;
+		int y = screen.getHeight() * 2 / 8;
+
+		String[] items = FileManager.getInstance().loadCashItem();
+		String speedup = "Speed UP Potion\t\t" + items[6] + "/10";
+		String invincibility = "Invincibility Potion\t\t" + items[7] + "/10";
+
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(speedup, x + 10, y + 140);
+		backBufferGraphics.drawString(invincibility, x + 10, y + 180);
+
+		backBufferGraphics.setColor(Color.GREEN);
+		if(focusreroll == 1) {
+			if (item_num == 7)
+				backBufferGraphics.drawString(speedup, x + 10, y + 140);
+			else if (item_num == 8)
+				backBufferGraphics.drawString(invincibility, x + 10, y + 180);
+		}
 	}
 
 	public void drawCoin(final Screen screen, final int coin) {
@@ -1290,7 +1322,6 @@ public final class DrawManager {
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(slot3,screen.getWidth() / 5 - 30,screen.getHeight() * 8 / 10);
-
 	}
 
 	public void drawSaveStartDelete (final Screen screen, final int mCode, final int startordelete) {
@@ -1482,27 +1513,27 @@ public final class DrawManager {
 	public void drawSelectItemScreen (final  Screen screen, final int row) {
 		String[] items = FileManager.getInstance().loadCashItem();
 		String title = "Choose your cash item";
-		String[] rows = {"No Use",
+		String[] rows = { "No Use",
 				"BulletSpeed Box    " + items[0] + "/10",
 				"Point Box    " + items[1] + "/10",
 				"Shield Box     " + items[2] + "/10",
 				"Speed Box    " + items[3] + "/10",
 				"Life Box     " + items[4] + "/10",
-				"MachineGun Box    " + items[5] + "/10"};
+				"MachineGun Box    " + items[5] + "/10",
+				"SpeedUp Potion    " + items[6] + "/10",
+				"Invincibility Potion    " + items[7] + "/10" };
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, title, 75);
 
-		for (int i = 0; i <= 6; i++) {
+		for (int i = 0; i <= 8; i++) {
 			if (row == i) {
 				backBufferGraphics.setColor(Color.GREEN);
 			}
 			else {
 				backBufferGraphics.setColor(Color.WHITE);
 			}
-			drawCenteredRegularString(screen, rows[i], 150 + screen.getHeight() * (2 *  i) / 20);
+			drawCenteredRegularString(screen, rows[i], 150 + screen.getHeight() * (2 *  i) / 25);
 		}
 	}
-
-
 }

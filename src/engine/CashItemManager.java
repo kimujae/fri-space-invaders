@@ -7,7 +7,6 @@ public class CashItemManager {
 
     private Item.ItemType itemtype;
 
-
     private Item.PotionItem potionItem;
 
     int BulletSpeedItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[0]);
@@ -16,9 +15,8 @@ public class CashItemManager {
     int SpeedUpItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[3]);
     int ExtraLifeItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[4]);
     int MachineGunItem_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[5]);
-    //int speeduppotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[6]);
-    //int invincibilitypotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[7]);
-
+    int speeduppotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[6]);
+    int invincibilitypotion_count = Integer.parseInt(FileManager.getInstance().loadCashItem()[7]);
     CashItemManager() {
         this.itemtype = null;
         this.potionItem = null;
@@ -33,13 +31,13 @@ public class CashItemManager {
 
     public void setItemType(Item.ItemType itemtype){ this.itemtype = itemtype; }
 
-//    public void setPotionItem(Item.PotionItem potionItem) { this.potionItem = potionItem; }
+    public void setPotionItem(Item.PotionItem potionItem) { this.potionItem = potionItem; }
 
     public Item.ItemType getItemType(){
         return this.itemtype;
     }
 
-//    public Item.PotionItem getPotionItem() { return this.potionItem; }
+    public Item.PotionItem getPotionItem() { return this.potionItem; }
 
     public boolean buyItem(int item_Num){
 
@@ -71,6 +69,27 @@ public class CashItemManager {
                 case 6:
                     this.itemtype = Item.ItemType.MachineGun;
                     MachineGunItem_count++;
+                    break;
+            }
+        }
+        FileManager.saveCashitem(item_Num, cashItemAmount(item_Num));
+        return true;
+    }
+
+    public boolean buyPotion(int item_Num){
+
+        if (cashItemAmount(item_Num) == 10){
+            return false;
+        }
+        else {
+            switch (item_Num){
+                case 7:
+                    this.potionItem = Item.PotionItem.SpeedUpPotion;
+                    speeduppotion_count++;
+                    break;
+                case 8:
+                    this.potionItem = Item.PotionItem.InvincibilityPotion;
+                    invincibilitypotion_count++;
                     break;
             }
         }
@@ -114,22 +133,29 @@ public class CashItemManager {
         return true;
     }
 
-//    public void usePotionItem(int item_Num) {
-//        switch (item_Num) {
-//            case 7:
-//                if(speeduppotion_count > 0) {
-//                    speeduppotion_count--;
-//                    this.potionItem = Item.PotionItem.SpeedUpPotion;
-//                }
-//                break;
-//            case 8:
-//                if(invincibilitypotion_count > 0) {
-//                    invincibilitypotion_count--;
-//                    this.potionItem = Item.PotionItem.InvincibilityPotion;
-//                }
-//                break;
-//        }
-//    }
+    public boolean usePotionItem(int item_Num) {
+        if (cashItemAmount(item_Num) == 0) {
+            return false;
+        }
+        else {
+            switch (item_Num) {
+                case 7:
+                    if (speeduppotion_count > 0) {
+                        this.potionItem = Item.PotionItem.SpeedUpPotion;
+                        speeduppotion_count--;
+                    }
+                    break;
+                case 8:
+                    if (invincibilitypotion_count > 0) {
+                        this.potionItem = Item.PotionItem.InvincibilityPotion;
+                        invincibilitypotion_count--;
+                    }
+                    break;
+            }
+        }
+        FileManager.saveCashitem(item_Num, cashItemAmount(item_Num));
+        return true;
+    }
     public int cashItemAmount(int item_num){
 
         int amount = 0;
@@ -153,10 +179,13 @@ public class CashItemManager {
             case 6:
                 amount = this.MachineGunItem_count;
                 break;
+            case 7:
+                amount = this.speeduppotion_count;
+                break;
+            case 8:
+                amount = this.invincibilitypotion_count;
+                break;
         }
         return amount;
-
     }
-
-
 }
