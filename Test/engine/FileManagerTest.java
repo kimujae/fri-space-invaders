@@ -11,6 +11,7 @@ import java.io.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -57,7 +58,21 @@ class FileManagerTest {
     }
 
     @Test
+    @Tag("loadCashItem")
     void loadCashItem(){
+        input_saveCashItem();
+        assertAll(
+                "multi",
+                ()-> assertEquals("30", FileManager.getInstance().loadCashItem()[0]),
+                ()-> assertEquals("0", FileManager.getInstance().loadCashItem()[1]),
+                ()-> assertEquals("0", FileManager.getInstance().loadCashItem()[2]),
+                ()-> assertEquals("0", FileManager.getInstance().loadCashItem()[3]),
+                ()-> assertEquals("0", FileManager.getInstance().loadCashItem()[4]),
+                ()-> assertEquals("0", FileManager.getInstance().loadCashItem()[5]),
+                ()-> assertEquals("0", FileManager.getInstance().loadCashItem()[6]),
+                ()-> assertEquals("0", FileManager.getInstance().loadCashItem()[7])
+        );
+
     }
 
     @Test
