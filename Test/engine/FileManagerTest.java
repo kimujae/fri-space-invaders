@@ -10,7 +10,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 
 class FileManagerTest {
@@ -38,11 +42,18 @@ class FileManagerTest {
     }
 
     @Test
+    @Tag("input_saveCoins")
     void input_saveCoins() {
+        setInputValues("3000");
+        FileManager.getInstance().saveCoins(3000);
     }
 
     @Test
+    @Tag("output_saveCoins")
     void output_saveCoins() {
+        String compareResult= "3000";
+        FileManager.getInstance().saveCoins(3000);
+        assertThat(output.toString().trim(),is(equalTo(compareResult)));
     }
 
     @Test
