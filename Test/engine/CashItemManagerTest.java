@@ -2,6 +2,7 @@ package engine;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +40,7 @@ class CashItemManagerTest {
     }
 
     @Test
+    @Tag("buyItem")
     void buyItem() {
         CashItemManager cashItemManager = new CashItemManager();
         boolean buy = cashItemManager.buyItem(2);
@@ -47,10 +49,18 @@ class CashItemManagerTest {
     }
 
     @Test
+    @Tag("buyPotion")
     void buyPotion() {
+        CashItemManager cashItemManager = new CashItemManager();
+        boolean buyP = cashItemManager.buyPotion(7);
+        boolean buyP2 = cashItemManager.buyPotion(7);
+        assertEquals(true, buyP);
+        assertEquals(true, buyP2);
+        System.out.println("buyPotion");
     }
 
     @Test
+    @Tag("useItem")
     void useItem() {
         CashItemManager cashItemManager = new CashItemManager();
         boolean use = cashItemManager.useItem(2);
@@ -59,7 +69,14 @@ class CashItemManagerTest {
     }
 
     @Test
+    @Tag("usePotionItem")
     void usePotionItem() {
+        CashItemManager cashItemManager = new CashItemManager();
+        boolean buyP = cashItemManager.usePotionItem(7);
+        boolean buyP2 = cashItemManager.usePotionItem(8);
+        assertEquals(true, buyP);
+        assertEquals(true, buyP2);
+        System.out.println("usePotion");
     }
 
     @Test
