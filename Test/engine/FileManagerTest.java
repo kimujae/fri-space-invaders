@@ -76,11 +76,18 @@ class FileManagerTest {
     }
 
     @Test
+    @Tag("input_saveCashItem")
     void input_saveCashItem(){
+        setInputValues("30");
+        FileManager.getInstance().saveCashitem(1,30);
     }
 
     @Test
+    @Tag("output_saveCashItem")
     void output_saveCashItem(){
+        String compareResult= "30,0,0,0,0,0,0,0";
+        FileManager.getInstance().saveCashitem(1, 30);
+        assertThat(output.toString().trim(),is(equalTo(compareResult)));
     }
 
 
