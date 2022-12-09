@@ -1,5 +1,7 @@
 package engine;
 
+import engine.DrawManager.SpriteType;
+
 import java.awt.*;
 import java.io.*;
 import java.net.URLDecoder;
@@ -9,9 +11,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import engine.DrawManager.SpriteType;
-import engine.DrawManager;
 
 /**
  * Manages files used in the application.
@@ -395,7 +394,7 @@ public final class FileManager {
 
 			bufferedWriter.write(saveCoins);
 			bufferedWriter.close();
-
+			System.out.println(loadCoins());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -578,7 +577,6 @@ public final class FileManager {
 	public static void saveCashitem(int item, int item_amount) {
 		try {
 			String cashitem[] = loadCashItem();
-			System.out.println(cashitem.length);
 			String jarPath = FileManager.class.getProtectionDomain()
 					.getCodeSource().getLocation().getPath();
 			jarPath = URLDecoder.decode(jarPath, "UTF-8");
@@ -595,6 +593,8 @@ public final class FileManager {
 			savecashitem.write(cashitemstr);
 
 			savecashitem.close();
+			System.out.println(loadCashItem()[0]+","+loadCashItem()[1]+","+loadCashItem()[2]+","
+					+loadCashItem()[3]+","+loadCashItem()[4]+","+loadCashItem()[5]+","+loadCashItem()[6]+","+loadCashItem()[7]);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
